@@ -13,15 +13,17 @@
         :root {
             --bg-main: #0b0f19;
             --bg-sidebar: #111827;
-            --bg-card: #1f2937;
-            --border-color: #374151;
-            --primary: #6366f1;
-            --primary-hover: #4f46e5;
+            --bg-card: #1e293b;
+            --border-color: #334155;
+            --primary: #4f46e5;
+            --primary-hover: #4338ca;
+            --text-main: #ffffff;
+            --text-muted: #cbd5e1;
         }
 
         body {
             background-color: var(--bg-main);
-            color: #f3f4f6;
+            color: var(--text-main);
             font-family: 'Plus Jakarta Sans', sans-serif;
             overflow-x: hidden;
         }
@@ -36,15 +38,14 @@
         }
 
         .sidebar-brand {
-            font-size: 1.15rem;
+            font-size: 1.2rem;
             font-weight: 700;
-            background: linear-gradient(135deg, #818cf8 0%, #c084fc 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            color: #ffffff;
+            letter-spacing: 0.5px;
         }
 
         .nav-link {
-            color: #9ca3af;
+            color: #cbd5e1;
             border-radius: 10px;
             margin-bottom: 8px;
             padding: 12px 16px;
@@ -56,10 +57,15 @@
             gap: 12px;
         }
 
-        .nav-link:hover, .nav-link.active {
+        .nav-link:hover {
+            color: #ffffff;
+            background-color: rgba(255, 255, 255, 0.05);
+        }
+
+        .nav-link.active {
             background: linear-gradient(135deg, var(--primary) 0%, var(--primary-hover) 100%);
-            color: #fff;
-            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+            color: #ffffff !important;
+            box-shadow: 0 4px 12px rgba(79, 70, 229, 0.4);
         }
 
         /* Card Custom */
@@ -67,86 +73,81 @@
             background-color: var(--bg-card);
             border: 1px solid var(--border-color);
             border-radius: 16px;
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            color: #ffffff;
+            transition: transform 0.2s ease, border-color 0.2s ease;
         }
 
         .card-custom:hover {
-            border-color: #4b5563;
-        }
-
-        /* Stat Cards */
-        .stat-card {
-            position: relative;
-            overflow: hidden;
-        }
-        .stat-card::after {
-            content: '';
-            position: absolute;
-            top: 0; right: 0; bottom: 0; left: 0;
-            background: linear-gradient(135deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0) 100%);
-            pointer-events: none;
+            border-color: #475569;
         }
 
         /* Table Styling */
         .table {
-            color: #f3f4f6 !important;
+            color: #ffffff !important;
             vertical-align: middle;
         }
         .table th {
-            background-color: #111827 !important;
-            color: #9ca3af !important;
+            background-color: #0f172a !important;
+            color: #cbd5e1 !important;
             font-weight: 600;
             border-bottom: 1px solid var(--border-color);
             padding: 14px;
         }
         .table td {
             background-color: var(--bg-card) !important;
+            color: #ffffff !important;
             border-bottom: 1px solid var(--border-color);
             padding: 14px;
         }
 
         /* Form Controls */
         .form-control, .form-select {
-            background-color: #111827 !important;
+            background-color: #0f172a !important;
             border: 1px solid var(--border-color) !important;
-            color: #fff !important;
+            color: #ffffff !important;
             border-radius: 10px;
             padding: 12px;
         }
+        .form-control::placeholder {
+            color: #64748b;
+        }
         .form-control:focus, .form-select:focus {
-            border-color: var(--primary) !important;
-            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+            border-color: #6366f1 !important;
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.25);
+            color: #ffffff !important;
+        }
+        .form-select option {
+            background-color: #1e293b;
+            color: #ffffff;
         }
 
         /* Buttons */
         .btn-primary {
-            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-hover) 100%);
+            background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
             border: none;
             border-radius: 10px;
             padding: 10px 20px;
             font-weight: 600;
+            color: #ffffff;
             transition: all 0.2s;
         }
         .btn-primary:hover {
-            opacity: 0.9;
+            background: linear-gradient(135deg, #4f46e5 0%, #4338ca 100%);
+            color: #ffffff;
             transform: translateY(-1px);
         }
 
         /* Content Sections */
-        .content-section { display: none; animation: fadeIn 0.4s ease-in-out; }
+        .content-section { display: none; animation: fadeIn 0.3s ease-in-out; }
         .content-section.active { display: block; }
 
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(8px); }
+            from { opacity: 0; transform: translateY(6px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* Badge Custom */
-        .badge {
-            padding: 6px 12px;
-            border-radius: 6px;
-            font-weight: 600;
-            font-size: 0.75rem;
+        .text-muted-custom {
+            color: var(--text-muted) !important;
         }
     </style>
 </head>
@@ -158,7 +159,7 @@
         <div class="col-md-3 col-lg-2 sidebar p-4 d-flex flex-column justify-content-between">
             <div>
                 <div class="d-flex align-items-center gap-2 mb-4 px-2">
-                    <i class="fa-solid fa-graduation-cap fs-4 text-indigo"></i>
+                    <i class="fa-solid fa-graduation-cap fs-4 text-indigo" style="color: #818cf8;"></i>
                     <span class="sidebar-brand">PR Reminder</span>
                 </div>
                 <ul class="nav nav-pills flex-column">
@@ -179,9 +180,9 @@
                     </li>
                 </ul>
             </div>
-            <div class="text-muted small px-2">
+            <div class="text-muted-custom small px-2">
                 <hr class="border-secondary">
-                <p class="mb-0">Digital Task v2.0</p>
+                <p class="mb-0 fw-semibold text-white">Digital Task v2.1</p>
                 <small>Sistem Pengingat Sekolah</small>
             </div>
         </div>
@@ -193,8 +194,8 @@
             <div id="page-dashboard" class="content-section active">
                 <div class="mb-4 d-flex justify-content-between align-items-center flex-wrap gap-3">
                     <div>
-                        <h2 class="fw-bold mb-1">Selamat Datang di Sistem Pengingat PR Sekolah 👋</h2>
-                        <p class="text-muted mb-0">Pantau tenggat waktu tugas harianmu agar tidak ada yang terlewat.</p>
+                        <h2 class="fw-bold mb-1 text-white">Selamat Datang di Sistem Pengingat PR Sekolah 👋</h2>
+                        <p class="text-muted-custom mb-0">Pantau tenggat waktu tugas harianmu agar tidak ada yang terlewat.</p>
                     </div>
                     <button class="btn btn-primary d-flex align-items-center gap-2 shadow-sm" onclick="switchPage('tambah')">
                         <i class="fa-solid fa-plus"></i> Buat Tugas Baru
@@ -202,45 +203,45 @@
                 </div>
 
                 <!-- Statistik Ringkasan -->
-                <h5 class="fw-bold mb-3"><i class="fa-solid fa-chart-pie text-indigo me-2"></i>Ringkasan Tugas</h5>
+                <h5 class="fw-bold mb-3 text-white"><i class="fa-solid fa-chart-pie me-2" style="color: #818cf8;"></i>Ringkasan Tugas</h5>
                 <div class="row g-4 mb-5">
                     <div class="col-md-4">
-                        <div class="card card-custom stat-card p-4 shadow-sm border-start border-4 border-info">
+                        <div class="card card-custom p-4 shadow-sm border-start border-4 border-info">
                             <div class="d-flex justify-content-between align-items-center">
                                 <div>
-                                    <span class="text-muted small fw-semibold text-uppercase">Total Tugas</span>
+                                    <span class="text-muted-custom small fw-bold text-uppercase">Total Tugas</span>
                                     <h2 class="fw-bold text-info mb-0 mt-1" id="stat-total">0</h2>
                                 </div>
-                                <div class="fs-2 text-info opacity-50"><i class="fa-solid fa-folder-open"></i></div>
+                                <div class="fs-2 text-info opacity-75"><i class="fa-solid fa-folder-open"></i></div>
                             </div>
                         </div>
                     </div>
                     <div class="col-md-4">
-                        <div class="card card-custom stat-card p-4 shadow-sm border-start border-4 border-warning">
+                        <div class="card card-custom p-4 shadow-sm border-start border-4 border-warning">
                             <div class="d-flex justify-content-between align-items-center">
                                 <div>
-                                    <span class="text-muted small fw-semibold text-uppercase">Belum Selesai</span>
+                                    <span class="text-muted-custom small fw-bold text-uppercase">Belum Selesai</span>
                                     <h2 class="fw-bold text-warning mb-0 mt-1" id="stat-belum">0</h2>
                                 </div>
-                                <div class="fs-2 text-warning opacity-50"><i class="fa-solid fa-clock-rotate-left"></i></div>
+                                <div class="fs-2 text-warning opacity-75"><i class="fa-solid fa-clock-rotate-left"></i></div>
                             </div>
                         </div>
                     </div>
                     <div class="col-md-4">
-                        <div class="card card-custom stat-card p-4 shadow-sm border-start border-4 border-success">
+                        <div class="card card-custom p-4 shadow-sm border-start border-4 border-success">
                             <div class="d-flex justify-content-between align-items-center">
                                 <div>
-                                    <span class="text-muted small fw-semibold text-uppercase">Selesai</span>
+                                    <span class="text-muted-custom small fw-bold text-uppercase">Selesai</span>
                                     <h2 class="fw-bold text-success mb-0 mt-1" id="stat-selesai">0</h2>
                                 </div>
-                                <div class="fs-2 text-success opacity-50"><i class="fa-solid fa-circle-check"></i></div>
+                                <div class="fs-2 text-success opacity-75"><i class="fa-solid fa-circle-check"></i></div>
                             </div>
                         </div>
                     </div>
                 </div>
 
                 <!-- Deadline Terdekat -->
-                <h5 class="fw-bold mb-3"><i class="fa-solid fa-triangle-exclamation text-warning me-2"></i>Deadline Terdekat</h5>
+                <h5 class="fw-bold mb-3 text-white"><i class="fa-solid fa-triangle-exclamation text-warning me-2"></i>Deadline Terdekat</h5>
                 <div class="list-group gap-2" id="deadline-list">
                     <!-- Dynamic Content -->
                 </div>
@@ -250,8 +251,8 @@
             <div id="page-daftar" class="content-section">
                 <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
                     <div>
-                        <h2 class="fw-bold mb-1">Daftar PR / Tugas</h2>
-                        <p class="text-muted mb-0">Kelola dan ubah status pengerjaan tugas sekolahmu di sini.</p>
+                        <h2 class="fw-bold mb-1 text-white">Daftar PR / Tugas</h2>
+                        <p class="text-muted-custom mb-0">Kelola dan ubah status pengerjaan tugas sekolahmu di sini.</p>
                     </div>
                     <button class="btn btn-primary d-flex align-items-center gap-2" onclick="switchPage('tambah')">
                         <i class="fa-solid fa-plus"></i> Tambah PR
@@ -262,8 +263,8 @@
                 <div class="row mb-4">
                     <div class="col-md-4">
                         <div class="input-group">
-                            <span class="input-group-text bg-dark border-secondary text-muted"><i class="fa-solid fa-filter"></i></span>
-                            <select id="filter-mapel" class="form-select border-secondary" onchange="renderTabel()">
+                            <span class="input-group-text bg-dark border-secondary text-white"><i class="fa-solid fa-filter"></i></span>
+                            <select id="filter-mapel" class="form-select border-secondary text-white" onchange="renderTabel()">
                                 <option value="">Semua Mata Pelajaran</option>
                                 <option value="Matematika">Matematika</option>
                                 <option value="Bahasa Indonesia">Bahasa Indonesia</option>
@@ -302,15 +303,15 @@
                     <div class="col-md-8 col-lg-6">
                         <div class="card card-custom p-4 p-md-5 shadow-lg border-0">
                             <div class="text-center mb-4">
-                                <div class="bg-indigo text-primary rounded-circle d-inline-flex p-3 mb-2 fs-3 bg-opacity-10">
-                                    <i class="fa-solid fa-book-bookmark text-primary"></i>
+                                <div class="bg-primary text-white rounded-circle d-inline-flex p-3 mb-2 fs-3 bg-opacity-25">
+                                    <i class="fa-solid fa-book-bookmark"></i>
                                 </div>
-                                <h3 class="fw-bold">Tambah Tugas Baru</h3>
-                                <p class="text-muted small">Masukkan detail informasi tugas sekolah dengan benar.</p>
+                                <h3 class="fw-bold text-white">Tambah Tugas Baru</h3>
+                                <p class="text-muted-custom small">Masukkan detail informasi tugas sekolah dengan benar.</p>
                             </div>
                             <form id="form-tambah" onsubmit="tambahTugas(event)">
                                 <div class="mb-3">
-                                    <label class="form-label small fw-semibold">Mata Pelajaran</label>
+                                    <label class="form-label small fw-semibold text-white">Mata Pelajaran</label>
                                     <select id="input-mapel" class="form-select" required>
                                         <option value="">-- Pilih Mata Pelajaran --</option>
                                         <option value="Matematika">Matematika</option>
@@ -320,16 +321,16 @@
                                     </select>
                                 </div>
                                 <div class="mb-3">
-                                    <label class="form-label small fw-semibold">Deskripsi Tugas</label>
+                                    <label class="form-label small fw-semibold text-white">Deskripsi Tugas</label>
                                     <textarea id="input-deskripsi" class="form-control" rows="3" placeholder="Contoh: Kerjakan halaman 15-20 bagian A..." required></textarea>
                                 </div>
                                 <div class="mb-4">
-                                    <label class="form-label small fw-semibold">Tenggat Waktu (Deadline)</label>
+                                    <label class="form-label small fw-semibold text-white">Tenggat Waktu (Deadline)</label>
                                     <input type="date" id="input-deadline" class="form-control" required>
                                 </div>
                                 <div class="d-flex gap-2">
                                     <button type="submit" class="btn btn-primary flex-grow-1">Simpan Tugas</button>
-                                    <button type="button" class="btn btn-outline-secondary text-white border-secondary px-4" onclick="switchPage('daftar')">Batal</button>
+                                    <button type="button" class="btn btn-outline-light border-secondary px-4 text-white" onclick="switchPage('daftar')">Batal</button>
                                 </div>
                             </form>
                         </div>
@@ -418,29 +419,29 @@
         }
 
         if(filteredData.length === 0) {
-            tbody.innerHTML = `<tr><td colspan="6" class="text-center text-muted py-5"><i class="fa-solid fa-folder-open fs-2 mb-2 d-block"></i>Belum ada data tugas.</td></tr>`;
+            tbody.innerHTML = `<tr><td colspan="6" class="text-center text-muted-custom py-5"><i class="fa-solid fa-folder-open fs-2 mb-2 d-block"></i>Belum ada data tugas.</td></tr>`;
             return;
         }
 
         filteredData.forEach((t, index) => {
             let badgeStatus = t.status === 'belum' 
-                ? '<span class="badge bg-danger bg-opacity-10 text-danger border border-danger border-opacity-25"><i class="fa-solid fa-circle-xmark me-1"></i> Belum</span>' 
-                : '<span class="badge bg-success bg-opacity-10 text-success border border-success border-opacity-25"><i class="fa-solid fa-circle-check me-1"></i> Selesai</span>';
+                ? '<span class="badge bg-danger bg-opacity-25 text-danger border border-danger border-opacity-50"><i class="fa-solid fa-circle-xmark me-1"></i> Belum</span>' 
+                : '<span class="badge bg-success bg-opacity-25 text-success border border-success border-opacity-50"><i class="fa-solid fa-circle-check me-1"></i> Selesai</span>';
             
             let tglFormat = new Date(t.deadline).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' });
             
             tbody.innerHTML += `
                 <tr>
-                    <td class="text-muted">${index + 1}</td>
-                    <td class="fw-bold text-indigo">${t.mapel}</td>
-                    <td>${t.deskripsi}</td>
-                    <td><i class="fa-regular fa-calendar-days me-1 text-muted"></i> ${tglFormat}</td>
+                    <td class="text-muted-custom">${index + 1}</td>
+                    <td class="fw-bold text-white">${t.mapel}</td>
+                    <td class="text-white">${t.deskripsi}</td>
+                    <td class="text-white"><i class="fa-regular fa-calendar-days me-1 text-muted-custom"></i> ${tglFormat}</td>
                     <td>${badgeStatus}</td>
                     <td class="text-center">
-                        <button class="btn btn-sm btn-outline-info px-2 py-1 me-1" title="Ubah Status" onclick="ubahStatus(${t.id})">
+                        <button class="btn btn-sm btn-outline-info px-2 py-1 me-1 text-white border-info" title="Ubah Status" onclick="ubahStatus(${t.id})">
                             <i class="fa-solid fa-rotate"></i>
                         </button>
-                        <button class="btn btn-sm btn-outline-danger px-2 py-1" title="Hapus Tugas" onclick="hapusTugas(${t.id})">
+                        <button class="btn btn-sm btn-outline-danger px-2 py-1 text-white border-danger" title="Hapus Tugas" onclick="hapusTugas(${t.id})">
                             <i class="fa-solid fa-trash-can"></i>
                         </button>
                     </td>
@@ -468,7 +469,7 @@
         const todayStr = new Date().toISOString().split('T')[0];
 
         if(top3.length === 0) {
-            deadlineList.innerHTML = `<div class="card card-custom p-4 text-center text-muted"><i class="fa-solid fa-face-smile fs-3 mb-2 text-success"></i>Hore! Tidak ada tugas mendesak saat ini.</div>`;
+            deadlineList.innerHTML = `<div class="card card-custom p-4 text-center text-white"><i class="fa-solid fa-face-smile fs-3 mb-2 text-success"></i>Hore! Tidak ada tugas mendesak saat ini.</div>`;
             return;
         }
 
@@ -479,16 +480,16 @@
             deadlineList.innerHTML += `
                 <div class="card card-custom p-3 text-white d-flex flex-row justify-content-between align-items-center shadow-sm">
                     <div class="d-flex align-items-center gap-3">
-                        <div class="bg-primary bg-opacity-10 p-3 rounded-3 text-primary fs-4">
+                        <div class="bg-primary bg-opacity-25 p-3 rounded-3 text-white fs-4">
                             <i class="fa-solid fa-book"></i>
                         </div>
                         <div>
-                            <h6 class="mb-1 fw-bold">${t.mapel}</h6>
-                            <p class="text-muted small mb-0">${t.deskripsi}</p>
+                            <h6 class="mb-1 fw-bold text-white">${t.mapel}</h6>
+                            <p class="text-muted-custom small mb-0">${t.deskripsi}</p>
                         </div>
                     </div>
                     <div class="text-end">
-                        <span class="badge bg-dark border border-secondary mb-1"><i class="fa-regular fa-calendar me-1"></i> ${tglFormat}</span>
+                        <span class="badge bg-dark border border-secondary mb-1 text-white"><i class="fa-regular fa-calendar me-1"></i> ${tglFormat}</span>
                         <div>
                             ${isToday ? '<span class="badge bg-danger">Hari Ini!</span>' : ''}
                         </div>
@@ -503,5 +504,3 @@
 
 </body>
 </html>
-
-```
