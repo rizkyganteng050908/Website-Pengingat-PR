@@ -1,1265 +1,897 @@
+
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PR Master - Pengingat PR & Tugas Sekolah Digital</title>
-    <!-- Bootstrap 5 CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Google Fonts & FontAwesome Icons -->
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <style>
-        :root {
-            --bg-dark: #070a12;
-            --bg-sidebar: #0f172a;
-            --bg-card: rgba(30, 41, 59, 0.7);
-            --border-glass: rgba(255, 255, 255, 0.1);
-            --border-glow: rgba(99, 102, 241, 0.4);
-            --primary: #6366f1;
-            --primary-hover: #4f46e5;
-            --secondary: #ec4899;
-            --accent-cyan: #06b6d4;
-            --accent-emerald: #10b981;
-            --text-main: #f8fafc;
-            --text-muted: #94a3b8;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#080b16">
+<title>PR Master Studio — Smart Student Planner</title>
 
-        body {
-            background-color: var(--bg-dark);
-            background-image: 
-                radial-gradient(at 0% 0%, rgba(99, 102, 241, 0.15) 0px, transparent 50%),
-                radial-gradient(at 100% 100%, rgba(236, 72, 153, 0.12) 0px, transparent 50%),
-                radial-gradient(at 50% 50%, rgba(6, 182, 212, 0.08) 0px, transparent 50%);
-            background-attachment: fixed;
-            color: var(--text-main);
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            min-height: 100vh;
-            overflow-x: hidden;
-        }
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet">
 
-        /* Glassmorphism Panels & Cards */
-        .glass-panel {
-            background: var(--bg-card);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border: 1px solid var(--border-glass);
-            border-radius: 20px;
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
-        }
+<style>
+:root{
+ --bg:#080b16;--panel:#11182b;--card:#151e33;
+ --primary:#818cf8;--purple:#a78bfa;--cyan:#22d3ee;
+ --green:#34d399;--yellow:#fbbf24;--red:#fb7185;
+ --text:#f8fafc;--muted:#9aa9c2;--border:rgba(148,163,184,.15);
+}
+*{box-sizing:border-box}
+body{
+ margin:0;background:
+ radial-gradient(ellipse at 0% 0%,rgba(99,102,241,.15),transparent 40%),
+ radial-gradient(ellipse at 100% 100%,rgba(168,85,247,.10),transparent 40%),
+ var(--bg);background-attachment:fixed;color:var(--text);
+ font-family:'Plus Jakarta Sans',sans-serif;min-height:100vh;
+}
+button,input,select,textarea{font-family:inherit}
+a{text-decoration:none}
+.text-muted{color:var(--muted)!important}
+.glass{
+ background:rgba(17,24,43,.82);border:1px solid var(--border);
+ border-radius:20px;backdrop-filter:blur(18px);
+ box-shadow:0 12px 35px rgba(0,0,0,.12);
+}
+.card-custom{
+ background:linear-gradient(145deg,rgba(24,34,57,.94),rgba(15,22,40,.94));
+ border:1px solid var(--border);border-radius:18px;
+ transition:.2s;min-width:0;
+}
+.card-custom:hover{border-color:rgba(129,140,248,.38);transform:translateY(-2px)}
+.btn-primary-custom{
+ color:white;background:linear-gradient(120deg,#6366f1,#8b5cf6);
+ border:0;border-radius:12px;padding:12px 18px;font-weight:700;
+}
+.btn-primary-custom:hover{color:white;filter:brightness(1.12)}
+.btn-soft{
+ color:#e2e8f0;background:rgba(255,255,255,.05);
+ border:1px solid var(--border);border-radius:11px;
+}
+.btn-soft:hover{background:rgba(129,140,248,.15);color:white}
+.form-control,.form-select{
+ background:#0c1325!important;color:white!important;
+ border:1px solid var(--border)!important;border-radius:11px;
+ padding:11px 13px;
+}
+.form-control:focus,.form-select:focus{
+ border-color:var(--primary)!important;
+ box-shadow:0 0 0 3px rgba(129,140,248,.13)!important;
+}
+.form-control::placeholder{color:#71809b}
+.form-select option{background:#11182b;color:white}
+.form-label{color:#b9c5da;font-size:.83rem;font-weight:600}
+.badge-custom{display:inline-block;padding:6px 9px;border-radius:8px;font-size:.72rem;font-weight:700}
+.priority-Tinggi{color:#fda4af;background:rgba(244,63,94,.13)}
+.priority-Sedang{color:#fcd34d;background:rgba(245,158,11,.13)}
+.priority-Rendah{color:#6ee7b7;background:rgba(16,185,129,.13)}
+.status-done{color:#6ee7b7;background:rgba(16,185,129,.13)}
+.status-pending{color:#fcd34d;background:rgba(245,158,11,.13)}
+.status-late{color:#fda4af;background:rgba(244,63,94,.13)}
 
-        .glass-card {
-            background: rgba(15, 23, 42, 0.6);
-            backdrop-filter: blur(12px);
-            border: 1px solid var(--border-glass);
-            border-radius: 16px;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
+/* LOGIN */
+#login-overlay{
+ position:fixed;inset:0;z-index:9999;display:flex;align-items:center;
+ justify-content:center;overflow:auto;padding:20px;
+ background:radial-gradient(ellipse at 10% 10%,rgba(99,102,241,.22),transparent 45%),
+ radial-gradient(ellipse at 90% 90%,rgba(192,132,252,.16),transparent 40%),#070a14;
+}
+.login-card{
+ width:100%;max-width:430px;padding:35px;
+ border:1px solid rgba(255,255,255,.12);border-radius:27px;
+ background:rgba(15,23,42,.88);box-shadow:0 30px 90px #0007;
+}
+.logo-icon{
+ width:65px;height:65px;border-radius:20px;display:grid;place-items:center;
+ margin:0 auto 18px;font-size:27px;
+ background:linear-gradient(135deg,#6366f1,#a855f7);
+ box-shadow:0 10px 30px #6366f155;
+}
 
-        .glass-card:hover {
-            border-color: rgba(99, 102, 241, 0.4);
-            transform: translateY(-2px);
-            box-shadow: 0 12px 24px -10px rgba(99, 102, 241, 0.3);
-        }
+/* APP LAYOUT */
+.sidebar{
+ position:fixed;top:0;bottom:0;left:0;width:250px;padding:25px 17px;
+ background:rgba(10,15,29,.96);border-right:1px solid var(--border);
+ display:flex;flex-direction:column;justify-content:space-between;
+ z-index:1000;overflow-y:auto;
+}
+.main-area{margin-left:250px;padding:30px;min-width:0}
+.brand{font-size:1.2rem;font-weight:800;letter-spacing:-.5px}
+.brand-mark{
+ width:42px;height:42px;border-radius:13px;display:grid;place-items:center;
+ background:linear-gradient(135deg,#6366f1,#a855f7);font-size:20px;
+}
+.nav-custom{
+ display:flex;align-items:center;gap:13px;padding:13px 14px;
+ margin:4px 0;border-radius:12px;color:var(--muted);
+ cursor:pointer;font-weight:600;font-size:.87rem;border:1px solid transparent;
+}
+.nav-custom i{width:20px;text-align:center}
+.nav-custom:hover,.nav-custom.active{
+ color:white;background:rgba(129,140,248,.13);
+ border-color:rgba(129,140,248,.16);
+}
+.nav-custom.active{box-shadow:inset 3px 0 #818cf8}
+.mobile-top{
+ display:none;position:sticky;top:0;z-index:900;
+ background:rgba(8,11,22,.94);backdrop-filter:blur(18px);
+ padding:12px 16px;border-bottom:1px solid var(--border);
+}
+.page{display:none;animation:fade .25s ease}
+.page.active{display:block}
+@keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.hero{
+ padding:32px;background:
+ radial-gradient(ellipse at 100% 0%,rgba(129,140,248,.2),transparent 50%),
+ linear-gradient(130deg,#19223c,#10172a);
+ border:1px solid rgba(129,140,248,.2);border-radius:22px;
+}
+.stat-number{font-size:2rem;font-weight:800;letter-spacing:-1px}
+.stat-icon{
+ width:43px;height:43px;border-radius:13px;display:grid;place-items:center;
+ background:rgba(129,140,248,.13);color:var(--primary);font-size:18px;
+}
+.progress-track{height:8px;border-radius:20px;background:#29334a;overflow:hidden}
+.progress-bar-custom{height:100%;border-radius:20px;background:linear-gradient(90deg,#6366f1,#c084fc);transition:width .4s}
+.table{--bs-table-bg:transparent;--bs-table-color:white;margin:0}
+.table th{
+ background:#10182b;color:#9eacc5;font-size:.72rem;letter-spacing:.5px;
+ text-transform:uppercase;padding:15px;border-bottom:1px solid var(--border);
+ white-space:nowrap;
+}
+.table td{padding:15px;border-bottom:1px solid var(--border);vertical-align:middle;overflow-wrap:anywhere}
+.table tbody tr:hover td{background:rgba(129,140,248,.04)}
+.task-description{white-space:pre-wrap;overflow-wrap:anywhere}
+.avatar{
+ width:43px;height:43px;border-radius:50%;object-fit:cover;
+ border:2px solid var(--primary);background:#202b45;
+}
+.calendar-grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:7px}
+.calendar-head{text-align:center;color:var(--muted);font-size:.75rem;font-weight:700;padding:10px 0}
+.calendar-day{
+ min-width:0;min-height:100px;padding:8px;border:1px solid var(--border);
+ border-radius:12px;background:rgba(12,19,37,.6);
+}
+.calendar-day.today{border-color:var(--primary);background:rgba(99,102,241,.13)}
+.calendar-day.empty{background:transparent;border-color:transparent}
+.calendar-task{
+ font-size:.63rem;padding:4px;margin-top:5px;border-radius:5px;
+ white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:white;
+ background:#4f46e5;
+}
+.calendar-task.done{background:#047857}
+.calendar-task.late{background:#be123c}
+.modal-content{background:#11182b;color:white;border:1px solid var(--border);border-radius:20px}
+.modal-header,.modal-footer{border-color:var(--border)}
+.btn-close{filter:invert(1)}
+.toast-container{z-index:11000}
+.empty-state{padding:35px 15px;text-align:center;color:var(--muted)}
+.mobile-task-actions{display:flex;gap:6px}
+.avatar-large{width:105px;height:105px;object-fit:cover;border-radius:50%;border:3px solid var(--primary)}
 
-        /* === STYLING HALAMAN LOGIN SLEEK MESH GLASS === */
-        #login-overlay {
-            position: fixed;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: #030712;
-            z-index: 9999;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            overflow: hidden;
-        }
-
-        /* Animated Ambient Glowing Orbs */
-        .ambient-orb {
-            position: absolute;
-            border-radius: 50%;
-            filter: blur(100px);
-            opacity: 0.5;
-            animation: pulseOrb 10s ease-in-out infinite alternate;
-        }
-        .orb-1 {
-            width: 400px; height: 400px;
-            background: #6366f1;
-            top: -100px; left: -100px;
-        }
-        .orb-2 {
-            width: 450px; height: 450px;
-            background: #ec4899;
-            bottom: -150px; right: -100px;
-            animation-delay: -5s;
-        }
-        .orb-3 {
-            width: 300px; height: 300px;
-            background: #06b6d4;
-            top: 40%; left: 60%;
-            animation-delay: -2s;
-        }
-
-        @keyframes pulseOrb {
-            0% { transform: scale(1) translate(0, 0); opacity: 0.4; }
-            100% { transform: scale(1.2) translate(30px, -20px); opacity: 0.7; }
-        }
-
-        .login-card {
-            background: rgba(15, 23, 42, 0.75);
-            backdrop-filter: blur(28px);
-            -webkit-backdrop-filter: blur(28px);
-            border: 1px solid rgba(255, 255, 255, 0.12);
-            border-radius: 28px;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7),
-                        inset 0 1px 0 0 rgba(255, 255, 255, 0.15);
-            position: relative;
-            z-index: 10;
-        }
-
-        .login-icon-box {
-            width: 72px; height: 72px;
-            background: linear-gradient(135deg, rgba(99, 102, 241, 0.25) 0%, rgba(236, 72, 153, 0.25) 100%);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 22px;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 8px 25px rgba(99, 102, 241, 0.3);
-        }
-
-        /* Sidebar Styling (Desktop) */
-        .sidebar {
-            background: var(--bg-sidebar);
-            border-right: 1px solid var(--border-glass);
-            min-height: 100vh;
-            position: sticky;
-            top: 0;
-            z-index: 1020;
-        }
-
-        .nav-link-custom {
-            color: var(--text-muted);
-            border-radius: 12px;
-            padding: 12px 18px;
-            font-weight: 600;
-            margin-bottom: 6px;
-            display: flex;
-            align-items: center;
-            gap: 14px;
-            transition: all 0.25s ease;
-            cursor: pointer;
-            text-decoration: none;
-        }
-
-        .nav-link-custom:hover {
-            color: #ffffff;
-            background: rgba(255, 255, 255, 0.05);
-            transform: translateX(4px);
-        }
-
-        .nav-link-custom.active {
-            background: linear-gradient(135deg, var(--primary) 0%, #4338ca 100%);
-            color: #ffffff !important;
-            box-shadow: 0 4px 20px rgba(99, 102, 241, 0.4);
-        }
-
-        /* Mobile Offcanvas Drawer & Topbar */
-        .offcanvas-dark {
-            background: var(--bg-sidebar);
-            border-right: 1px solid var(--border-glass);
-            color: var(--text-main);
-        }
-
-        .topbar-mobile {
-            background: rgba(15, 23, 42, 0.85);
-            backdrop-filter: blur(12px);
-            border-bottom: 1px solid var(--border-glass);
-            position: sticky;
-            top: 0;
-            z-index: 1010;
-        }
-
-        /* App Page Display Toggle */
-        .app-page {
-            display: none;
-            animation: fadeInPage 0.35s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .app-page.active {
-            display: block;
-        }
-
-        @keyframes fadeInPage {
-            from { opacity: 0; transform: translateY(12px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* Priority Badges */
-        .badge-priority-tinggi {
-            background: rgba(244, 63, 94, 0.2);
-            color: #fda4af;
-            border: 1px solid rgba(244, 63, 94, 0.4);
-        }
-        .badge-priority-sedang {
-            background: rgba(245, 158, 11, 0.2);
-            color: #fde047;
-            border: 1px solid rgba(245, 158, 11, 0.4);
-        }
-        .badge-priority-rendah {
-            background: rgba(16, 185, 129, 0.2);
-            color: #6ee7b7;
-            border: 1px solid rgba(16, 185, 129, 0.4);
-        }
-
-        /* Inputs & Form Elements */
-        .form-control, .form-select {
-            background-color: rgba(15, 23, 42, 0.7) !important;
-            border: 1px solid var(--border-glass) !important;
-            color: #ffffff !important;
-            border-radius: 12px;
-            padding: 12px 16px;
-        }
-
-        .form-control:focus, .form-select:focus {
-            border-color: var(--primary) !important;
-            box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.2) !important;
-        }
-
-        .form-control::placeholder {
-            color: #64748b;
-        }
-
-        .form-select option {
-            background-color: #0f172a;
-            color: #ffffff;
-        }
-
-        /* Buttons */
-        .btn-gradient-primary {
-            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
-            border: none;
-            color: #ffffff;
-            font-weight: 700;
-            border-radius: 12px;
-            padding: 12px 24px;
-            transition: all 0.3s ease;
-        }
-
-        .btn-gradient-primary:hover {
-            opacity: 0.92;
-            transform: translateY(-1px);
-            box-shadow: 0 8px 20px rgba(99, 102, 241, 0.35);
-            color: #ffffff;
-        }
-
-        /* Table Styling */
-        .table-glass {
-            color: #ffffff !important;
-            margin-bottom: 0;
-        }
-        .table-glass th {
-            background-color: rgba(15, 23, 42, 0.9) !important;
-            color: var(--text-muted) !important;
-            font-size: 0.8rem;
-            text-transform: uppercase;
-            letter-spacing: 0.8px;
-            border-bottom: 1px solid var(--border-glass);
-            padding: 16px;
-        }
-        .table-glass td {
-            background-color: transparent !important;
-            color: #ffffff !important;
-            border-bottom: 1px solid var(--border-glass);
-            padding: 16px;
-            vertical-align: middle;
-        }
-
-        /* Calendar Grid Styling */
-        .calendar-header {
-            display: grid;
-            grid-template-columns: repeat(7, 1fr);
-            text-align: center;
-            font-weight: 700;
-            color: var(--text-muted);
-            margin-bottom: 10px;
-        }
-
-        .calendar-body {
-            display: grid;
-            grid-template-columns: repeat(7, 1fr);
-            gap: 8px;
-        }
-
-        .calendar-day {
-            min-height: 90px;
-            background: rgba(15, 23, 42, 0.5);
-            border: 1px solid var(--border-glass);
-            border-radius: 12px;
-            padding: 8px;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-        }
-
-        .calendar-day:hover {
-            background: rgba(30, 41, 59, 0.8);
-            border-color: var(--primary);
-        }
-
-        .calendar-day.empty {
-            background: transparent;
-            border: none;
-            cursor: default;
-        }
-
-        .calendar-day.today {
-            border: 2px solid var(--primary);
-            background: rgba(99, 102, 241, 0.15);
-        }
-
-        .day-number {
-            font-size: 0.9rem;
-            font-weight: 700;
-        }
-
-        .day-tasks {
-            display: flex;
-            flex-direction: column;
-            gap: 3px;
-        }
-
-        .task-dot {
-            font-size: 0.7rem;
-            padding: 2px 6px;
-            border-radius: 6px;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            font-weight: 600;
-        }
-
-        /* Radial Progress Ring SVG */
-        .progress-ring-circle {
-            transition: stroke-dashoffset 0.5s ease-in-out;
-            transform: rotate(-90deg);
-            transform-origin: 50% 50%;
-        }
-
-        /* Custom Toast Notification */
-        .toast-container {
-            position: fixed;
-            bottom: 24px;
-            right: 24px;
-            z-index: 10000;
-        }
-
-        .avatar-box {
-            width: 48px;
-            height: 48px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 2px solid var(--primary);
-        }
-    </style>
+@media(max-width:991px){
+ .sidebar{display:none}
+ .main-area{margin-left:0;padding:20px}
+ .mobile-top{display:block}
+ .calendar-day{min-height:75px;padding:5px}
+ .calendar-grid{gap:4px}
+}
+@media(max-width:575px){
+ .main-area{padding:15px 12px}
+ .hero{padding:22px 18px}
+ .stat-number{font-size:1.65rem}
+ .calendar-day{min-height:56px;padding:4px 2px;border-radius:7px}
+ .calendar-task{font-size:.53rem;padding:3px;margin-top:3px}
+ .calendar-head{font-size:.65rem}
+ .login-card{padding:25px 20px}
+ .page-title{font-size:1.35rem}
+}
+@media(prefers-reduced-motion:reduce){
+ *,*::before,*::after{animation:none!important;transition:none!important}
+}
+</style>
 </head>
+
 <body>
 
-<!-- 0. SCREEN LOGIN CYBERPUNK GLASS -->
+<!-- LOGIN -->
 <div id="login-overlay">
-    <!-- Ambient Animated Mesh Gradient -->
-    <div class="ambient-orb orb-1"></div>
-    <div class="ambient-orb orb-2"></div>
-    <div class="ambient-orb orb-3"></div>
+ <div class="login-card">
+  <div class="logo-icon"><i class="fa-solid fa-graduation-cap"></i></div>
+  <div class="text-center mb-4">
+   <h3 class="fw-bold mb-2">PR Master Studio</h3>
+   <p class="text-muted small">Atur tugasmu. Capai targetmu.</p>
+  </div>
 
-    <div class="container p-3">
-        <div class="row justify-content-center">
-            <div class="col-md-8 col-lg-5 col-xl-4">
-                <div class="login-card p-4 p-sm-5 text-center">
-                    
-                    <!-- App Logo Header -->
-                    <div class="mb-4">
-                        <div class="login-icon-box mb-3">
-                            <i class="fa-solid fa-graduation-cap fs-2 text-white"></i>
-                        </div>
-                        <h3 class="fw-extrabold text-white mb-1 tracking-tight">PR Master Studio</h3>
-                        <p class="text-muted small">Sistem Pengingat PR & Tugas Sekolah Digital</p>
-                    </div>
-
-                    <!-- Form Login -->
-                    <form id="form-login" onsubmit="handleLogin(event)">
-                        <div class="mb-3 text-start">
-                            <label class="form-label small text-muted fw-bold">EMAIL SISWA / NIK</label>
-                            <div class="input-group">
-                                <span class="input-group-text bg-dark border-glass text-muted"><i class="fa-regular fa-envelope"></i></span>
-                                <input type="email" id="login-email" class="form-control" placeholder="nama@sekolah.sch.id" required>
-                            </div>
-                        </div>
-
-                        <div class="mb-4 text-start">
-                            <label class="form-label small text-muted fw-bold">PASSWORD</label>
-                            <div class="input-group">
-                                <span class="input-group-text bg-dark border-glass text-muted"><i class="fa-solid fa-lock"></i></span>
-                                <input type="password" id="login-password" class="form-control" placeholder="••••••••" required>
-                                <button class="btn btn-dark border-glass text-muted" type="button" onclick="togglePasswordVis()">
-                                    <i class="fa-regular fa-eye" id="pass-icon"></i>
-                                </button>
-                            </div>
-                        </div>
-
-                        <button type="submit" class="btn btn-gradient-primary w-100 py-3 mb-3">
-                            Masuk Aplikasi <i class="fa-solid fa-arrow-right-to-bracket ms-2"></i>
-                        </button>
-
-                        <div class="d-flex gap-2">
-                            <button type="button" class="btn btn-dark border-glass text-white w-100 btn-sm py-2" onclick="autofillDemo('siswa')">
-                                <i class="fa-solid fa-user-graduate me-1 text-primary"></i> Demo Siswa
-                            </button>
-                            <button type="button" class="btn btn-dark border-glass text-white w-100 btn-sm py-2" onclick="autofillDemo('guest')">
-                                <i class="fa-solid fa-user-clock me-1 text-info"></i> Mode Tamu
-                            </button>
-                        </div>
-                    </form>
-
-                    <div class="mt-4 pt-3 border-top border-glass text-center">
-                        <small class="text-muted" style="font-size: 0.75rem;">PR Master Studio v3.0 • Cyberpunk Glass UI</small>
-                    </div>
-
-                </div>
-            </div>
-        </div>
+  <form id="login-form">
+   <div class="mb-3">
+    <label class="form-label">Email siswa</label>
+    <input id="login-email" type="email" class="form-control" placeholder="nama@sekolah.sch.id" required>
+   </div>
+   <div class="mb-4">
+    <label class="form-label">Password</label>
+    <div class="input-group">
+     <input id="login-password" type="password" class="form-control" placeholder="Masukkan password" required>
+     <button type="button" class="btn btn-soft" onclick="togglePassword()"><i id="eye-icon" class="fa-regular fa-eye"></i></button>
     </div>
+   </div>
+   <button class="btn btn-primary-custom w-100 mb-3" type="submit">Masuk Aplikasi <i class="fa-solid fa-arrow-right ms-2"></i></button>
+  </form>
+
+  <div class="d-flex gap-2">
+   <button class="btn btn-soft flex-fill btn-sm py-2" onclick="demoLogin()"><i class="fa-solid fa-user-graduate me-1"></i> Demo Siswa</button>
+   <button class="btn btn-soft flex-fill btn-sm py-2" onclick="guestLogin()"><i class="fa-solid fa-user-clock me-1"></i> Mode Tamu</button>
+  </div>
+  <p class="text-muted text-center mt-4 mb-0" style="font-size:.72rem">PR MASTER STUDIO • SMART STUDENT PLANNER</p>
+ </div>
 </div>
 
-<!-- TOPBAR MOBILE -->
-<div class="topbar-mobile d-lg-none p-3">
-    <div class="d-flex align-items-center justify-content-between">
-        <div class="d-flex align-items-center gap-2">
-            <button class="btn btn-dark border-glass text-white px-3 py-2" type="button" data-bs-toggle="offcanvas" data-bs-target="#mobileMenu">
-                <i class="fa-solid fa-bars fs-5"></i>
-            </button>
-            <div class="d-flex align-items-center gap-2">
-                <i class="fa-solid fa-graduation-cap text-primary fs-4"></i>
-                <span class="fw-bold fs-5 text-white">PR Master</span>
-            </div>
-        </div>
-        <div class="d-flex align-items-center gap-2" onclick="switchPage('profile')" style="cursor: pointer;">
-            <img id="mobile-user-avatar" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&auto=format&fit=crop&q=80" class="avatar-box" alt="Avatar">
-        </div>
-    </div>
+<!-- MOBILE HEADER -->
+<header class="mobile-top">
+ <div class="d-flex justify-content-between align-items-center">
+  <div class="d-flex align-items-center gap-2">
+   <button class="btn btn-soft" data-bs-toggle="offcanvas" data-bs-target="#mobile-menu"><i class="fa-solid fa-bars"></i></button>
+   <div class="brand d-flex align-items-center gap-2"><span class="brand-mark"><i class="fa-solid fa-graduation-cap"></i></span> PR Master</div>
+  </div>
+  <button class="btn btn-soft" onclick="switchPage('profile')"><i class="fa-solid fa-user"></i></button>
+ </div>
+</header>
+
+<!-- MOBILE MENU -->
+<div class="offcanvas offcanvas-start text-white" id="mobile-menu" style="background:#0c1122">
+ <div class="offcanvas-header border-bottom" style="border-color:var(--border)!important">
+  <h5 class="fw-bold mb-0">PR Master Studio</h5>
+  <button class="btn-close" data-bs-dismiss="offcanvas"></button>
+ </div>
+ <div class="offcanvas-body d-flex flex-column">
+  <div id="mobile-nav"></div>
+  <div class="mt-auto pt-4">
+   <div class="d-flex align-items-center gap-3 mb-3">
+    <img id="mobile-avatar" class="avatar" alt="Foto profil">
+    <div><div id="mobile-name" class="fw-bold"></div><small id="mobile-class" class="text-muted"></small></div>
+   </div>
+   <button class="btn btn-soft w-100" onclick="logout()"><i class="fa-solid fa-right-from-bracket me-2"></i>Keluar</button>
+  </div>
+ </div>
 </div>
 
-<!-- MAIN LAYOUT -->
-<div class="container-fluid">
-    <div class="row">
-
-        <!-- 1. SIDEBAR DESKTOP -->
-        <div class="col-lg-2 d-none d-lg-block sidebar p-4 d-flex flex-column justify-content-between">
-            <div>
-                <div class="d-flex align-items-center gap-3 mb-4 px-2">
-                    <div class="bg-primary bg-opacity-25 p-2 rounded-3 text-primary">
-                        <i class="fa-solid fa-graduation-cap fs-3"></i>
-                    </div>
-                    <div>
-                        <h5 class="fw-bold mb-0 text-white">PR Master</h5>
-                        <small class="text-muted">Task Manager v3.0</small>
-                    </div>
-                </div>
-
-                <hr class="border-glass mb-4">
-
-                <div class="nav flex-column">
-                    <a class="nav-link-custom active" onclick="switchPage('dashboard')" id="nav-dashboard">
-                        <i class="fa-solid fa-chart-pie"></i> Dashboard
-                    </a>
-                    <a class="nav-link-custom" onclick="switchPage('daftar')" id="nav-daftar">
-                        <i class="fa-solid fa-list-check"></i> Daftar PR
-                    </a>
-                    <a class="nav-link-custom" onclick="openModalTambah()">
-                        <i class="fa-solid fa-circle-plus text-primary"></i> Tambah PR
-                    </a>
-                    <a class="nav-link-custom" onclick="switchPage('calendar')" id="nav-calendar">
-                        <i class="fa-solid fa-calendar-days"></i> Kalender PR
-                    </a>
-                    <a class="nav-link-custom" onclick="switchPage('profile')" id="nav-profile">
-                        <i class="fa-solid fa-user-gear"></i> Profil Saya
-                    </a>
-                </div>
-            </div>
-
-            <!-- Profile Widget Desktop Sidebar -->
-            <div>
-                <div class="glass-card p-3 d-flex align-items-center gap-3 mb-3">
-                    <img id="side-user-avatar" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&auto=format&fit=crop&q=80" class="avatar-box" alt="Avatar">
-                    <div class="overflow-hidden">
-                        <h6 class="fw-bold mb-0 text-white text-truncate" id="side-user-name">Mochamad Rizky</h6>
-                        <small class="text-muted d-block text-truncate" id="side-user-role">XII RPL 3</small>
-                    </div>
-                </div>
-                <button class="btn btn-outline-danger border-glass w-100 btn-sm text-white" onclick="handleLogout()">
-                    <i class="fa-solid fa-right-from-bracket me-2"></i> Logout
-                </button>
-            </div>
-        </div>
-
-        <!-- 2. OFFCANVAS DRAWER (MOBILE MENU) -->
-        <div class="offcanvas offcanvas-start offcanvas-dark" tabindex="-1" id="mobileMenu">
-            <div class="offcanvas-header border-bottom border-glass p-4">
-                <div class="d-flex align-items-center gap-2">
-                    <i class="fa-solid fa-graduation-cap text-primary fs-3"></i>
-                    <h5 class="offcanvas-title fw-bold text-white">PR Master Digital</h5>
-                </div>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas"></button>
-            </div>
-            <div class="offcanvas-body p-4 d-flex flex-column justify-content-between">
-                <div class="nav flex-column">
-                    <a class="nav-link-custom active" onclick="switchPage('dashboard'); closeOffcanvas();" id="mob-nav-dashboard">
-                        <i class="fa-solid fa-chart-pie"></i> Dashboard
-                    </a>
-                    <a class="nav-link-custom" onclick="switchPage('daftar'); closeOffcanvas();" id="mob-nav-daftar">
-                        <i class="fa-solid fa-list-check"></i> Daftar PR
-                    </a>
-                    <a class="nav-link-custom" onclick="openModalTambah(); closeOffcanvas();">
-                        <i class="fa-solid fa-circle-plus text-primary"></i> Tambah PR Baru
-                    </a>
-                    <a class="nav-link-custom" onclick="switchPage('calendar'); closeOffcanvas();" id="mob-nav-calendar">
-                        <i class="fa-solid fa-calendar-days"></i> Kalender PR
-                    </a>
-                    <a class="nav-link-custom" onclick="switchPage('profile'); closeOffcanvas();" id="mob-nav-profile">
-                        <i class="fa-solid fa-user-gear"></i> Profil Saya
-                    </a>
-                </div>
-
-                <div class="mt-4">
-                    <div class="glass-card p-3 d-flex align-items-center gap-3 mb-3">
-                        <img id="drawer-user-avatar" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&auto=format&fit=crop&q=80" class="avatar-box" alt="Avatar">
-                        <div>
-                            <h6 class="fw-bold mb-0 text-white" id="drawer-user-name">Mochamad Rizky</h6>
-                            <small class="text-muted" id="drawer-user-role">XII RPL 3</small>
-                        </div>
-                    </div>
-                    <button class="btn btn-outline-danger border-glass w-100 text-white" onclick="handleLogout()">
-                        <i class="fa-solid fa-right-from-bracket me-2"></i> Keluar Akun
-                    </button>
-                </div>
-            </div>
-        </div>
-
-        <!-- 3. MAIN CONTENT AREA -->
-        <div class="col-lg-10 p-3 p-md-4 p-xl-5">
-
-            <!-- PAGE 1: DASHBOARD -->
-            <div id="page-dashboard" class="app-page active">
-                <div class="glass-panel p-4 p-md-5 mb-4 position-relative overflow-hidden">
-                    <div class="row align-items-center position-relative" style="z-index: 2;">
-                        <div class="col-md-8 mb-3 mb-md-0">
-                            <span class="badge bg-primary bg-opacity-25 text-primary border border-primary border-opacity-50 px-3 py-2 rounded-pill mb-3">
-                                <i class="fa-solid fa-sparkles me-1"></i> AI Remind Engine
-                            </span>
-                            <h2 class="fw-extrabold text-white mb-2" id="welcome-heading">Selamat Datang, Rizky! 👋</h2>
-                            <p class="text-muted mb-0">Pantau tenggat waktu PR dan tugas sekolah harianmu agar pengerjaan tetap disiplin.</p>
-                        </div>
-                        <div class="col-md-4 text-md-end">
-                            <button class="btn btn-gradient-primary px-4 py-3" onclick="openModalTambah()">
-                                <i class="fa-solid fa-plus me-2"></i> Tambah PR Baru
-                            </button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Stats Grid Row -->
-                <div class="row g-3 g-md-4 mb-4">
-                    <div class="col-6 col-lg-3">
-                        <div class="glass-card p-3 p-md-4 border-start border-4 border-info">
-                            <span class="text-muted small fw-bold text-uppercase d-block mb-1">Total PR</span>
-                            <h2 class="fw-bold text-info mb-0" id="stat-total">0</h2>
-                        </div>
-                    </div>
-                    <div class="col-6 col-lg-3">
-                        <div class="glass-card p-3 p-md-4 border-start border-4 border-warning">
-                            <span class="text-muted small fw-bold text-uppercase d-block mb-1">Belum Selesai</span>
-                            <h2 class="fw-bold text-warning mb-0" id="stat-belum">0</h2>
-                        </div>
-                    </div>
-                    <div class="col-6 col-lg-3">
-                        <div class="glass-card p-3 p-md-4 border-start border-4 border-success">
-                            <span class="text-muted small fw-bold text-uppercase d-block mb-1">Selesai</span>
-                            <h2 class="fw-bold text-success mb-0" id="stat-selesai">0</h2>
-                        </div>
-                    </div>
-                    <div class="col-6 col-lg-3">
-                        <div class="glass-card p-3 p-md-4 border-start border-4 border-danger">
-                            <span class="text-muted small fw-bold text-uppercase d-block mb-1">Terlambat</span>
-                            <h2 class="fw-bold text-danger mb-0" id="stat-terlambat">0</h2>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Progress Ring & Urgent Tasks -->
-                <div class="row g-4 mb-4">
-                    <div class="col-md-5 col-lg-4">
-                        <div class="glass-panel p-4 h-100 text-center d-flex flex-column justify-content-center align-items-center">
-                            <h5 class="fw-bold text-white mb-3">Penyelesaian PR</h5>
-                            <div class="position-relative d-inline-flex align-items-center justify-content-center">
-                                <svg width="160" height="160" viewBox="0 0 120 120">
-                                    <circle cx="60" cy="60" r="50" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="12"/>
-                                    <circle id="progress-ring-circle" class="progress-ring-circle" cx="60" cy="60" r="50" fill="none" stroke="var(--primary)" stroke-width="12" stroke-dasharray="314.15" stroke-dashoffset="314.15" stroke-linecap="round"/>
-                                </svg>
-                                <div class="position-absolute text-center">
-                                    <h2 class="fw-extrabold text-white mb-0" id="stat-percent">0%</h2>
-                                    <small class="text-muted">Tuntas</small>
-                                </div>
-                            </div>
-                            <p class="text-muted small mt-3 mb-0">Tetap konsisten menyelesaikan PR tepat waktu!</p>
-                        </div>
-                    </div>
-
-                    <div class="col-md-7 col-lg-8">
-                        <div class="glass-panel p-4 h-100">
-                            <div class="d-flex justify-content-between align-items-center mb-3">
-                                <h5 class="fw-bold text-white mb-0"><i class="fa-solid fa-clock-rotate-left text-warning me-2"></i>Mendesak / Mendekati Deadline</h5>
-                                <a class="text-primary small fw-bold text-decoration-none cursor-pointer" onclick="switchPage('daftar')">Lihat Semua</a>
-                            </div>
-                            <div id="urgent-task-container" class="d-flex flex-column gap-3">
-                                <!-- Dynamic Render -->
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- PAGE 2: DAFTAR PR -->
-            <div id="page-daftar" class="app-page">
-                <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
-                    <div>
-                        <h3 class="fw-bold text-white mb-1">Daftar PR & Tugas Sekolah</h3>
-                        <p class="text-muted mb-0">Kelola, filter, dan ubah status pengerjaan tugas sekolahmu di sini.</p>
-                    </div>
-                    <button class="btn btn-gradient-primary" onclick="openModalTambah()">
-                        <i class="fa-solid fa-plus me-2"></i> Tambah PR Baru
-                    </button>
-                </div>
-
-                <!-- Controls & Filter Bar -->
-                <div class="glass-panel p-3 mb-4">
-                    <div class="row g-3">
-                        <div class="col-md-4">
-                            <div class="input-group">
-                                <span class="input-group-text bg-dark border-glass text-muted"><i class="fa-solid fa-magnifying-glass"></i></span>
-                                <input type="text" id="search-task" class="form-control" placeholder="Cari judul PR atau mapel..." oninput="renderDaftarPR()">
-                            </div>
-                        </div>
-                        <div class="col-6 col-md-3">
-                            <select id="filter-mapel" class="form-select" onchange="renderDaftarPR()">
-                                <option value="">Semua Mapel</option>
-                                <option value="Matematika">Matematika</option>
-                                <option value="Bahasa Indonesia">Bahasa Indonesia</option>
-                                <option value="Bahasa Inggris">Bahasa Inggris</option>
-                                <option value="IPA / Fisika">IPA / Fisika</option>
-                                <option value="Informatika / RPL">Informatika / RPL</option>
-                                <option value="PPKn">PPKn</option>
-                                <option value="Sejarah">Sejarah</option>
-                            </select>
-                        </div>
-                        <div class="col-6 col-md-3">
-                            <select id="filter-status" class="form-select" onchange="renderDaftarPR()">
-                                <option value="">Semua Status</option>
-                                <option value="belum">Belum Selesai</option>
-                                <option value="selesai">Selesai</option>
-                            </select>
-                        </div>
-                        <div class="col-md-2 text-end">
-                            <button class="btn btn-outline-light border-glass w-100" onclick="resetFilters()">
-                                <i class="fa-solid fa-arrows-rotate me-1"></i> Reset
-                            </button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Desktop Table View -->
-                <div class="glass-panel p-0 overflow-hidden d-none d-md-block mb-4">
-                    <div class="table-responsive">
-                        <table class="table table-glass align-middle">
-                            <thead>
-                                <tr>
-                                    <th width="5%">No</th>
-                                    <th width="22%">Mata Pelajaran</th>
-                                    <th width="30%">Deskripsi PR</th>
-                                    <th width="15%">Deadline</th>
-                                    <th width="12%">Prioritas</th>
-                                    <th width="8%">Status</th>
-                                    <th width="8%" class="text-center">Aksi</th>
-                                </tr>
-                            </thead>
-                            <tbody id="table-pr-body">
-                                <!-- Dynamic JS Render -->
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-
-                <!-- Mobile Cards View -->
-                <div class="d-md-none d-flex flex-column gap-3 mb-4" id="cards-pr-mobile">
-                    <!-- Dynamic JS Render -->
-                </div>
-            </div>
-
-            <!-- PAGE 3: KALENDER PR -->
-            <div id="page-calendar" class="app-page">
-                <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
-                    <div>
-                        <h3 class="fw-bold text-white mb-1">Kalender Tugas</h3>
-                        <p class="text-muted mb-0">Pantau jadwal deadline PR harian berdasarkan kalender bulanan.</p>
-                    </div>
-                    <div class="d-flex align-items-center gap-2">
-                        <button class="btn btn-dark border-glass text-white" onclick="changeMonth(-1)"><i class="fa-solid fa-chevron-left"></i></button>
-                        <span class="fw-bold text-white px-3 fs-5" id="calendar-month-year">Okt 2026</span>
-                        <button class="btn btn-dark border-glass text-white" onclick="changeMonth(1)"><i class="fa-solid fa-chevron-right"></i></button>
-                    </div>
-                </div>
-
-                <div class="glass-panel p-3 p-md-4">
-                    <div class="calendar-header">
-                        <div>Min</div><div>Sen</div><div>Sel</div><div>Rab</div><div>Kam</div><div>Jum</div><div>Sab</div>
-                    </div>
-                    <div class="calendar-body" id="calendar-days-container">
-                        <!-- Dynamic Calendar Days -->
-                    </div>
-                </div>
-            </div>
-
-            <!-- PAGE 4: PROFIL SAYA -->
-            <div id="page-profile" class="app-page">
-                <div class="row justify-content-center">
-                    <div class="col-lg-8">
-                        <div class="glass-panel p-4 p-md-5">
-                            <div class="text-center mb-4 position-relative">
-                                <img id="profile-display-avatar" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200&auto=format&fit=crop&q=80" class="rounded-circle border border-primary border-3 shadow-lg mb-3" style="width: 120px; height: 120px; object-fit: cover;" alt="Avatar">
-                                <h3 class="fw-bold text-white mb-1" id="profile-display-name">Mochamad Rizky Ramadhan</h3>
-                                <p class="text-muted mb-2" id="profile-display-role">Siswa • XII RPL 3 • SMK Wahidin</p>
-                                <span class="badge bg-success bg-opacity-25 text-success border border-success border-opacity-50 px-3 py-2 rounded-pill">
-                                    <i class="fa-solid fa-shield-check me-1"></i> Akun Aktif
-                                </span>
-                            </div>
-
-                            <form id="form-edit-profile" onsubmit="saveProfile(event)">
-                                <h5 class="fw-bold text-white mb-3"><i class="fa-solid fa-user-pen text-primary me-2"></i>Edit Informasi Profil</h5>
-                                <div class="row g-3 mb-3">
-                                    <div class="col-md-6">
-                                        <label class="form-label small text-muted">Nama Lengkap</label>
-                                        <input type="text" id="edit-profile-name" class="form-control" required>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label class="form-label small text-muted">Email Siswa</label>
-                                        <input type="email" id="edit-profile-email" class="form-control" required>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label class="form-label small text-muted">Kelas / Jurusan</label>
-                                        <input type="text" id="edit-profile-kelas" class="form-control" placeholder="Contoh: XII RPL 3">
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label class="form-label small text-muted">Nama Sekolah</label>
-                                        <input type="text" id="edit-profile-sekolah" class="form-control" placeholder="SMK / SMA Negeri">
-                                    </div>
-                                    <div class="col-12">
-                                        <label class="form-label small text-muted">URL Foto Avatar</label>
-                                        <input type="url" id="edit-profile-avatar" class="form-control" placeholder="https://...">
-                                    </div>
-                                </div>
-                                <button type="submit" class="btn btn-gradient-primary w-100 py-3">
-                                    <i class="fa-solid fa-floppy-disk me-2"></i> Simpan Perubahan Profil
-                                </button>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-        </div>
+<!-- DESKTOP SIDEBAR -->
+<aside class="sidebar">
+ <div>
+  <div class="d-flex align-items-center gap-3 px-2 mb-4">
+   <div class="brand-mark"><i class="fa-solid fa-graduation-cap"></i></div>
+   <div><div class="brand">PR Master</div><small class="text-muted">Student Planner</small></div>
+  </div>
+  <div class="text-muted small fw-bold px-3 mb-2 mt-4">MENU UTAMA</div>
+  <nav id="desktop-nav"></nav>
+ </div>
+ <div>
+  <div class="card-custom p-3 mb-3">
+   <div class="d-flex align-items-center gap-3">
+    <img id="side-avatar" class="avatar" alt="Foto profil">
+    <div class="overflow-hidden">
+     <div id="side-name" class="fw-bold text-truncate small"></div>
+     <small id="side-class" class="text-muted text-truncate d-block"></small>
     </div>
+   </div>
+  </div>
+  <button class="btn btn-soft w-100" onclick="logout()"><i class="fa-solid fa-right-from-bracket me-2"></i>Logout</button>
+ </div>
+</aside>
+
+<!-- MAIN -->
+<main class="main-area">
+
+<!-- DASHBOARD -->
+<section id="page-dashboard" class="page active">
+ <div class="hero mb-4">
+  <div class="row align-items-center g-4">
+   <div class="col-lg-8">
+    <span class="badge rounded-pill text-bg-primary mb-3"><i class="fa-solid fa-wand-magic-sparkles me-1"></i> SMART STUDENT PLANNER</span>
+    <h2 id="welcome" class="fw-bold mb-2">Selamat datang!</h2>
+    <p class="text-muted mb-0">Rencanakan tugas, atur deadline, dan selesaikan pekerjaan sekolahmu dengan lebih teratur.</p>
+   </div>
+   <div class="col-lg-4 text-lg-end">
+    <button class="btn btn-primary-custom" onclick="openTaskModal()"><i class="fa-solid fa-plus me-2"></i>Tambah PR Baru</button>
+   </div>
+  </div>
+ </div>
+
+ <div class="row g-3 mb-4">
+  <div class="col-6 col-xl-3"><div class="card-custom p-3 p-md-4 h-100"><div class="d-flex justify-content-between align-items-center mb-3"><span class="text-muted small">Total PR</span><span class="stat-icon"><i class="fa-solid fa-book"></i></span></div><div class="stat-number" id="stat-total">0</div><small class="text-muted">Semua tugas</small></div></div>
+  <div class="col-6 col-xl-3"><div class="card-custom p-3 p-md-4 h-100"><div class="d-flex justify-content-between align-items-center mb-3"><span class="text-muted small">Belum selesai</span><span class="stat-icon" style="color:var(--yellow)"><i class="fa-solid fa-hourglass-half"></i></span></div><div class="stat-number" id="stat-pending">0</div><small class="text-muted">Perlu dikerjakan</small></div></div>
+  <div class="col-6 col-xl-3"><div class="card-custom p-3 p-md-4 h-100"><div class="d-flex justify-content-between align-items-center mb-3"><span class="text-muted small">Selesai</span><span class="stat-icon" style="color:var(--green)"><i class="fa-solid fa-circle-check"></i></span></div><div class="stat-number" id="stat-done">0</div><small class="text-muted">Berhasil dituntaskan</small></div></div>
+  <div class="col-6 col-xl-3"><div class="card-custom p-3 p-md-4 h-100"><div class="d-flex justify-content-between align-items-center mb-3"><span class="text-muted small">Terlambat</span><span class="stat-icon" style="color:var(--red)"><i class="fa-solid fa-clock"></i></span></div><div class="stat-number" id="stat-late">0</div><small class="text-muted">Deadline terlewati</small></div></div>
+ </div>
+
+ <div class="row g-4 mb-4">
+  <div class="col-lg-4">
+   <div class="glass p-4 h-100">
+    <h6 class="fw-bold mb-4">Progres Penyelesaian</h6>
+    <div class="text-center py-3">
+     <div style="font-size:3.5rem;font-weight:800;letter-spacing:-3px" id="progress-percent">0%</div>
+     <p class="text-muted small">Total tugas terselesaikan</p>
+    </div>
+    <div class="progress-track"><div id="progress-bar" class="progress-bar-custom" style="width:0%"></div></div>
+    <div class="d-flex justify-content-between mt-3 small"><span class="text-muted">Tugas selesai</span><span id="progress-count">0 dari 0</span></div>
+   </div>
+  </div>
+  <div class="col-lg-8">
+   <div class="glass p-4 h-100">
+    <div class="d-flex justify-content-between align-items-center gap-2 mb-3">
+     <h6 class="fw-bold mb-0"><i class="fa-solid fa-fire me-2" style="color:var(--yellow)"></i>Deadline Terdekat</h6>
+     <button class="btn btn-soft btn-sm" onclick="switchPage('daftar')">Lihat semua <i class="fa-solid fa-arrow-right ms-1"></i></button>
+    </div>
+    <div id="urgent-list"></div>
+   </div>
+  </div>
+ </div>
+
+ <div class="glass p-4">
+  <div class="d-flex justify-content-between align-items-center mb-3">
+   <h6 class="fw-bold mb-0">Aktivitas Tugas</h6>
+   <button class="btn btn-soft btn-sm" onclick="switchPage('calendar')">Buka kalender</button>
+  </div>
+  <p class="text-muted small mb-0">Gunakan dashboard ini untuk melihat perkembangan tugasmu. Pastikan deadline selalu diperiksa secara berkala.</p>
+ </div>
+</section>
+
+<!-- DAFTAR -->
+<section id="page-daftar" class="page">
+ <div class="d-flex justify-content-between align-items-center flex-wrap gap-3 mb-4">
+  <div><h3 class="page-title fw-bold mb-1">Daftar PR & Tugas</h3><p class="text-muted mb-0 small">Semua tugas sekolahmu dalam satu tempat.</p></div>
+  <button class="btn btn-primary-custom" onclick="openTaskModal()"><i class="fa-solid fa-plus me-2"></i>Tambah PR</button>
+ </div>
+
+ <div class="glass p-3 mb-4">
+  <div class="row g-3">
+   <div class="col-lg-5"><input id="search-task" class="form-control" placeholder="Cari judul atau mata pelajaran..." oninput="renderTasks()"></div>
+   <div class="col-6 col-lg-3"><select id="filter-mapel" class="form-select" onchange="renderTasks()"><option value="">Semua mapel</option></select></div>
+   <div class="col-6 col-lg-2"><select id="filter-status" class="form-select" onchange="renderTasks()"><option value="">Semua status</option><option value="belum">Belum selesai</option><option value="selesai">Selesai</option></select></div>
+   <div class="col-lg-2"><button class="btn btn-soft w-100" onclick="resetFilters()"><i class="fa-solid fa-rotate me-1"></i>Reset</button></div>
+  </div>
+ </div>
+
+ <div class="glass overflow-hidden d-none d-md-block">
+  <div class="table-responsive">
+   <table class="table align-middle">
+    <thead><tr><th>No.</th><th>Mata pelajaran / Deskripsi</th><th>Deadline</th><th>Prioritas</th><th>Status</th><th>Aksi</th></tr></thead>
+    <tbody id="task-table"></tbody>
+   </table>
+  </div>
+ </div>
+ <div id="task-cards" class="d-md-none d-flex flex-column gap-3"></div>
+</section>
+
+<!-- KALENDER -->
+<section id="page-calendar" class="page">
+ <div class="d-flex justify-content-between align-items-center flex-wrap gap-3 mb-4">
+  <div><h3 class="page-title fw-bold mb-1">Kalender PR</h3><p class="text-muted small mb-0">Lihat jadwal deadline setiap bulan.</p></div>
+  <div class="d-flex align-items-center gap-2">
+   <button class="btn btn-soft" onclick="changeMonth(-1)"><i class="fa-solid fa-chevron-left"></i></button>
+   <span id="calendar-title" class="fw-bold text-center" style="min-width:130px"></span>
+   <button class="btn btn-soft" onclick="changeMonth(1)"><i class="fa-solid fa-chevron-right"></i></button>
+  </div>
+ </div>
+ <div class="glass p-2 p-md-4">
+  <div class="calendar-grid" id="calendar-head"></div>
+  <div class="calendar-grid" id="calendar-days"></div>
+ </div>
+ <div class="glass p-3 mt-3"><small class="text-muted"><span style="color:#818cf8">●</span> Tugas aktif &nbsp; <span style="color:#34d399">●</span> Selesai &nbsp; <span style="color:#fb7185">●</span> Terlambat</small></div>
+</section>
+
+<!-- PROFIL -->
+<section id="page-profile" class="page">
+ <div class="mb-4"><h3 class="page-title fw-bold mb-1">Profil Saya</h3><p class="text-muted small">Kelola informasi profil siswa.</p></div>
+ <div class="glass p-4 p-md-5" style="max-width:760px;margin:auto">
+  <div class="text-center mb-4">
+   <img id="profile-avatar" class="avatar-large mb-3" alt="Foto profil">
+   <h4 id="profile-heading" class="fw-bold mb-1"></h4>
+   <p id="profile-subtitle" class="text-muted small"></p>
+   <span class="badge rounded-pill text-bg-success">Profil lokal</span>
+  </div>
+  <form id="profile-form">
+   <div class="row g-3">
+    <div class="col-md-6"><label class="form-label">Nama lengkap</label><input id="profile-name" class="form-control" required maxlength="80"></div>
+    <div class="col-md-6"><label class="form-label">Email</label><input id="profile-email" type="email" class="form-control" required></div>
+    <div class="col-md-6"><label class="form-label">Kelas / jurusan</label><input id="profile-class" class="form-control" placeholder="XII RPL 3"></div>
+    <div class="col-md-6"><label class="form-label">Nama sekolah</label><input id="profile-school" class="form-control" placeholder="Nama sekolah"></div>
+    <div class="col-12"><label class="form-label">URL foto profil (opsional)</label><input id="profile-photo" type="url" class="form-control" placeholder="https://..."></div>
+   </div>
+   <button class="btn btn-primary-custom w-100 mt-4" type="submit"><i class="fa-solid fa-floppy-disk me-2"></i>Simpan Profil</button>
+  </form>
+ </div>
+</section>
+
+<footer class="text-center text-muted small py-4">PR Master Studio · Smart Student Planner</footer>
+</main>
+
+<!-- MODAL TASK -->
+<div class="modal fade" id="task-modal" tabindex="-1">
+ <div class="modal-dialog modal-dialog-centered">
+  <div class="modal-content">
+   <div class="modal-header p-4"><h5 id="modal-title" class="modal-title fw-bold">Tambah PR Baru</h5><button class="btn-close" data-bs-dismiss="modal"></button></div>
+   <div class="modal-body p-4">
+    <form id="task-form">
+     <input type="hidden" id="task-id">
+     <div class="mb-3"><label class="form-label">Mata pelajaran</label><select id="task-mapel" class="form-select" required></select></div>
+     <div class="mb-3"><label class="form-label">Deskripsi tugas</label><textarea id="task-description" class="form-control" rows="3" maxlength="1500" placeholder="Contoh: Kerjakan halaman 45 nomor 1–10" required></textarea></div>
+     <div class="row g-3 mb-4">
+      <div class="col-6"><label class="form-label">Deadline</label><input type="date" id="task-deadline" class="form-control" required></div>
+      <div class="col-6"><label class="form-label">Prioritas</label><select id="task-priority" class="form-select"><option>Tinggi</option><option selected>Sedang</option><option>Rendah</option></select></div>
+     </div>
+     <div class="d-flex gap-2"><button class="btn btn-primary-custom flex-fill" type="submit">Simpan Tugas</button><button class="btn btn-soft" type="button" data-bs-dismiss="modal">Batal</button></div>
+    </form>
+   </div>
+  </div>
+ </div>
 </div>
 
-<!-- MODAL TAMBAH / EDIT PR -->
-<div class="modal fade" id="modalTask" tabindex="-1">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content glass-panel border-glass text-white p-2">
-            <div class="modal-header border-bottom border-glass">
-                <h5 class="modal-title fw-bold" id="modalTaskTitle"><i class="fa-solid fa-book-bookmark text-primary me-2"></i>Tambah PR Baru</h5>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
-            </div>
-            <div class="modal-body">
-                <form id="form-task" onsubmit="saveTask(event)">
-                    <input type="hidden" id="task-id">
-                    <div class="mb-3">
-                        <label class="form-label small text-muted fw-bold">MATA PELAJARAN</label>
-                        <select id="task-mapel" class="form-select" required>
-                            <option value="">-- Pilih Mata Pelajaran --</option>
-                            <option value="Matematika">Matematika</option>
-                            <option value="Bahasa Indonesia">Bahasa Indonesia</option>
-                            <option value="Bahasa Inggris">Bahasa Inggris</option>
-                            <option value="IPA / Fisika">IPA / Fisika</option>
-                            <option value="Informatika / RPL">Informatika / RPL</option>
-                            <option value="PPKn">PPKn</option>
-                            <option value="Sejarah">Sejarah</option>
-                        </select>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label small text-muted fw-bold">DESKRIPSI PR / TUGAS</label>
-                        <textarea id="task-deskripsi" class="form-control" rows="3" placeholder="Contoh: Kerjakan Bab 3 Halaman 45 Nomor 1-10..." required></textarea>
-                    </div>
-                    <div class="row g-3 mb-4">
-                        <div class="col-md-6">
-                            <label class="form-label small text-muted fw-bold">DEADLINE (TENGGAT WAKTU)</label>
-                            <input type="date" id="task-deadline" class="form-control" required>
-                        </div>
-                        <div class="col-md-6">
-                            <label class="form-label small text-muted fw-bold">PRIORITAS</label>
-                            <select id="task-prioritas" class="form-select" required>
-                                <option value="Sedang">Sedang</option>
-                                <option value="Tinggi">Tinggi (Mendesak)</option>
-                                <option value="Rendah">Rendah</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="d-flex gap-2">
-                        <button type="submit" class="btn btn-gradient-primary w-100 py-2">Simpan Tugas</button>
-                        <button type="button" class="btn btn-outline-light border-glass px-4" data-bs-dismiss="modal">Batal</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
+<!-- TOAST -->
+<div class="toast-container position-fixed bottom-0 end-0 p-3">
+ <div id="app-toast" class="toast text-bg-dark border-0" role="status">
+  <div class="d-flex"><div id="toast-text" class="toast-body">Berhasil!</div><button class="btn-close btn-close-white m-auto me-3" data-bs-dismiss="toast"></button></div>
+ </div>
 </div>
 
-<!-- TOAST CONTAINER -->
-<div class="toast-container">
-    <div id="liveToast" class="toast align-items-center text-white bg-dark border-glass p-1" role="alert">
-        <div class="d-flex">
-            <div class="toast-body d-flex align-items-center gap-2" id="toast-message">
-                <i class="fa-solid fa-circle-check text-success fs-5"></i>
-                <span>Tugas berhasil disimpan!</span>
-            </div>
-            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
-        </div>
-    </div>
-</div>
-
-<!-- Bootstrap 5 Bundle JS -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script>
-    /* Global Application State */
-    let currentUser = JSON.parse(localStorage.getItem('prmaster_user')) || {
-        name: 'Mochamad Rizky Ramadhan',
-        email: 'rizky@smkwahidin.sch.id',
-        kelas: 'XII RPL 3',
-        sekolah: 'SMK Wahidin Cirebon',
-        avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200&auto=format&fit=crop&q=80',
-        isLoggedIn: true
-    };
+'use strict';
 
-    let daftarPR = JSON.parse(localStorage.getItem('prmaster_tasks')) || [
-        { id: 1, mapel: 'Matematika', deskripsi: 'PR Latihan Soal Bab 2 Halaman 45-50', deadline: new Date().toISOString().split('T')[0], prioritas: 'Tinggi', status: 'belum' },
-        { id: 2, mapel: 'Informatika / RPL', deskripsi: 'Membuat API Backend RESTful dengan Node.js', deadline: new Date(Date.now() + 86400000).toISOString().split('T')[0], prioritas: 'Sedang', status: 'belum' },
-        { id: 3, mapel: 'Bahasa Indonesia', deskripsi: 'Merangkum Teks Laporan Hasil Observasi', deadline: new Date(Date.now() + 259200000).toISOString().split('T')[0], prioritas: 'Rendah', status: 'selesai' }
-    ];
+/* ============================
+   KONFIGURASI DAN PENYIMPANAN
+============================ */
+const SUBJECTS = [
+ 'Matematika','Bahasa Indonesia','Bahasa Inggris',
+ 'IPA / Fisika','Informatika / RPL','PPKn','Sejarah',
+ 'Pendidikan Agama','PJOK','Seni Budaya','PKWU','Lainnya'
+];
 
-    let currentCalDate = new Date();
-    let modalTaskInstance;
+const DEFAULT_USER = {
+ name:'Mochamad Rizky Ramadhan',
+ email:'rizky@smkwahidin.sch.id',
+ kelas:'XII RPL 3',
+ sekolah:'SMK Wahidin Cirebon',
+ avatar:'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200&auto=format&fit=crop&q=80'
+};
 
-    document.addEventListener('DOMContentLoaded', () => {
-        modalTaskInstance = new bootstrap.Modal(document.getElementById('modalTask'));
-        checkAuthStatus();
-        updateUserProfileUI();
-        renderDashboard();
-        renderDaftarPR();
-        renderCalendar();
-    });
+function loadJSON(key, fallback){
+ try {
+  const value = localStorage.getItem(key);
+  return value === null ? fallback : JSON.parse(value);
+ } catch(error) {
+  return fallback;
+ }
+}
 
-    /* AUTH LOGIC */
-    function checkAuthStatus() {
-        const overlay = document.getElementById('login-overlay');
-        if(currentUser.isLoggedIn) {
-            overlay.style.display = 'none';
-        } else {
-            overlay.style.display = 'flex';
-        }
+let currentUser = {...DEFAULT_USER,...loadJSON('prmaster_user',{})};
+let loggedIn = sessionStorage.getItem('prmaster_session') === 'active';
+
+let tasks = loadJSON('prmaster_tasks',[
+ {id:1,mapel:'Matematika',deskripsi:'PR Latihan Soal Bab 2 Halaman 45–50',deadline:getDateOffset(0),prioritas:'Tinggi',status:'belum'},
+ {id:2,mapel:'Informatika / RPL',deskripsi:'Membuat rancangan aplikasi sederhana',deadline:getDateOffset(1),prioritas:'Sedang',status:'belum'},
+ {id:3,mapel:'Bahasa Indonesia',deskripsi:'Merangkum teks laporan hasil observasi',deadline:getDateOffset(3),prioritas:'Rendah',status:'selesai'}
+]);
+
+let calendarDate = new Date();
+let taskModal;
+
+/* TANGGAL LOKAL */
+function localDate(date = new Date()){
+ const y=date.getFullYear();
+ const m=String(date.getMonth()+1).padStart(2,'0');
+ const d=String(date.getDate()).padStart(2,'0');
+ return `${y}-${m}-${d}`;
+}
+function getDateOffset(days){
+ const d=new Date();
+ d.setDate(d.getDate()+days);
+ return localDate(d);
+}
+function formatDate(value, options){
+ if(!value) return '-';
+ const [y,m,d]=value.split('-').map(Number);
+ const date=new Date(y,m-1,d);
+ return date.toLocaleDateString('id-ID',options||{day:'numeric',month:'short',year:'numeric'});
+}
+function escapeHTML(value){
+ return String(value??'').replace(/[&<>"']/g,char=>({
+  '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
+ })[char]);
+}
+function safePhoto(value){
+ try{
+  const url=new URL(value);
+  if(url.protocol==='https:'||url.protocol==='http:')return url.href;
+ }catch(e){}
+ return '';
+}
+function saveUser(){
+ localStorage.setItem('prmaster_user',JSON.stringify(currentUser));
+ updateProfileUI();
+}
+function saveTasks(){
+ localStorage.setItem('prmaster_tasks',JSON.stringify(tasks));
+}
+
+/* INIT */
+document.addEventListener('DOMContentLoaded',()=>{
+ taskModal=new bootstrap.Modal(document.getElementById('task-modal'));
+ buildNavigation();
+ buildSubjectOptions();
+ document.getElementById('login-form').addEventListener('submit',login);
+ document.getElementById('task-form').addEventListener('submit',saveTask);
+ document.getElementById('profile-form').addEventListener('submit',saveProfile);
+
+ checkLogin();
+ updateProfileUI();
+ renderAll();
+});
+
+/* NAVIGATION */
+const NAV_ITEMS=[
+ {id:'dashboard',label:'Dashboard',icon:'fa-chart-pie'},
+ {id:'daftar',label:'Daftar PR',icon:'fa-list-check'},
+ {id:'add',label:'Tambah PR Baru',icon:'fa-circle-plus'},
+ {id:'calendar',label:'Kalender PR',icon:'fa-calendar-days'},
+ {id:'profile',label:'Profil Saya',icon:'fa-user-gear'}
+];
+
+function buildNavigation(){
+ ['desktop-nav','mobile-nav'].forEach(containerId=>{
+  const container=document.getElementById(containerId);
+  container.innerHTML='';
+  NAV_ITEMS.forEach(item=>{
+   const a=document.createElement('a');
+   a.href='#'+item.id;
+   a.className='nav-custom'+(item.id==='dashboard'?' active':'');
+   a.dataset.page=item.id;
+   a.innerHTML=`<i class="fa-solid ${item.icon}"></i><span>${item.label}</span>`;
+   a.addEventListener('click',e=>{
+    e.preventDefault();
+    if(item.id==='add')openTaskModal();
+    else switchPage(item.id);
+    if(containerId==='mobile-nav'){
+     const el=document.getElementById('mobile-menu');
+     bootstrap.Offcanvas.getInstance(el)?.hide();
     }
+   });
+   container.appendChild(a);
+  });
+ });
+}
+function switchPage(id){
+ document.querySelectorAll('.page').forEach(el=>el.classList.remove('active'));
+ document.getElementById('page-'+id)?.classList.add('active');
+ document.querySelectorAll('.nav-custom').forEach(el=>{
+  el.classList.toggle('active',el.dataset.page===id);
+ });
+ if(id==='dashboard')renderDashboard();
+ if(id==='daftar')renderTasks();
+ if(id==='calendar')renderCalendar();
+ if(id==='profile')updateProfileUI();
+ window.scrollTo({top:0,behavior:'smooth'});
+}
 
-    function togglePasswordVis() {
-        const passInput = document.getElementById('login-password');
-        const icon = document.getElementById('pass-icon');
-        if (passInput.type === 'password') {
-            passInput.type = 'text';
-            icon.classList.replace('fa-eye', 'fa-eye-slash');
-        } else {
-            passInput.type = 'password';
-            icon.classList.replace('fa-eye-slash', 'fa-eye');
-        }
-    }
+/* LOGIN — DEMO LOKAL, BUKAN AUTENTIKASI AMAN */
+function checkLogin(){
+ document.getElementById('login-overlay').style.display=loggedIn?'none':'flex';
+}
+function login(event){
+ event.preventDefault();
+ const email=document.getElementById('login-email').value.trim();
+ const password=document.getElementById('login-password').value;
+ if(!email||!password)return;
 
-    function handleLogin(e) {
-        e.preventDefault();
-        const email = document.getElementById('login-email').value;
-        currentUser.isLoggedIn = true;
-        currentUser.email = email;
-        if(email.includes('siswa')) currentUser.name = 'Siswa Demo';
-        saveUserData();
-        checkAuthStatus();
-        showToast('Berhasil masuk ke sistem!');
-    }
+ currentUser.email=email;
+ if(email==='siswa@smkwahidin.sch.id'){
+  currentUser.name='Siswa Demo';
+ }
+ saveUser();
+ loggedIn=true;
+ sessionStorage.setItem('prmaster_session','active');
+ checkLogin();
+ showToast('Berhasil masuk ke PR Master!');
+}
+function demoLogin(){
+ document.getElementById('login-email').value='siswa@smkwahidin.sch.id';
+ document.getElementById('login-password').value='12345678';
+ document.getElementById('login-form').requestSubmit();
+}
+function guestLogin(){
+ currentUser={...DEFAULT_USER,name:'Tamu Pengunjung',email:'tamu@example.com'};
+ saveUser();
+ loggedIn=true;
+ sessionStorage.setItem('prmaster_session','active');
+ checkLogin();
+ showToast('Selamat datang di Mode Tamu!');
+}
+function logout(){
+ loggedIn=false;
+ sessionStorage.removeItem('prmaster_session');
+ checkLogin();
+ showToast('Kamu telah keluar dari aplikasi.');
+}
+function togglePassword(){
+ const input=document.getElementById('login-password');
+ const icon=document.getElementById('eye-icon');
+ input.type=input.type==='password'?'text':'password';
+ icon.className=input.type==='password'?'fa-regular fa-eye':'fa-regular fa-eye-slash';
+}
 
-    function handleLogout() {
-        currentUser.isLoggedIn = false;
-        saveUserData();
-        checkAuthStatus();
-    }
+/* PROFIL */
+function updateProfileUI(){
+ const photo=safePhoto(currentUser.avatar)||'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200&auto=format&fit=crop&q=80';
+ document.getElementById('welcome').textContent='Selamat datang, '+(currentUser.name||'Siswa').split(' ')[0]+'!';
+ ['side-avatar','mobile-avatar','profile-avatar'].forEach(id=>{
+  document.getElementById(id).src=photo;
+ });
+ ['side-name','mobile-name'].forEach(id=>{
+  document.getElementById(id).textContent=currentUser.name;
+ });
+ ['side-class','mobile-class'].forEach(id=>{
+  document.getElementById(id).textContent=currentUser.kelas||'Siswa';
+ });
+ document.getElementById('profile-heading').textContent=currentUser.name;
+ document.getElementById('profile-subtitle').textContent=
+  `${currentUser.kelas||'Siswa'} • ${currentUser.sekolah||'Sekolah'}`;
+ document.getElementById('profile-name').value=currentUser.name||'';
+ document.getElementById('profile-email').value=currentUser.email||'';
+ document.getElementById('profile-class').value=currentUser.kelas||'';
+ document.getElementById('profile-school').value=currentUser.sekolah||'';
+ document.getElementById('profile-photo').value=currentUser.avatar||'';
+}
+function saveProfile(event){
+ event.preventDefault();
+ currentUser.name=document.getElementById('profile-name').value.trim();
+ currentUser.email=document.getElementById('profile-email').value.trim();
+ currentUser.kelas=document.getElementById('profile-class').value.trim();
+ currentUser.sekolah=document.getElementById('profile-school').value.trim();
+ const photo=document.getElementById('profile-photo').value.trim();
+ currentUser.avatar=safePhoto(photo)||DEFAULT_USER.avatar;
+ saveUser();
+ showToast('Profil berhasil diperbarui!');
+}
 
-    function autofillDemo(type) {
-        if(type === 'siswa') {
-            document.getElementById('login-email').value = 'siswa@smkwahidin.sch.id';
-            document.getElementById('login-password').value = '12345678';
-        } else {
-            currentUser.isLoggedIn = true;
-            currentUser.name = 'Tamu Pengunjung';
-            saveUserData();
-            checkAuthStatus();
-        }
-    }
+/* SUBJECTS */
+function buildSubjectOptions(){
+ ['task-mapel','filter-mapel'].forEach(id=>{
+  const select=document.getElementById(id);
+  SUBJECTS.forEach(subject=>{
+   const option=document.createElement('option');
+   option.value=subject;
+   option.textContent=subject;
+   select.appendChild(option);
+  });
+ });
+}
 
-    /* NAVIGATION LOGIC */
-    function switchPage(pageId) {
-        document.querySelectorAll('.app-page').forEach(p => p.classList.remove('active'));
-        document.querySelectorAll('.nav-link-custom').forEach(n => n.classList.remove('active'));
+/* CRUD TASK */
+function openTaskModal(id=null){
+ document.getElementById('task-form').reset();
+ document.getElementById('task-id').value='';
+ document.getElementById('task-deadline').value=getDateOffset(1);
+ document.getElementById('task-priority').value='Sedang';
+ document.getElementById('modal-title').textContent=id?'Edit Tugas':'Tambah PR Baru';
 
-        document.getElementById('page-' + pageId).classList.add('active');
-        
-        const deskNav = document.getElementById('nav-' + pageId);
-        if(deskNav) deskNav.classList.add('active');
+ if(id!==null){
+  const task=tasks.find(t=>String(t.id)===String(id));
+  if(!task)return;
+  document.getElementById('task-id').value=task.id;
+  document.getElementById('task-mapel').value=task.mapel;
+  document.getElementById('task-description').value=task.deskripsi;
+  document.getElementById('task-deadline').value=task.deadline;
+  document.getElementById('task-priority').value=task.prioritas;
+ }
+ taskModal.show();
+}
 
-        if(pageId === 'dashboard') renderDashboard();
-        if(pageId === 'daftar') renderDaftarPR();
-        if(pageId === 'calendar') renderCalendar();
-    }
+function saveTask(event){
+ event.preventDefault();
+ const id=document.getElementById('task-id').value;
+ const mapel=document.getElementById('task-mapel').value;
+ const deskripsi=document.getElementById('task-description').value.trim();
+ const deadline=document.getElementById('task-deadline').value;
+ const prioritas=document.getElementById('task-priority').value;
 
-    function closeOffcanvas() {
-        const drawer = bootstrap.Offcanvas.getInstance(document.getElementById('mobileMenu'));
-        if(drawer) drawer.hide();
-    }
+ if(!mapel||!deskripsi||!deadline)return;
+ if(!/^\d{4}-\d{2}-\d{2}$/.test(deadline)){
+  showToast('Tanggal deadline tidak valid.');
+  return;
+ }
 
-    /* PROFILE MANAGEMENT */
-    function saveUserData() {
-        localStorage.setItem('prmaster_user', JSON.stringify(currentUser));
-        updateUserProfileUI();
-    }
+ if(id){
+  tasks=tasks.map(t=>String(t.id)===id?{...t,mapel,deskripsi,deadline,prioritas}:t);
+  showToast('Tugas berhasil diperbarui!');
+ }else{
+  tasks.push({id:Date.now(),mapel,deskripsi,deadline,prioritas,status:'belum'});
+  showToast('PR baru berhasil ditambahkan!');
+ }
+ saveTasks();
+ taskModal.hide();
+ renderAll();
+}
 
-    function updateUserProfileUI() {
-        document.getElementById('welcome-heading').innerText = `Selamat Datang, ${currentUser.name.split(' ')[0]}! 👋`;
-        document.getElementById('side-user-name').innerText = currentUser.name;
-        document.getElementById('side-user-role').innerText = currentUser.kelas;
-        document.getElementById('side-user-avatar').src = currentUser.avatar;
+function toggleStatus(id){
+ tasks=tasks.map(t=>String(t.id)===String(id)
+  ?{...t,status:t.status==='selesai'?'belum':'selesai'}:t);
+ saveTasks();
+ renderAll();
+ showToast('Status tugas berhasil diubah!');
+}
+function deleteTask(id){
+ if(!confirm('Yakin ingin menghapus tugas ini?'))return;
+ tasks=tasks.filter(t=>String(t.id)!==String(id));
+ saveTasks();
+ renderAll();
+ showToast('Tugas berhasil dihapus.');
+}
 
-        document.getElementById('drawer-user-name').innerText = currentUser.name;
-        document.getElementById('drawer-user-role').innerText = currentUser.kelas;
-        document.getElementById('drawer-user-avatar').src = currentUser.avatar;
-        document.getElementById('mobile-user-avatar').src = currentUser.avatar;
+/* HELPERS */
+function isLate(task){
+ return task.status!=='selesai'&&task.deadline<localDate();
+}
+function statusBadge(task){
+ if(task.status==='selesai')return '<span class="badge-custom status-done">Selesai</span>';
+ if(isLate(task))return '<span class="badge-custom status-late">Terlambat</span>';
+ return '<span class="badge-custom status-pending">Belum selesai</span>';
+}
+function priorityBadge(task){
+ const p=['Tinggi','Sedang','Rendah'].includes(task.prioritas)?task.prioritas:'Sedang';
+ return `<span class="badge-custom priority-${p}">${p}</span>`;
+}
+function sortTasks(list){
+ return [...list].sort((a,b)=>a.deadline.localeCompare(b.deadline));
+}
+function taskActions(task){
+ const id=Number(task.id);
+ return `<div class="d-flex gap-1 justify-content-center">
+  <button class="btn btn-soft btn-sm" aria-label="Ubah status" title="Ubah status" onclick="toggleStatus(${id})"><i class="fa-solid fa-check"></i></button>
+  <button class="btn btn-soft btn-sm" aria-label="Edit" title="Edit" onclick="openTaskModal(${id})"><i class="fa-solid fa-pen"></i></button>
+  <button class="btn btn-soft btn-sm text-danger" aria-label="Hapus" title="Hapus" onclick="deleteTask(${id})"><i class="fa-solid fa-trash"></i></button>
+ </div>`;
+}
+function renderAll(){
+ renderDashboard();
+ renderTasks();
+ renderCalendar();
+}
 
-        // Form profile fill
-        document.getElementById('profile-display-name').innerText = currentUser.name;
-        document.getElementById('profile-display-role').innerText = `Siswa • ${currentUser.kelas} • ${currentUser.sekolah}`;
-        document.getElementById('profile-display-avatar').src = currentUser.avatar;
+/* DASHBOARD */
+function renderDashboard(){
+ const total=tasks.length;
+ const done=tasks.filter(t=>t.status==='selesai').length;
+ const pending=total-done;
+ const late=tasks.filter(isLate).length;
+ const percent=total?Math.round(done/total*100):0;
 
-        document.getElementById('edit-profile-name').value = currentUser.name;
-        document.getElementById('edit-profile-email').value = currentUser.email;
-        document.getElementById('edit-profile-kelas').value = currentUser.kelas;
-        document.getElementById('edit-profile-sekolah').value = currentUser.sekolah;
-        document.getElementById('edit-profile-avatar').value = currentUser.avatar;
-    }
+ document.getElementById('stat-total').textContent=total;
+ document.getElementById('stat-pending').textContent=pending;
+ document.getElementById('stat-done').textContent=done;
+ document.getElementById('stat-late').textContent=late;
+ document.getElementById('progress-percent').textContent=percent+'%';
+ document.getElementById('progress-bar').style.width=percent+'%';
+ document.getElementById('progress-count').textContent=`${done} dari ${total}`;
 
-    function saveProfile(e) {
-        e.preventDefault();
-        currentUser.name = document.getElementById('edit-profile-name').value;
-        currentUser.email = document.getElementById('edit-profile-email').value;
-        currentUser.kelas = document.getElementById('edit-profile-kelas').value;
-        currentUser.sekolah = document.getElementById('edit-profile-sekolah').value;
-        currentUser.avatar = document.getElementById('edit-profile-avatar').value || currentUser.avatar;
+ const list=sortTasks(tasks.filter(t=>t.status!=='selesai')).slice(0,4);
+ const container=document.getElementById('urgent-list');
 
-        saveUserData();
-        showToast('Profil berhasil diperbarui!');
-    }
+ if(!list.length){
+  container.innerHTML='<div class="empty-state"><i class="fa-solid fa-circle-check fs-2 mb-3 d-block" style="color:var(--green)"></i><div class="fw-bold text-white">Semua tugas selesai!</div><small>Bagus, kamu sudah menyelesaikan tugas yang tercatat.</small></div>';
+  return;
+ }
 
-    /* TASK CRUD LOGIC */
-    function saveTasksToStorage() {
-        localStorage.setItem('prmaster_tasks', JSON.stringify(daftarPR));
-    }
+ container.innerHTML=list.map(t=>`
+  <div class="card-custom p-3 mb-2">
+   <div class="d-flex justify-content-between align-items-start gap-2">
+    <div class="d-flex gap-3 align-items-start">
+     <button class="btn btn-soft btn-sm mt-1" title="Tandai selesai" onclick="toggleStatus(${Number(t.id)})"><i class="fa-solid fa-check"></i></button>
+     <div class="min-w-0">
+      <div class="fw-bold">${escapeHTML(t.mapel)}</div>
+      <div class="text-muted small task-description mt-1">${escapeHTML(t.deskripsi)}</div>
+     </div>
+    </div>
+    <div class="text-end flex-shrink-0">
+     ${isLate(t)?'<span class="badge-custom status-late">Terlambat</span>':`<span class="small text-muted">${formatDate(t.deadline,{day:'numeric',month:'short'})}</span>`}
+     <div class="mt-2">${priorityBadge(t)}</div>
+    </div>
+   </div>
+  </div>`).join('');
+}
 
-    function openModalTambah() {
-        document.getElementById('modalTaskTitle').innerHTML = `<i class="fa-solid fa-book-bookmark text-primary me-2"></i>Tambah PR Baru`;
-        document.getElementById('form-task').reset();
-        document.getElementById('task-id').value = '';
-        modalTaskInstance.show();
-    }
+/* DAFTAR TUGAS */
+function renderTasks(){
+ const search=(document.getElementById('search-task').value||'').toLowerCase().trim();
+ const mapel=document.getElementById('filter-mapel').value;
+ const status=document.getElementById('filter-status').value;
 
-    function saveTask(e) {
-        e.preventDefault();
-        const id = document.getElementById('task-id').value;
-        const mapel = document.getElementById('task-mapel').value;
-        const deskripsi = document.getElementById('task-deskripsi').value;
-        const deadline = document.getElementById('task-deadline').value;
-        const prioritas = document.getElementById('task-prioritas').value;
+ const filtered=sortTasks(tasks.filter(t=>{
+  const text=(t.mapel+' '+t.deskripsi).toLowerCase();
+  return text.includes(search)&&(!mapel||t.mapel===mapel)&&(!status||t.status===status);
+ }));
 
-        if(id) {
-            daftarPR = daftarPR.map(t => t.id == id ? { ...t, mapel, deskripsi, deadline, prioritas } : t);
-            showToast('PR berhasil diperbarui!');
-        } else {
-            const newTask = {
-                id: Date.now(),
-                mapel, deskripsi, deadline, prioritas, status: 'belum'
-            };
-            daftarPR.push(newTask);
-            showToast('PR baru berhasil ditambahkan!');
-        }
+ const table=document.getElementById('task-table');
+ const cards=document.getElementById('task-cards');
 
-        saveTasksToStorage();
-        modalTaskInstance.hide();
-        renderDashboard();
-        renderDaftarPR();
-    }
+ if(!filtered.length){
+  table.innerHTML='<tr><td colspan="6"><div class="empty-state"><i class="fa-solid fa-folder-open fs-2 mb-2 d-block"></i>Tidak ada tugas ditemukan.</div></td></tr>';
+  cards.innerHTML='<div class="glass empty-state">Tidak ada tugas ditemukan.</div>';
+  return;
+ }
 
-    function toggleStatus(id) {
-        daftarPR = daftarPR.map(t => {
-            if(t.id == id) t.status = t.status === 'belum' ? 'selesai' : 'belum';
-            return t;
-        });
-        saveTasksToStorage();
-        renderDashboard();
-        renderDaftarPR();
-        showToast('Status PR diubah!');
-    }
+ table.innerHTML=filtered.map((t,i)=>`
+  <tr>
+   <td class="text-muted">${i+1}</td>
+   <td><div class="fw-bold">${escapeHTML(t.mapel)}</div><div class="text-muted small task-description mt-1">${escapeHTML(t.deskripsi)}</div></td>
+   <td class="text-nowrap"><i class="fa-regular fa-calendar me-1 text-muted"></i>${formatDate(t.deadline)}</td>
+   <td>${priorityBadge(t)}</td><td>${statusBadge(t)}</td><td>${taskActions(t)}</td>
+  </tr>`).join('');
 
-    function editTask(id) {
-        const task = daftarPR.find(t => t.id == id);
-        if(!task) return;
+ cards.innerHTML=filtered.map(t=>`
+  <div class="card-custom p-3">
+   <div class="d-flex justify-content-between gap-2 mb-3">${priorityBadge(t)}${statusBadge(t)}</div>
+   <h6 class="fw-bold">${escapeHTML(t.mapel)}</h6>
+   <p class="text-muted small task-description">${escapeHTML(t.deskripsi)}</p>
+   <div class="d-flex justify-content-between align-items-center gap-2 pt-3 border-top" style="border-color:var(--border)!important">
+    <small class="text-muted"><i class="fa-regular fa-calendar me-1"></i>${formatDate(t.deadline)}</small>
+    <div class="mobile-task-actions">${taskActions(t)}</div>
+   </div>
+  </div>`).join('');
+}
 
-        document.getElementById('modalTaskTitle').innerHTML = `<i class="fa-solid fa-pen-to-square text-primary me-2"></i>Edit PR`;
-        document.getElementById('task-id').value = task.id;
-        document.getElementById('task-mapel').value = task.mapel;
-        document.getElementById('task-deskripsi').value = task.deskripsi;
-        document.getElementById('task-deadline').value = task.deadline;
-        document.getElementById('task-prioritas').value = task.prioritas;
+function resetFilters(){
+ document.getElementById('search-task').value='';
+ document.getElementById('filter-mapel').value='';
+ document.getElementById('filter-status').value='';
+ renderTasks();
+}
 
-        modalTaskInstance.show();
-    }
+/* KALENDER */
+function renderCalendar(){
+ const year=calendarDate.getFullYear();
+ const month=calendarDate.getMonth();
+ const monthNames=['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];
 
-    function deleteTask(id) {
-        if(confirm('Apakah kamu yakin ingin menghapus PR ini?')) {
-            daftarPR = daftarPR.filter(t => t.id != id);
-            saveTasksToStorage();
-            renderDashboard();
-            renderDaftarPR();
-            showToast('PR berhasil dihapus!');
-        }
-    }
+ document.getElementById('calendar-title').textContent=`${monthNames[month]} ${year}`;
 
-    /* RENDER DASHBOARD */
-    function renderDashboard() {
-        const todayStr = new Date().toISOString().split('T')[0];
-        const total = daftarPR.length;
-        const selesai = daftarPR.filter(t => t.status === 'selesai').length;
-        const belum = daftarPR.filter(t => t.status === 'belum').length;
-        const terlambat = daftarPR.filter(t => t.status === 'belum' && t.deadline < todayStr).length;
+ const head=document.getElementById('calendar-head');
+ head.innerHTML=['Min','Sen','Sel','Rab','Kam','Jum','Sab'].map(d=>`<div class="calendar-head">${d}</div>`).join('');
 
-        document.getElementById('stat-total').innerText = total;
-        document.getElementById('stat-selesai').innerText = selesai;
-        document.getElementById('stat-belum').innerText = belum;
-        document.getElementById('stat-terlambat').innerText = terlambat;
+ const container=document.getElementById('calendar-days');
+ const firstDay=new Date(year,month,1).getDay();
+ const days=new Date(year,month+1,0).getDate();
+ const today=localDate();
+ let html='';
 
-        // Progress Radial Percent
-        const percent = total > 0 ? Math.round((selesai / total) * 100) : 0;
-        document.getElementById('stat-percent').innerText = `${percent}%`;
-        
-        const circle = document.getElementById('progress-ring-circle');
-        const circumference = 314.15;
-        const offset = circumference - (percent / 100) * circumference;
-        circle.style.strokeDashoffset = offset;
+ for(let i=0;i<firstDay;i++)html+='<div class="calendar-day empty"></div>';
 
-        // Render Urgent Deadline Feed
-        const urgentContainer = document.getElementById('urgent-task-container');
-        urgentContainer.innerHTML = '';
+ for(let day=1;day<=days;day++){
+  const date=`${year}-${String(month+1).padStart(2,'0')}-${String(day).padStart(2,'0')}`;
+  const dayTasks=tasks.filter(t=>t.deadline===date);
+  const taskHtml=dayTasks.slice(0,3).map(t=>{
+   const cls=t.status==='selesai'?'done':isLate(t)?'late':'';
+   return `<div class="calendar-task ${cls}" title="${escapeHTML(t.mapel)}">${escapeHTML(t.mapel)}</div>`;
+  }).join('');
+  const extra=dayTasks.length>3?`<div class="text-muted" style="font-size:.6rem">+${dayTasks.length-3} lainnya</div>`:'';
 
-        let urgentTasks = daftarPR.filter(t => t.status === 'belum').sort((a,b) => new Date(a.deadline) - new Date(b.deadline)).slice(0, 3);
+  html+=`<div class="calendar-day ${date===today?'today':''}">
+   <div class="small fw-bold">${day}</div>${taskHtml}${extra}
+  </div>`;
+ }
+ container.innerHTML=html;
+}
+function changeMonth(delta){
+ calendarDate.setDate(1);
+ calendarDate.setMonth(calendarDate.getMonth()+delta);
+ renderCalendar();
+}
 
-        if(urgentTasks.length === 0) {
-            urgentContainer.innerHTML = `<div class="p-4 text-center text-muted"><i class="fa-solid fa-circle-check text-success fs-2 mb-2 d-block"></i>Semua tugas telah diselesaikan! Bagus sekali.</div>`;
-            return;
-        }
-
-        urgentTasks.forEach(t => {
-            const isToday = t.deadline === todayStr;
-            const isOverdue = t.deadline < todayStr;
-            const dateFmt = new Date(t.deadline).toLocaleDateString('id-ID', { day: 'numeric', month: 'short' });
-
-            urgentContainer.innerHTML += `
-                <div class="glass-card p-3 d-flex justify-content-between align-items-center">
-                    <div class="d-flex align-items-center gap-3">
-                        <button class="btn btn-outline-success btn-sm rounded-circle p-2" onclick="toggleStatus(${t.id})" title="Tandai Selesai">
-                            <i class="fa-solid fa-check"></i>
-                        </button>
-                        <div>
-                            <h6 class="fw-bold text-white mb-0">${t.mapel}</h6>
-                            <small class="text-muted text-truncate d-block" style="max-width: 250px;">${t.deskripsi}</small>
-                        </div>
-                    </div>
-                    <div class="text-end">
-                        <span class="badge ${isOverdue ? 'bg-danger' : (isToday ? 'bg-warning text-dark' : 'bg-dark border border-glass')} mb-1">
-                            ${isOverdue ? 'Terlambat' : (isToday ? 'Hari Ini!' : dateFmt)}
-                        </span>
-                        <small class="d-block text-muted" style="font-size:0.75rem;">Prioritas: ${t.prioritas}</small>
-                    </div>
-                </div>
-            `;
-        });
-    }
-
-    /* RENDER DAFTAR PR */
-    function renderDaftarPR() {
-        const search = document.getElementById('search-task').value.toLowerCase();
-        const mapelFilter = document.getElementById('filter-mapel').value;
-        const statusFilter = document.getElementById('filter-status').value;
-
-        let filtered = daftarPR.filter(t => {
-            const matchSearch = t.mapel.toLowerCase().includes(search) || t.deskripsi.toLowerCase().includes(search);
-            const matchMapel = mapelFilter ? t.mapel === mapelFilter : true;
-            const matchStatus = statusFilter ? t.status === statusFilter : true;
-            return matchSearch && matchMapel && matchStatus;
-        });
-
-        const tableBody = document.getElementById('table-pr-body');
-        const cardsMobile = document.getElementById('cards-pr-mobile');
-        tableBody.innerHTML = '';
-        cardsMobile.innerHTML = '';
-
-        if(filtered.length === 0) {
-            const emptyHtml = `<tr><td colspan="7" class="text-center text-muted py-5"><i class="fa-solid fa-folder-open fs-2 mb-2 d-block"></i>Tidak ada data tugas PR ditemukan.</td></tr>`;
-            tableBody.innerHTML = emptyHtml;
-            cardsMobile.innerHTML = `<div class="glass-card p-4 text-center text-muted"><i class="fa-solid fa-folder-open fs-2 mb-2 d-block"></i>Tidak ada data tugas PR ditemukan.</div>`;
-            return;
-        }
-
-        filtered.forEach((t, i) => {
-            const dateFmt = new Date(t.deadline).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' });
-            const pClass = `badge-priority-${t.prioritas.toLowerCase()}`;
-            const isDone = t.status === 'selesai';
-
-            // Desktop Table Row
-            tableBody.innerHTML += `
-                <tr>
-                    <td class="text-muted">${i + 1}</td>
-                    <td class="fw-bold text-white">${t.mapel}</td>
-                    <td class="text-muted">${t.deskripsi}</td>
-                    <td class="text-white"><i class="fa-regular fa-calendar me-1 text-muted"></i> ${dateFmt}</td>
-                    <td><span class="badge ${pClass}">${t.prioritas}</span></td>
-                    <td>
-                        <span class="badge ${isDone ? 'bg-success bg-opacity-25 text-success' : 'bg-warning bg-opacity-25 text-warning'}">
-                            ${isDone ? 'Selesai' : 'Belum'}
-                        </span>
-                    </td>
-                    <td class="text-center">
-                        <div class="d-flex gap-1 justify-content-center">
-                            <button class="btn btn-sm btn-dark border-glass text-info" onclick="toggleStatus(${t.id})" title="Ubah Status"><i class="fa-solid fa-rotate"></i></button>
-                            <button class="btn btn-sm btn-dark border-glass text-warning" onclick="editTask(${t.id})" title="Edit"><i class="fa-solid fa-pen"></i></button>
-                            <button class="btn btn-sm btn-dark border-glass text-danger" onclick="deleteTask(${t.id})" title="Hapus"><i class="fa-solid fa-trash"></i></button>
-                        </div>
-                    </td>
-                </tr>
-            `;
-
-            // Mobile Card View
-            cardsMobile.innerHTML += `
-                <div class="glass-card p-3 position-relative">
-                    <div class="d-flex justify-content-between align-items-start mb-2">
-                        <span class="badge ${pClass}">${t.prioritas}</span>
-                        <span class="badge ${isDone ? 'bg-success bg-opacity-25 text-success' : 'bg-warning bg-opacity-25 text-warning'}">
-                            ${isDone ? 'Selesai' : 'Belum'}
-                        </span>
-                    </div>
-                    <h6 class="fw-bold text-white mb-1">${t.mapel}</h6>
-                    <p class="text-muted small mb-3">${t.deskripsi}</p>
-                    <div class="d-flex justify-content-between align-items-center pt-2 border-top border-glass">
-                        <small class="text-muted"><i class="fa-regular fa-calendar me-1"></i> ${dateFmt}</small>
-                        <div class="d-flex gap-1">
-                            <button class="btn btn-sm btn-dark border-glass text-info" onclick="toggleStatus(${t.id})"><i class="fa-solid fa-rotate"></i></button>
-                            <button class="btn btn-sm btn-dark border-glass text-warning" onclick="editTask(${t.id})"><i class="fa-solid fa-pen"></i></button>
-                            <button class="btn btn-sm btn-dark border-glass text-danger" onclick="deleteTask(${t.id})"><i class="fa-solid fa-trash"></i></button>
-                        </div>
-                    </div>
-                </div>
-            `;
-        });
-    }
-
-    function resetFilters() {
-        document.getElementById('search-task').value = '';
-        document.getElementById('filter-mapel').value = '';
-        document.getElementById('filter-status').value = '';
-        renderDaftarPR();
-    }
-
-    /* RENDER CALENDAR LOGIC */
-    function renderCalendar() {
-        const year = currentCalDate.getFullYear();
-        const month = currentCalDate.getMonth();
-
-        const monthNames = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
-        document.getElementById('calendar-month-year').innerText = `${monthNames[month]} ${year}`;
-
-        const firstDay = new Date(year, month, 1).getDay();
-        const daysInMonth = new Date(year, month + 1, 0).getDate();
-
-        const container = document.getElementById('calendar-days-container');
-        container.innerHTML = '';
-
-        for(let i = 0; i < firstDay; i++) {
-            container.innerHTML += `<div class="calendar-day empty"></div>`;
-        }
-
-        const todayStr = new Date().toISOString().split('T')[0];
-
-        for(let day = 1; day <= daysInMonth; day++) {
-            const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
-            const isToday = dateStr === todayStr;
-            const dayTasks = daftarPR.filter(t => t.deadline === dateStr);
-
-            let tasksHtml = '';
-            dayTasks.forEach(t => {
-                const colorClass = t.status === 'selesai' ? 'bg-success' : (t.prioritas === 'Tinggi' ? 'bg-danger' : 'bg-primary');
-                tasksHtml += `<div class="task-dot ${colorClass} text-white">${t.mapel}</div>`;
-            });
-
-            container.innerHTML += `
-                <div class="calendar-day ${isToday ? 'today' : ''}">
-                    <span class="day-number text-white">${day}</span>
-                    <div class="day-tasks">${tasksHtml}</div>
-                </div>
-            `;
-        }
-    }
-
-    function changeMonth(delta) {
-        currentCalDate.setMonth(currentCalDate.getMonth() + delta);
-        renderCalendar();
-    }
-
-    /* TOAST NOTIFICATION */
-    function showToast(msg) {
-        document.getElementById('toast-message').querySelector('span').innerText = msg;
-        const toastEl = document.getElementById('liveToast');
-        const toast = new bootstrap.Toast(toastEl);
-        toast.show();
-    }
+/* NOTIFIKASI */
+function showToast(message){
+ document.getElementById('toast-text').textContent=message;
+ bootstrap.Toast.getOrCreateInstance(document.getElementById('app-toast'),{delay:2600}).show();
+}
 </script>
 </body>
 </html>
