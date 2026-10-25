@@ -15,16 +15,13 @@
             --bg-dark: #070a12;
             --bg-sidebar: #0f172a;
             --bg-card: rgba(30, 41, 59, 0.7);
-            --bg-card-hover: rgba(51, 65, 85, 0.8);
             --border-glass: rgba(255, 255, 255, 0.1);
-            --border-glow: rgba(99, 102, 241, 0.3);
+            --border-glow: rgba(99, 102, 241, 0.4);
             --primary: #6366f1;
             --primary-hover: #4f46e5;
             --secondary: #ec4899;
             --accent-cyan: #06b6d4;
             --accent-emerald: #10b981;
-            --accent-amber: #f59e0b;
-            --accent-rose: #f43f5e;
             --text-main: #f8fafc;
             --text-muted: #94a3b8;
         }
@@ -42,7 +39,7 @@
             overflow-x: hidden;
         }
 
-        /* Glassmorphism Effect */
+        /* Glassmorphism Panels & Cards */
         .glass-panel {
             background: var(--bg-card);
             backdrop-filter: blur(16px);
@@ -64,6 +61,72 @@
             border-color: rgba(99, 102, 241, 0.4);
             transform: translateY(-2px);
             box-shadow: 0 12px 24px -10px rgba(99, 102, 241, 0.3);
+        }
+
+        /* === STYLING HALAMAN LOGIN SLEEK MESH GLASS === */
+        #login-overlay {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: #030712;
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        /* Animated Ambient Glowing Orbs */
+        .ambient-orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(100px);
+            opacity: 0.5;
+            animation: pulseOrb 10s ease-in-out infinite alternate;
+        }
+        .orb-1 {
+            width: 400px; height: 400px;
+            background: #6366f1;
+            top: -100px; left: -100px;
+        }
+        .orb-2 {
+            width: 450px; height: 450px;
+            background: #ec4899;
+            bottom: -150px; right: -100px;
+            animation-delay: -5s;
+        }
+        .orb-3 {
+            width: 300px; height: 300px;
+            background: #06b6d4;
+            top: 40%; left: 60%;
+            animation-delay: -2s;
+        }
+
+        @keyframes pulseOrb {
+            0% { transform: scale(1) translate(0, 0); opacity: 0.4; }
+            100% { transform: scale(1.2) translate(30px, -20px); opacity: 0.7; }
+        }
+
+        .login-card {
+            background: rgba(15, 23, 42, 0.75);
+            backdrop-filter: blur(28px);
+            -webkit-backdrop-filter: blur(28px);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 28px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7),
+                        inset 0 1px 0 0 rgba(255, 255, 255, 0.15);
+            position: relative;
+            z-index: 10;
+        }
+
+        .login-icon-box {
+            width: 72px; height: 72px;
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.25) 0%, rgba(236, 72, 153, 0.25) 100%);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 22px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 8px 25px rgba(99, 102, 241, 0.3);
         }
 
         /* Sidebar Styling (Desktop) */
@@ -102,14 +165,13 @@
             box-shadow: 0 4px 20px rgba(99, 102, 241, 0.4);
         }
 
-        /* Mobile Offcanvas Drawer */
+        /* Mobile Offcanvas Drawer & Topbar */
         .offcanvas-dark {
             background: var(--bg-sidebar);
             border-right: 1px solid var(--border-glass);
             color: var(--text-main);
         }
 
-        /* Topbar Mobile */
         .topbar-mobile {
             background: rgba(15, 23, 42, 0.85);
             backdrop-filter: blur(12px);
@@ -119,7 +181,7 @@
             z-index: 1010;
         }
 
-        /* Section Display Toggle */
+        /* App Page Display Toggle */
         .app-page {
             display: none;
             animation: fadeInPage 0.35s cubic-bezier(0.4, 0, 0.2, 1);
@@ -192,7 +254,7 @@
             color: #ffffff;
         }
 
-        /* Modern Table Styling */
+        /* Table Styling */
         .table-glass {
             color: #ffffff !important;
             margin-bottom: 0;
@@ -287,26 +349,12 @@
             transform-origin: 50% 50%;
         }
 
-        /* Login Screen Backdrop Overlay */
-        #login-overlay {
-            position: fixed;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: var(--bg-dark);
-            background-image: 
-                radial-gradient(at 20% 20%, rgba(99, 102, 241, 0.25) 0px, transparent 40%),
-                radial-gradient(at 80% 80%, rgba(236, 72, 153, 0.2) 0px, transparent 40%);
-            z-index: 2000;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
         /* Custom Toast Notification */
         .toast-container {
             position: fixed;
             bottom: 24px;
             right: 24px;
-            z-index: 3000;
+            z-index: 10000;
         }
 
         .avatar-box {
@@ -320,57 +368,73 @@
 </head>
 <body>
 
-<!-- 0. LOGIN OVERLAY (SCREEN LOGIN) -->
+<!-- 0. SCREEN LOGIN CYBERPUNK GLASS -->
 <div id="login-overlay">
+    <!-- Ambient Animated Mesh Gradient -->
+    <div class="ambient-orb orb-1"></div>
+    <div class="ambient-orb orb-2"></div>
+    <div class="ambient-orb orb-3"></div>
+
     <div class="container p-3">
         <div class="row justify-content-center">
-            <div class="col-md-8 col-lg-5">
-                <div class="glass-panel p-4 p-md-5 text-center shadow-lg">
+            <div class="col-md-8 col-lg-5 col-xl-4">
+                <div class="login-card p-4 p-sm-5 text-center">
+                    
+                    <!-- App Logo Header -->
                     <div class="mb-4">
-                        <div class="d-inline-flex align-items-center justify-content-center bg-primary bg-opacity-25 p-3 rounded-circle text-primary mb-3" style="width: 70px; height: 70px;">
-                            <i class="fa-solid fa-graduation-cap fs-1"></i>
+                        <div class="login-icon-box mb-3">
+                            <i class="fa-solid fa-graduation-cap fs-2 text-white"></i>
                         </div>
-                        <h3 class="fw-bold text-white mb-1">PR Master Studio</h3>
-                        <p class="text-muted small">Sistem Remind & Management Tugas Sekolah Digital</p>
+                        <h3 class="fw-extrabold text-white mb-1 tracking-tight">PR Master Studio</h3>
+                        <p class="text-muted small">Sistem Pengingat PR & Tugas Sekolah Digital</p>
                     </div>
 
+                    <!-- Form Login -->
                     <form id="form-login" onsubmit="handleLogin(event)">
                         <div class="mb-3 text-start">
                             <label class="form-label small text-muted fw-bold">EMAIL SISWA / NIK</label>
                             <div class="input-group">
                                 <span class="input-group-text bg-dark border-glass text-muted"><i class="fa-regular fa-envelope"></i></span>
-                                <input type="email" id="login-email" class="form-control" placeholder="nama@sekolah.id" required>
+                                <input type="email" id="login-email" class="form-control" placeholder="nama@sekolah.sch.id" required>
                             </div>
                         </div>
+
                         <div class="mb-4 text-start">
                             <label class="form-label small text-muted fw-bold">PASSWORD</label>
                             <div class="input-group">
                                 <span class="input-group-text bg-dark border-glass text-muted"><i class="fa-solid fa-lock"></i></span>
                                 <input type="password" id="login-password" class="form-control" placeholder="••••••••" required>
+                                <button class="btn btn-dark border-glass text-muted" type="button" onclick="togglePasswordVis()">
+                                    <i class="fa-regular fa-eye" id="pass-icon"></i>
+                                </button>
                             </div>
                         </div>
 
-                        <button type="submit" class="btn btn-gradient-primary w-100 mb-3">
-                            Masuk ke Aplikasi <i class="fa-solid fa-arrow-right-to-bracket ms-2"></i>
+                        <button type="submit" class="btn btn-gradient-primary w-100 py-3 mb-3">
+                            Masuk Aplikasi <i class="fa-solid fa-arrow-right-to-bracket ms-2"></i>
                         </button>
 
-                        <div class="d-flex gap-2 mb-3">
-                            <button type="button" class="btn btn-outline-light border-glass w-100 btn-sm text-muted" onclick="autofillDemo('siswa')">
-                                <i class="fa-solid fa-user-graduate me-1"></i> Demo Siswa
+                        <div class="d-flex gap-2">
+                            <button type="button" class="btn btn-dark border-glass text-white w-100 btn-sm py-2" onclick="autofillDemo('siswa')">
+                                <i class="fa-solid fa-user-graduate me-1 text-primary"></i> Demo Siswa
                             </button>
-                            <button type="button" class="btn btn-outline-light border-glass w-100 btn-sm text-muted" onclick="autofillDemo('guest')">
-                                <i class="fa-solid fa-user-clock me-1"></i> Mode Tamu
+                            <button type="button" class="btn btn-dark border-glass text-white w-100 btn-sm py-2" onclick="autofillDemo('guest')">
+                                <i class="fa-solid fa-user-clock me-1 text-info"></i> Mode Tamu
                             </button>
                         </div>
                     </form>
-                    <p class="text-muted small mb-0">Version 3.0 • Full Responsive Edition</p>
+
+                    <div class="mt-4 pt-3 border-top border-glass text-center">
+                        <small class="text-muted" style="font-size: 0.75rem;">PR Master Studio v3.0 • Cyberpunk Glass UI</small>
+                    </div>
+
                 </div>
             </div>
         </div>
     </div>
 </div>
 
-<!-- TOPBAR MOBILE (Tampil Hanya di Layar HP & Tablet) -->
+<!-- TOPBAR MOBILE -->
 <div class="topbar-mobile d-lg-none p-3">
     <div class="d-flex align-items-center justify-content-between">
         <div class="d-flex align-items-center gap-2">
@@ -388,7 +452,7 @@
     </div>
 </div>
 
-<!-- MAIN LAYOUT WRAPPER -->
+<!-- MAIN LAYOUT -->
 <div class="container-fluid">
     <div class="row">
 
@@ -418,7 +482,7 @@
                         <i class="fa-solid fa-circle-plus text-primary"></i> Tambah PR
                     </a>
                     <a class="nav-link-custom" onclick="switchPage('calendar')" id="nav-calendar">
-                        <i class="fa-solid fa-calendar-days"></i> Kalender Tugas
+                        <i class="fa-solid fa-calendar-days"></i> Kalender PR
                     </a>
                     <a class="nav-link-custom" onclick="switchPage('profile')" id="nav-profile">
                         <i class="fa-solid fa-user-gear"></i> Profil Saya
@@ -426,7 +490,7 @@
                 </div>
             </div>
 
-            <!-- Profile Widget di Sidebar Desk -->
+            <!-- Profile Widget Desktop Sidebar -->
             <div>
                 <div class="glass-card p-3 d-flex align-items-center gap-3 mb-3">
                     <img id="side-user-avatar" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&auto=format&fit=crop&q=80" class="avatar-box" alt="Avatar">
@@ -489,15 +553,14 @@
 
             <!-- PAGE 1: DASHBOARD -->
             <div id="page-dashboard" class="app-page active">
-                <!-- Welcome Banner -->
                 <div class="glass-panel p-4 p-md-5 mb-4 position-relative overflow-hidden">
                     <div class="row align-items-center position-relative" style="z-index: 2;">
                         <div class="col-md-8 mb-3 mb-md-0">
                             <span class="badge bg-primary bg-opacity-25 text-primary border border-primary border-opacity-50 px-3 py-2 rounded-pill mb-3">
-                                <i class="fa-solid fa-sparkles me-1"></i> AI Powered Reminder
+                                <i class="fa-solid fa-sparkles me-1"></i> AI Remind Engine
                             </span>
                             <h2 class="fw-extrabold text-white mb-2" id="welcome-heading">Selamat Datang, Rizky! 👋</h2>
-                            <p class="text-muted mb-0">Ada beberapa tugas PR sekolah yang mendekati tenggat waktu hari ini. Selesaikan tepat waktu ya!</p>
+                            <p class="text-muted mb-0">Pantau tenggat waktu PR dan tugas sekolah harianmu agar pengerjaan tetap disiplin.</p>
                         </div>
                         <div class="col-md-4 text-md-end">
                             <button class="btn btn-gradient-primary px-4 py-3" onclick="openModalTambah()">
@@ -550,7 +613,7 @@
                                     <small class="text-muted">Tuntas</small>
                                 </div>
                             </div>
-                            <p class="text-muted small mt-3 mb-0" id="stat-progress-text">Tetap semangat menyelesaikan tugas harianmu!</p>
+                            <p class="text-muted small mt-3 mb-0">Tetap konsisten menyelesaikan PR tepat waktu!</p>
                         </div>
                     </div>
 
@@ -558,7 +621,7 @@
                         <div class="glass-panel p-4 h-100">
                             <div class="d-flex justify-content-between align-items-center mb-3">
                                 <h5 class="fw-bold text-white mb-0"><i class="fa-solid fa-clock-rotate-left text-warning me-2"></i>Mendesak / Mendekati Deadline</h5>
-                                <a class="text-primary small fw-bold text-decoration-none" onclick="switchPage('daftar')">Lihat Semua</a>
+                                <a class="text-primary small fw-bold text-decoration-none cursor-pointer" onclick="switchPage('daftar')">Lihat Semua</a>
                             </div>
                             <div id="urgent-task-container" class="d-flex flex-column gap-3">
                                 <!-- Dynamic Render -->
@@ -573,7 +636,7 @@
                 <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
                     <div>
                         <h3 class="fw-bold text-white mb-1">Daftar PR & Tugas Sekolah</h3>
-                        <p class="text-muted mb-0">Kelola, filter, dan tandai pengerjaan PR sekolahmu secara interaktif.</p>
+                        <p class="text-muted mb-0">Kelola, filter, dan ubah status pengerjaan tugas sekolahmu di sini.</p>
                     </div>
                     <button class="btn btn-gradient-primary" onclick="openModalTambah()">
                         <i class="fa-solid fa-plus me-2"></i> Tambah PR Baru
@@ -616,8 +679,7 @@
                     </div>
                 </div>
 
-                <!-- Responsive View Desktop Table vs Mobile Cards -->
-                <!-- A. Desktop Table View -->
+                <!-- Desktop Table View -->
                 <div class="glass-panel p-0 overflow-hidden d-none d-md-block mb-4">
                     <div class="table-responsive">
                         <table class="table table-glass align-middle">
@@ -639,7 +701,7 @@
                     </div>
                 </div>
 
-                <!-- B. Mobile Card View -->
+                <!-- Mobile Cards View -->
                 <div class="d-md-none d-flex flex-column gap-3 mb-4" id="cards-pr-mobile">
                     <!-- Dynamic JS Render -->
                 </div>
@@ -650,7 +712,7 @@
                 <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
                     <div>
                         <h3 class="fw-bold text-white mb-1">Kalender Tugas</h3>
-                        <p class="text-muted mb-0">Pantau jadwal tenggat waktu PR berdasarkan tampilan kalender bulanan.</p>
+                        <p class="text-muted mb-0">Pantau jadwal deadline PR harian berdasarkan kalender bulanan.</p>
                     </div>
                     <div class="d-flex align-items-center gap-2">
                         <button class="btn btn-dark border-glass text-white" onclick="changeMonth(-1)"><i class="fa-solid fa-chevron-left"></i></button>
@@ -772,7 +834,7 @@
     </div>
 </div>
 
-<!-- TOAST NOTIFICATION CONTAINER -->
+<!-- TOAST CONTAINER -->
 <div class="toast-container">
     <div id="liveToast" class="toast align-items-center text-white bg-dark border-glass p-1" role="alert">
         <div class="d-flex">
@@ -817,13 +879,25 @@
         renderCalendar();
     });
 
-    /* AUTH & SESSION LOGIC */
+    /* AUTH LOGIC */
     function checkAuthStatus() {
         const overlay = document.getElementById('login-overlay');
         if(currentUser.isLoggedIn) {
             overlay.style.display = 'none';
         } else {
             overlay.style.display = 'flex';
+        }
+    }
+
+    function togglePasswordVis() {
+        const passInput = document.getElementById('login-password');
+        const icon = document.getElementById('pass-icon');
+        if (passInput.type === 'password') {
+            passInput.type = 'text';
+            icon.classList.replace('fa-eye', 'fa-eye-slash');
+        } else {
+            passInput.type = 'password';
+            icon.classList.replace('fa-eye-slash', 'fa-eye');
         }
     }
 
@@ -1050,7 +1124,7 @@
         });
     }
 
-    /* RENDER DAFTAR PR (TABLE & CARDS) */
+    /* RENDER DAFTAR PR */
     function renderDaftarPR() {
         const search = document.getElementById('search-task').value.toLowerCase();
         const mapelFilter = document.getElementById('filter-mapel').value;
@@ -1148,7 +1222,6 @@
         const container = document.getElementById('calendar-days-container');
         container.innerHTML = '';
 
-        // Empty cells before first day
         for(let i = 0; i < firstDay; i++) {
             container.innerHTML += `<div class="calendar-day empty"></div>`;
         }
