@@ -26,6 +26,45 @@
             color: var(--text-main);
             font-family: 'Plus Jakarta Sans', sans-serif;
             overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        /* LOGIN SCREEN STYLING */
+        #login-screen {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: radial-gradient(circle at top right, rgba(79, 70, 229, 0.15), transparent 40%),
+                        radial-gradient(circle at bottom left, rgba(14, 165, 233, 0.1), transparent 40%),
+                        var(--bg-main);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 2000;
+        }
+
+        .login-card {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+            width: 100%;
+            max-width: 440px;
+            backdrop-filter: blur(10px);
+        }
+
+        .input-group-text-dark {
+            background-color: #0f172a !important;
+            border: 1px solid var(--border-color) !important;
+            border-right: none !important;
+            color: #64748b !important;
+        }
+
+        .input-with-icon {
+            border-left: none !important;
         }
 
         /* Sidebar Styling */
@@ -137,6 +176,14 @@
             transform: translateY(-1px);
         }
 
+        /* User Profile Box */
+        .user-profile-box {
+            background-color: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 12px;
+        }
+
         /* Content Sections */
         .content-section { display: none; animation: fadeIn 0.3s ease-in-out; }
         .content-section.active { display: block; }
@@ -149,19 +196,115 @@
         .text-muted-custom {
             color: var(--text-muted) !important;
         }
+
+        .cursor-pointer {
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
 
-<div class="container-fluid">
+<!-- 0. SCREEN LOGIN -->
+<div id="login-screen" class="p-3">
+    <div class="card login-card p-4 p-md-5">
+        <div class="text-center mb-4">
+            <div class="bg-primary text-white rounded-circle d-inline-flex p-3 mb-3 fs-3 bg-opacity-25" style="border: 1px solid rgba(99, 102, 241, 0.3);">
+                <i class="fa-solid fa-graduation-cap text-indigo" style="color: #818cf8;"></i>
+            </div>
+            <h3 class="fw-bold text-white mb-1">PR Reminder</h3>
+            <p class="text-muted-custom small mb-0">Masuk untuk mengelola tugas & PR sekolahmu</p>
+        </div>
+
+        <!-- Alert Pesan Error -->
+        <div id="login-alert" class="alert alert-danger py-2 small d-none" role="alert">
+            <i class="fa-solid fa-circle-exclamation me-1"></i> <span id="login-alert-msg">Email atau password salah!</span>
+        </div>
+
+        <form id="form-login" onsubmit="handleLogin(event)">
+            <!-- Input Email / Username -->
+            <div class="mb-3">
+                <label class="form-label small fw-semibold text-white">Email / Username</label>
+                <div class="input-group">
+                    <span class="input-group-text input-group-text-dark"><i class="fa-solid fa-envelope"></i></span>
+                    <input type="text" id="login-email" class="form-control input-with-icon" placeholder="siswa@sekolah.id" required>
+                </div>
+            </div>
+
+            <!-- Input Password -->
+            <div class="mb-3">
+                <div class="d-flex justify-content-between align-items-center mb-1">
+                    <label class="form-label small fw-semibold text-white mb-0">Kata Sandi</label>
+                </div>
+                <div class="input-group">
+                    <span class="input-group-text input-group-text-dark"><i class="fa-solid fa-lock"></i></span>
+                    <input type="password" id="login-password" class="form-control input-with-icon border-end-0" placeholder="••••••••" required>
+                    <button class="btn btn-outline-secondary border-secondary bg-dark text-muted-custom" type="button" onclick="togglePasswordVisibility()">
+                        <i class="fa-solid fa-eye" id="toggle-pwd-icon"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Remember Me & Forgot Password -->
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <div class="form-check">
+                    <input class="form-check-input bg-dark border-secondary" type="checkbox" id="remember-me" checked>
+                    <label class="form-check-label small text-muted-custom cursor-pointer" for="remember-me">
+                        Ingat Saya
+                    </label>
+                </div>
+                <a href="javascript:void(0)" onclick="autoFillDemo()" class="small text-decoration-none" style="color: #818cf8;">
+                    <i class="fa-solid fa-wand-magic-sparkles me-1"></i>Isi Demo
+                </a>
+            </div>
+
+            <!-- Submit Button -->
+            <button type="submit" class="btn btn-primary w-full w-100 py-2.5 mb-3 d-flex justify-content-center align-items-center gap-2">
+                <i class="fa-solid fa-right-to-bracket"></i> Masuk ke Aplikasi
+            </button>
+
+            <!-- Divider -->
+            <div class="position-relative text-center my-3">
+                <hr class="border-secondary my-0">
+                <span class="position-absolute top-50 start-50 translate-middle px-2 small text-muted-custom" style="background-color: var(--bg-card);">atau</span>
+            </div>
+
+            <!-- Guest Login Button -->
+            <button type="button" class="btn btn-outline-light border-secondary w-100 text-white py-2" onclick="loginAsGuest()">
+                <i class="fa-solid fa-user-astronaut me-1"></i> Masuk sebagai Tamu
+            </button>
+        </form>
+
+        <div class="text-center mt-4">
+            <span class="text-muted-custom small">Demo Akun: <b>siswa@sekolah.id</b> / <b>123456</b></span>
+        </div>
+    </div>
+</div>
+
+<!-- MAIN DASHBOARD CONTAINER (Sembunyi secara bawaan hingga Login) -->
+<div id="main-app" class="container-fluid d-none">
     <div class="row">
         <!-- SIDEBAR NAVIGATION -->
         <div class="col-md-3 col-lg-2 sidebar p-4 d-flex flex-column justify-content-between">
             <div>
+                <!-- Brand Header -->
                 <div class="d-flex align-items-center gap-2 mb-4 px-2">
                     <i class="fa-solid fa-graduation-cap fs-4 text-indigo" style="color: #818cf8;"></i>
                     <span class="sidebar-brand">PR Reminder</span>
                 </div>
+
+                <!-- User Profile Card -->
+                <div class="user-profile-box mb-4 d-flex align-items-center gap-3">
+                    <div class="position-relative">
+                        <img id="user-avatar" src="https://placehold.co/100x100/4f46e5/ffffff?text=S" alt="User Avatar" class="rounded-circle" width="42" height="42">
+                        <span class="position-absolute bottom-0 end-0 p-1 bg-success border border-dark rounded-circle"></span>
+                    </div>
+                    <div class="overflow-hidden">
+                        <h6 class="mb-0 text-white fw-bold text-truncate" id="user-display-name">Siswa Pintar</h6>
+                        <small class="text-muted-custom d-block text-truncate" id="user-display-role">Siswa Kelas X</small>
+                    </div>
+                </div>
+
+                <!-- Navigation Pills -->
                 <ul class="nav nav-pills flex-column">
                     <li class="nav-item">
                         <a class="nav-link active" onclick="switchPage('dashboard')" id="nav-dashboard">
@@ -180,7 +323,12 @@
                     </li>
                 </ul>
             </div>
+
+            <!-- Footer Sidebar & Logout -->
             <div class="text-muted-custom small px-2">
+                <button class="btn btn-outline-danger w-100 d-flex align-items-center justify-content-center gap-2 mb-3 border-danger border-opacity-50 text-danger" onclick="handleLogout()">
+                    <i class="fa-solid fa-right-from-bracket"></i> Keluar (Logout)
+                </button>
                 <hr class="border-secondary">
                 <p class="mb-0 fw-semibold text-white">Digital Task v2.1</p>
                 <small>Sistem Pengingat Sekolah</small>
@@ -194,7 +342,7 @@
             <div id="page-dashboard" class="content-section active">
                 <div class="mb-4 d-flex justify-content-between align-items-center flex-wrap gap-3">
                     <div>
-                        <h2 class="fw-bold mb-1 text-white">Selamat Datang di Sistem Pengingat PR Sekolah 👋</h2>
+                        <h2 class="fw-bold mb-1 text-white">Selamat Datang, <span id="welcome-user-name">Siswa</span> 👋</h2>
                         <p class="text-muted-custom mb-0">Pantau tenggat waktu tugas harianmu agar tidak ada yang terlewat.</p>
                     </div>
                     <button class="btn btn-primary d-flex align-items-center gap-2 shadow-sm" onclick="switchPage('tambah')">
@@ -270,6 +418,8 @@
                                 <option value="Bahasa Indonesia">Bahasa Indonesia</option>
                                 <option value="IPA">IPA</option>
                                 <option value="PPKn">PPKn</option>
+                                <option value="Bahasa Inggris">Bahasa Inggris</option>
+                                <option value="Informatika">Informatika</option>
                             </select>
                         </div>
                     </div>
@@ -318,6 +468,8 @@
                                         <option value="Bahasa Indonesia">Bahasa Indonesia</option>
                                         <option value="IPA">IPA</option>
                                         <option value="PPKn">PPKn</option>
+                                        <option value="Bahasa Inggris">Bahasa Inggris</option>
+                                        <option value="Informatika">Informatika</option>
                                     </select>
                                 </div>
                                 <div class="mb-3">
@@ -344,12 +496,118 @@
 
 <!-- JAVASCRIPT LOGIC INTERAKTIF -->
 <script>
+    // DATA DUMMY & LOCALSTORAGE LOGIC
     let daftarTugas = JSON.parse(localStorage.getItem('tugas_pr')) || [
         { id: 1, mapel: 'Matematika', deskripsi: 'PR Latihan 1 Halaman 10-20', deadline: new Date().toISOString().split('T')[0], status: 'belum' },
         { id: 2, mapel: 'Bahasa Indonesia', deskripsi: 'Merangkum Cerpen Tema Lingkungan', deadline: new Date(Date.now() + 86400000).toISOString().split('T')[0], status: 'belum' },
         { id: 3, mapel: 'IPA', deskripsi: 'Laporan Praktikum Percobaan Gaya Magnet', deadline: new Date(Date.now() + 259200000).toISOString().split('T')[0], status: 'selesai' }
     ];
 
+    // INITIALIZATION ON LOAD
+    window.onload = function() {
+        checkAuthStatus();
+    };
+
+    // --- AUTHENTICATION FUNCTIONS ---
+    function checkAuthStatus() {
+        const loggedUser = JSON.parse(localStorage.getItem('logged_user'));
+        if (loggedUser) {
+            showMainApp(loggedUser);
+        } else {
+            showLoginScreen();
+        }
+    }
+
+    function handleLogin(event) {
+        event.preventDefault();
+        const email = document.getElementById('login-email').value;
+        const password = document.getElementById('login-password').value;
+        const alertBox = document.getElementById('login-alert');
+
+        // Simple validation logic (Demo User & Generic Check)
+        if ((email === 'siswa@sekolah.id' && password === '123456') || (email.length > 3 && password.length >= 4)) {
+            alertBox.classList.add('d-none');
+            
+            // Extract display name from email if generic
+            let name = "Siswa Pintar";
+            if (email === 'siswa@sekolah.id') {
+                name = "Ahmad Pratama";
+            } else {
+                name = email.split('@')[0];
+                name = name.charAt(0).toUpperCase() + name.slice(1);
+            }
+
+            const userData = {
+                name: name,
+                email: email,
+                role: 'Siswa Aktif',
+                avatar: `https://placehold.co/100x100/4f46e5/ffffff?text=${name.charAt(0)}`
+            };
+
+            localStorage.setItem('logged_user', JSON.stringify(userData));
+            showMainApp(userData);
+        } else {
+            alertBox.classList.remove('d-none');
+            document.getElementById('login-alert-msg').innerText = "Email atau password salah!";
+        }
+    }
+
+    function loginAsGuest() {
+        const guestData = {
+            name: "Tamu (Guest)",
+            email: "guest@sekolah.id",
+            role: "Mode Penjelajah",
+            avatar: "https://placehold.co/100x100/64748b/ffffff?text=G"
+        };
+        localStorage.setItem('logged_user', JSON.stringify(guestData));
+        showMainApp(guestData);
+    }
+
+    function handleLogout() {
+        localStorage.removeItem('logged_user');
+        showLoginScreen();
+    }
+
+    function showMainApp(user) {
+        document.getElementById('login-screen').classList.add('d-none');
+        document.getElementById('main-app').classList.remove('d-none');
+        
+        // Update User Profile Interface
+        document.getElementById('user-display-name').innerText = user.name;
+        document.getElementById('welcome-user-name').innerText = user.name;
+        document.getElementById('user-display-role').innerText = user.role;
+        document.getElementById('user-avatar').src = user.avatar;
+
+        renderDashboard();
+    }
+
+    function showLoginScreen() {
+        document.getElementById('login-screen').classList.remove('d-none');
+        document.getElementById('main-app').classList.add('d-none');
+        document.getElementById('form-login').reset();
+        document.getElementById('login-alert').classList.add('d-none');
+    }
+
+    function togglePasswordVisibility() {
+        const pwdInput = document.getElementById('login-password');
+        const icon = document.getElementById('toggle-pwd-icon');
+        if (pwdInput.type === 'password') {
+            pwdInput.type = 'text';
+            icon.classList.remove('fa-eye');
+            icon.classList.add('fa-eye-slash');
+        } else {
+            pwdInput.type = 'password';
+            icon.classList.remove('fa-eye-slash');
+            icon.classList.add('fa-eye');
+        }
+    }
+
+    function autoFillDemo() {
+        document.getElementById('login-email').value = 'siswa@sekolah.id';
+        document.getElementById('login-password').value = '123456';
+    }
+
+    // --- PAGE NAVIGATION & APPLICATION LOGIC ---
     function switchPage(pageId) {
         document.querySelectorAll('.content-section').forEach(el => el.classList.remove('active'));
         document.querySelectorAll('.nav-link').forEach(el => el.classList.remove('active'));
@@ -397,7 +655,8 @@
     }
 
     function hapusTugas(id) {
-        if(confirm('Yakin ingin menghapus tugas ini?')) {
+        // Native custom confirmation modal fallback safely
+        if (confirm('Yakin ingin menghapus tugas ini?')) {
             daftarTugas = daftarTugas.filter(t => t.id !== id);
             simpanStorage();
             renderTabel();
@@ -498,8 +757,6 @@
             `;
         });
     }
-
-    renderDashboard();
 </script>
 
 </body>
