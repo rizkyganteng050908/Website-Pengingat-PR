@@ -1,763 +1,1025 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="id" class="dark">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aplikasi Pengingat PR & Tugas Sekolah Digital</title>
-    <!-- Bootstrap 5 CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Google Fonts & FontAwesome Icons -->
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Pengingat PR & Tugas Sekolah Digital</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#f0f3ff',
+                            100: '#e1e7ff',
+                            500: '#6366f1',
+                            600: '#4f46e5',
+                            700: '#4338ca',
+                            900: '#312e81',
+                            accent: '#a855f7'
+                        },
+                        darkbg: '#0f172a',
+                        cardbg: 'rgba(30, 41, 59, 0.7)'
+                    },
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Google Fonts: Plus Jakarta Sans -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
     <style>
-        :root {
-            --bg-main: #0b0f19;
-            --bg-sidebar: #111827;
-            --bg-card: #1e293b;
-            --border-color: #334155;
-            --primary: #4f46e5;
-            --primary-hover: #4338ca;
-            --text-main: #ffffff;
-            --text-muted: #cbd5e1;
-        }
-
         body {
-            background-color: var(--bg-main);
-            color: var(--text-main);
             font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #0b0f19;
+            color: #f3f4f6;
             overflow-x: hidden;
-            min-height: 100vh;
         }
-
-        /* LOGIN SCREEN STYLING */
-        #login-screen {
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: radial-gradient(circle at top right, rgba(79, 70, 229, 0.15), transparent 40%),
-                        radial-gradient(circle at bottom left, rgba(14, 165, 233, 0.1), transparent 40%),
-                        var(--bg-main);
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            z-index: 2000;
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
         }
-
-        .login-card {
-            background-color: var(--bg-card);
-            border: 1px solid var(--border-color);
-            border-radius: 20px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
-            width: 100%;
-            max-width: 440px;
-            backdrop-filter: blur(10px);
+        ::-webkit-scrollbar-track {
+            background: #0f172a;
         }
-
-        .input-group-text-dark {
-            background-color: #0f172a !important;
-            border: 1px solid var(--border-color) !important;
-            border-right: none !important;
-            color: #64748b !important;
+        ::-webkit-scrollbar-thumb {
+            background: #334155;
+            border-radius: 4px;
         }
-
-        .input-with-icon {
-            border-left: none !important;
+        ::-webkit-scrollbar-thumb:hover {
+            background: #6366f1;
         }
-
-        /* Sidebar Styling */
-        .sidebar {
-            background-color: var(--bg-sidebar);
-            min-height: 100vh;
-            border-right: 1px solid var(--border-color);
-            position: sticky;
-            top: 0;
+        /* Glassmorphism Classes */
+        .glass-panel {
+            background: rgba(30, 41, 59, 0.65);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
         }
-
-        .sidebar-brand {
-            font-size: 1.2rem;
-            font-weight: 700;
-            color: #ffffff;
-            letter-spacing: 0.5px;
+        .glass-card {
+            background: rgba(30, 41, 59, 0.5);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
-
-        .nav-link {
-            color: #cbd5e1;
-            border-radius: 10px;
-            margin-bottom: 8px;
-            padding: 12px 16px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            gap: 12px;
+        .glass-card:hover {
+            border-color: rgba(99, 102, 241, 0.4);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px -5px rgba(99, 102, 241, 0.15);
         }
-
-        .nav-link:hover {
-            color: #ffffff;
-            background-color: rgba(255, 255, 255, 0.05);
-        }
-
-        .nav-link.active {
-            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-hover) 100%);
-            color: #ffffff !important;
-            box-shadow: 0 4px 12px rgba(79, 70, 229, 0.4);
-        }
-
-        /* Card Custom */
-        .card-custom {
-            background-color: var(--bg-card);
-            border: 1px solid var(--border-color);
-            border-radius: 16px;
-            color: #ffffff;
-            transition: transform 0.2s ease, border-color 0.2s ease;
-        }
-
-        .card-custom:hover {
-            border-color: #475569;
-        }
-
-        /* Table Styling */
-        .table {
-            color: #ffffff !important;
-            vertical-align: middle;
-        }
-        .table th {
-            background-color: #0f172a !important;
-            color: #cbd5e1 !important;
-            font-weight: 600;
-            border-bottom: 1px solid var(--border-color);
-            padding: 14px;
-        }
-        .table td {
-            background-color: var(--bg-card) !important;
-            color: #ffffff !important;
-            border-bottom: 1px solid var(--border-color);
-            padding: 14px;
-        }
-
-        /* Form Controls */
-        .form-control, .form-select {
-            background-color: #0f172a !important;
-            border: 1px solid var(--border-color) !important;
-            color: #ffffff !important;
-            border-radius: 10px;
-            padding: 12px;
-        }
-        .form-control::placeholder {
-            color: #64748b;
-        }
-        .form-control:focus, .form-select:focus {
-            border-color: #6366f1 !important;
-            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.25);
-            color: #ffffff !important;
-        }
-        .form-select option {
-            background-color: #1e293b;
+        .glass-input {
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.1);
             color: #ffffff;
         }
-
-        /* Buttons */
-        .btn-primary {
-            background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
-            border: none;
-            border-radius: 10px;
-            padding: 10px 20px;
-            font-weight: 600;
-            color: #ffffff;
-            transition: all 0.2s;
+        .glass-input:focus {
+            border-color: #6366f1;
+            box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.25);
+            outline: none;
         }
-        .btn-primary:hover {
-            background: linear-gradient(135deg, #4f46e5 0%, #4338ca 100%);
-            color: #ffffff;
-            transform: translateY(-1px);
+        /* Touch hit target optimization for mobile */
+        .touch-btn {
+            min-height: 44px;
+            min-width: 44px;
         }
-
-        /* User Profile Box */
-        .user-profile-box {
-            background-color: rgba(255, 255, 255, 0.03);
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            padding: 12px;
+        /* Gradient text */
+        .gradient-text {
+            background: linear-gradient(135deg, #818cf8 0%, #c084fc 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
-
-        /* Content Sections */
-        .content-section { display: none; animation: fadeIn 0.3s ease-in-out; }
-        .content-section.active { display: block; }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(6px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .text-muted-custom {
-            color: var(--text-muted) !important;
-        }
-
-        .cursor-pointer {
-            cursor: pointer;
+        /* Drawer Transition */
+        .drawer-slide {
+            transition: transform 0.3s ease-in-out;
         }
     </style>
 </head>
-<body>
+<body class="bg-[#0b0f19] text-slate-100 min-h-screen flex flex-col antialiased selection:bg-indigo-500 selection:text-white">
 
-<!-- 0. SCREEN LOGIN -->
-<div id="login-screen" class="p-3">
-    <div class="card login-card p-4 p-md-5">
-        <div class="text-center mb-4">
-            <div class="bg-primary text-white rounded-circle d-inline-flex p-3 mb-3 fs-3 bg-opacity-25" style="border: 1px solid rgba(99, 102, 241, 0.3);">
-                <i class="fa-solid fa-graduation-cap text-indigo" style="color: #818cf8;"></i>
-            </div>
-            <h3 class="fw-bold text-white mb-1">PR Reminder</h3>
-            <p class="text-muted-custom small mb-0">Masuk untuk mengelola tugas & PR sekolahmu</p>
-        </div>
+    <!-- ==================== PAGE: AUTHENTICATION (LOGIN) ==================== -->
+    <div id="authPage" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#0b0f19]/90 backdrop-blur-xl overflow-y-auto">
+        <!-- Background Glowing Orbs -->
+        <div class="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-72 h-72 md:w-96 md:h-96 bg-indigo-600/30 rounded-full blur-[100px] pointer-events-none"></div>
+        <div class="absolute bottom-1/4 right-10 w-60 h-60 bg-purple-600/20 rounded-full blur-[80px] pointer-events-none"></div>
 
-        <!-- Alert Pesan Error -->
-        <div id="login-alert" class="alert alert-danger py-2 small d-none" role="alert">
-            <i class="fa-solid fa-circle-exclamation me-1"></i> <span id="login-alert-msg">Email atau password salah!</span>
-        </div>
-
-        <form id="form-login" onsubmit="handleLogin(event)">
-            <!-- Input Email / Username -->
-            <div class="mb-3">
-                <label class="form-label small fw-semibold text-white">Email / Username</label>
-                <div class="input-group">
-                    <span class="input-group-text input-group-text-dark"><i class="fa-solid fa-envelope"></i></span>
-                    <input type="text" id="login-email" class="form-control input-with-icon" placeholder="siswa@sekolah.id" required>
+        <div class="w-full max-w-md my-auto relative z-10">
+            <!-- Brand Logo Header -->
+            <div class="text-center mb-6">
+                <div class="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-tr from-indigo-600 to-purple-600 shadow-lg shadow-indigo-500/30 mb-3">
+                    <i class="fa-solid fa-graduation-cap text-3xl text-white"></i>
                 </div>
+                <h1 class="text-2xl md:text-3xl font-extrabold tracking-tight text-white">TugasKu <span class="gradient-text">Digital</span></h1>
+                <p class="text-sm text-slate-400 mt-1">Pengingat PR & Manajemen Tugas Sekolah Modern</p>
             </div>
 
-            <!-- Input Password -->
-            <div class="mb-3">
-                <div class="d-flex justify-content-between align-items-center mb-1">
-                    <label class="form-label small fw-semibold text-white mb-0">Kata Sandi</label>
-                </div>
-                <div class="input-group">
-                    <span class="input-group-text input-group-text-dark"><i class="fa-solid fa-lock"></i></span>
-                    <input type="password" id="login-password" class="form-control input-with-icon border-end-0" placeholder="••••••••" required>
-                    <button class="btn btn-outline-secondary border-secondary bg-dark text-muted-custom" type="button" onclick="togglePasswordVisibility()">
-                        <i class="fa-solid fa-eye" id="toggle-pwd-icon"></i>
-                    </button>
-                </div>
-            </div>
+            <!-- Login Glass Card -->
+            <div class="glass-panel rounded-3xl p-6 md:p-8 shadow-2xl relative border border-white/10">
+                <h2 class="text-xl font-bold text-white mb-2">Masuk ke Akun Anda</h2>
+                <p class="text-xs text-slate-400 mb-6">Kelola deadline PR & jadwal ujian dengan lebih terorganisir.</p>
 
-            <!-- Remember Me & Forgot Password -->
-            <div class="d-flex justify-content-between align-items-center mb-4">
-                <div class="form-check">
-                    <input class="form-check-input bg-dark border-secondary" type="checkbox" id="remember-me" checked>
-                    <label class="form-check-label small text-muted-custom cursor-pointer" for="remember-me">
-                        Ingat Saya
-                    </label>
-                </div>
-                <a href="javascript:void(0)" onclick="autoFillDemo()" class="small text-decoration-none" style="color: #818cf8;">
-                    <i class="fa-solid fa-wand-magic-sparkles me-1"></i>Isi Demo
-                </a>
-            </div>
-
-            <!-- Submit Button -->
-            <button type="submit" class="btn btn-primary w-full w-100 py-2.5 mb-3 d-flex justify-content-center align-items-center gap-2">
-                <i class="fa-solid fa-right-to-bracket"></i> Masuk ke Aplikasi
-            </button>
-
-            <!-- Divider -->
-            <div class="position-relative text-center my-3">
-                <hr class="border-secondary my-0">
-                <span class="position-absolute top-50 start-50 translate-middle px-2 small text-muted-custom" style="background-color: var(--bg-card);">atau</span>
-            </div>
-
-            <!-- Guest Login Button -->
-            <button type="button" class="btn btn-outline-light border-secondary w-100 text-white py-2" onclick="loginAsGuest()">
-                <i class="fa-solid fa-user-astronaut me-1"></i> Masuk sebagai Tamu
-            </button>
-        </form>
-
-        <div class="text-center mt-4">
-            <span class="text-muted-custom small">Demo Akun: <b>siswa@sekolah.id</b> / <b>123456</b></span>
-        </div>
-    </div>
-</div>
-
-<!-- MAIN DASHBOARD CONTAINER (Sembunyi secara bawaan hingga Login) -->
-<div id="main-app" class="container-fluid d-none">
-    <div class="row">
-        <!-- SIDEBAR NAVIGATION -->
-        <div class="col-md-3 col-lg-2 sidebar p-4 d-flex flex-column justify-content-between">
-            <div>
-                <!-- Brand Header -->
-                <div class="d-flex align-items-center gap-2 mb-4 px-2">
-                    <i class="fa-solid fa-graduation-cap fs-4 text-indigo" style="color: #818cf8;"></i>
-                    <span class="sidebar-brand">PR Reminder</span>
-                </div>
-
-                <!-- User Profile Card -->
-                <div class="user-profile-box mb-4 d-flex align-items-center gap-3">
-                    <div class="position-relative">
-                        <img id="user-avatar" src="https://placehold.co/100x100/4f46e5/ffffff?text=S" alt="User Avatar" class="rounded-circle" width="42" height="42">
-                        <span class="position-absolute bottom-0 end-0 p-1 bg-success border border-dark rounded-circle"></span>
-                    </div>
-                    <div class="overflow-hidden">
-                        <h6 class="mb-0 text-white fw-bold text-truncate" id="user-display-name">Siswa Pintar</h6>
-                        <small class="text-muted-custom d-block text-truncate" id="user-display-role">Siswa Kelas X</small>
-                    </div>
-                </div>
-
-                <!-- Navigation Pills -->
-                <ul class="nav nav-pills flex-column">
-                    <li class="nav-item">
-                        <a class="nav-link active" onclick="switchPage('dashboard')" id="nav-dashboard">
-                            <i class="fa-solid fa-house-chimney"></i> Dashboard
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" onclick="switchPage('daftar')" id="nav-daftar">
-                            <i class="fa-solid fa-list-check"></i> Daftar PR
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" onclick="switchPage('tambah')" id="nav-tambah">
-                            <i class="fa-solid fa-circle-plus"></i> Tambah PR
-                        </a>
-                    </li>
-                </ul>
-            </div>
-
-            <!-- Footer Sidebar & Logout -->
-            <div class="text-muted-custom small px-2">
-                <button class="btn btn-outline-danger w-100 d-flex align-items-center justify-content-center gap-2 mb-3 border-danger border-opacity-50 text-danger" onclick="handleLogout()">
-                    <i class="fa-solid fa-right-from-bracket"></i> Keluar (Logout)
-                </button>
-                <hr class="border-secondary">
-                <p class="mb-0 fw-semibold text-white">Digital Task v2.1</p>
-                <small>Sistem Pengingat Sekolah</small>
-            </div>
-        </div>
-
-        <!-- MAIN CONTENT AREA -->
-        <div class="col-md-9 col-lg-10 p-4 p-md-5">
-            
-            <!-- 1. HALAMAN DASHBOARD -->
-            <div id="page-dashboard" class="content-section active">
-                <div class="mb-4 d-flex justify-content-between align-items-center flex-wrap gap-3">
+                <form id="loginForm" onsubmit="handleLogin(event)" class="space-y-4">
                     <div>
-                        <h2 class="fw-bold mb-1 text-white">Selamat Datang, <span id="welcome-user-name">Siswa</span> 👋</h2>
-                        <p class="text-muted-custom mb-0">Pantau tenggat waktu tugas harianmu agar tidak ada yang terlewat.</p>
-                    </div>
-                    <button class="btn btn-primary d-flex align-items-center gap-2 shadow-sm" onclick="switchPage('tambah')">
-                        <i class="fa-solid fa-plus"></i> Buat Tugas Baru
-                    </button>
-                </div>
-
-                <!-- Statistik Ringkasan -->
-                <h5 class="fw-bold mb-3 text-white"><i class="fa-solid fa-chart-pie me-2" style="color: #818cf8;"></i>Ringkasan Tugas</h5>
-                <div class="row g-4 mb-5">
-                    <div class="col-md-4">
-                        <div class="card card-custom p-4 shadow-sm border-start border-4 border-info">
-                            <div class="d-flex justify-content-between align-items-center">
-                                <div>
-                                    <span class="text-muted-custom small fw-bold text-uppercase">Total Tugas</span>
-                                    <h2 class="fw-bold text-info mb-0 mt-1" id="stat-total">0</h2>
-                                </div>
-                                <div class="fs-2 text-info opacity-75"><i class="fa-solid fa-folder-open"></i></div>
-                            </div>
+                        <label class="block text-xs font-semibold text-slate-300 mb-1.5">Nama Pengguna / Email</label>
+                        <div class="relative">
+                            <i class="fa-solid fa-user absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-sm"></i>
+                            <input type="text" id="usernameInput" required placeholder="Contoh: Budi Santoso" class="w-full pl-10 pr-4 py-3 text-sm rounded-xl glass-input transition">
                         </div>
                     </div>
-                    <div class="col-md-4">
-                        <div class="card card-custom p-4 shadow-sm border-start border-4 border-warning">
-                            <div class="d-flex justify-content-between align-items-center">
-                                <div>
-                                    <span class="text-muted-custom small fw-bold text-uppercase">Belum Selesai</span>
-                                    <h2 class="fw-bold text-warning mb-0 mt-1" id="stat-belum">0</h2>
-                                </div>
-                                <div class="fs-2 text-warning opacity-75"><i class="fa-solid fa-clock-rotate-left"></i></div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="card card-custom p-4 shadow-sm border-start border-4 border-success">
-                            <div class="d-flex justify-content-between align-items-center">
-                                <div>
-                                    <span class="text-muted-custom small fw-bold text-uppercase">Selesai</span>
-                                    <h2 class="fw-bold text-success mb-0 mt-1" id="stat-selesai">0</h2>
-                                </div>
-                                <div class="fs-2 text-success opacity-75"><i class="fa-solid fa-circle-check"></i></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
 
-                <!-- Deadline Terdekat -->
-                <h5 class="fw-bold mb-3 text-white"><i class="fa-solid fa-triangle-exclamation text-warning me-2"></i>Deadline Terdekat</h5>
-                <div class="list-group gap-2" id="deadline-list">
-                    <!-- Dynamic Content -->
-                </div>
-            </div>
-
-            <!-- 2. HALAMAN DAFTAR PR -->
-            <div id="page-daftar" class="content-section">
-                <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
                     <div>
-                        <h2 class="fw-bold mb-1 text-white">Daftar PR / Tugas</h2>
-                        <p class="text-muted-custom mb-0">Kelola dan ubah status pengerjaan tugas sekolahmu di sini.</p>
-                    </div>
-                    <button class="btn btn-primary d-flex align-items-center gap-2" onclick="switchPage('tambah')">
-                        <i class="fa-solid fa-plus"></i> Tambah PR
-                    </button>
-                </div>
-
-                <!-- Filter Mapel -->
-                <div class="row mb-4">
-                    <div class="col-md-4">
-                        <div class="input-group">
-                            <span class="input-group-text bg-dark border-secondary text-white"><i class="fa-solid fa-filter"></i></span>
-                            <select id="filter-mapel" class="form-select border-secondary text-white" onchange="renderTabel()">
-                                <option value="">Semua Mata Pelajaran</option>
-                                <option value="Matematika">Matematika</option>
-                                <option value="Bahasa Indonesia">Bahasa Indonesia</option>
-                                <option value="IPA">IPA</option>
-                                <option value="PPKn">PPKn</option>
-                                <option value="Bahasa Inggris">Bahasa Inggris</option>
-                                <option value="Informatika">Informatika</option>
+                        <label class="block text-xs font-semibold text-slate-300 mb-1.5">Kelas / Peran</label>
+                        <div class="relative">
+                            <i class="fa-solid fa-school absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-sm"></i>
+                            <select id="roleInput" class="w-full pl-10 pr-4 py-3 text-sm rounded-xl glass-input transition bg-slate-900 text-slate-200">
+                                <option value="Kelas 12 IPA 1">Kelas 12 IPA 1</option>
+                                <option value="Kelas 11 IPS 2">Kelas 11 IPS 2</option>
+                                <option value="Kelas 10 SMP / SMA">Kelas 10 SMA</option>
+                                <option value="Siswa Mandiri">Siswa Mandiri</option>
                             </select>
                         </div>
                     </div>
+
+                    <button type="submit" class="touch-btn w-full py-3.5 px-4 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white font-semibold rounded-xl shadow-lg shadow-indigo-600/30 transition transform active:scale-95 flex items-center justify-center gap-2 mt-2">
+                        <span>Masuk Aplikasi</span>
+                        <i class="fa-solid fa-arrow-right text-sm"></i>
+                    </button>
+                </form>
+
+                <!-- Divider -->
+                <div class="relative my-6 text-center">
+                    <div class="absolute inset-0 flex items-center"><div class="w-full border-t border-slate-700/60"></div></div>
+                    <span class="relative bg-[#161f33] px-3 text-xs text-slate-400 rounded-full border border-slate-700/50">Atau Akses Cepat</span>
                 </div>
 
-                <!-- Tabel Data -->
-                <div class="card card-custom p-3 shadow-sm border-0">
-                    <div class="table-responsive rounded-3">
-                        <table class="table table-hover align-middle mb-0">
-                            <thead>
-                                <tr>
-                                    <th width="5%">No</th>
-                                    <th width="20%">Mapel</th>
-                                    <th width="35%">Deskripsi</th>
-                                    <th width="15%">Deadline</th>
-                                    <th width="10%">Status</th>
-                                    <th width="15%" class="text-center">Aksi</th>
-                                </tr>
-                            </thead>
-                            <tbody id="tabel-tugas-body">
-                                <!-- Dynamic Content -->
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 3. HALAMAN TAMBAH PR -->
-            <div id="page-tambah" class="content-section">
-                <div class="row justify-content-center">
-                    <div class="col-md-8 col-lg-6">
-                        <div class="card card-custom p-4 p-md-5 shadow-lg border-0">
-                            <div class="text-center mb-4">
-                                <div class="bg-primary text-white rounded-circle d-inline-flex p-3 mb-2 fs-3 bg-opacity-25">
-                                    <i class="fa-solid fa-book-bookmark"></i>
-                                </div>
-                                <h3 class="fw-bold text-white">Tambah Tugas Baru</h3>
-                                <p class="text-muted-custom small">Masukkan detail informasi tugas sekolah dengan benar.</p>
-                            </div>
-                            <form id="form-tambah" onsubmit="tambahTugas(event)">
-                                <div class="mb-3">
-                                    <label class="form-label small fw-semibold text-white">Mata Pelajaran</label>
-                                    <select id="input-mapel" class="form-select" required>
-                                        <option value="">-- Pilih Mata Pelajaran --</option>
-                                        <option value="Matematika">Matematika</option>
-                                        <option value="Bahasa Indonesia">Bahasa Indonesia</option>
-                                        <option value="IPA">IPA</option>
-                                        <option value="PPKn">PPKn</option>
-                                        <option value="Bahasa Inggris">Bahasa Inggris</option>
-                                        <option value="Informatika">Informatika</option>
-                                    </select>
-                                </div>
-                                <div class="mb-3">
-                                    <label class="form-label small fw-semibold text-white">Deskripsi Tugas</label>
-                                    <textarea id="input-deskripsi" class="form-control" rows="3" placeholder="Contoh: Kerjakan halaman 15-20 bagian A..." required></textarea>
-                                </div>
-                                <div class="mb-4">
-                                    <label class="form-label small fw-semibold text-white">Tenggat Waktu (Deadline)</label>
-                                    <input type="date" id="input-deadline" class="form-control" required>
-                                </div>
-                                <div class="d-flex gap-2">
-                                    <button type="submit" class="btn btn-primary flex-grow-1">Simpan Tugas</button>
-                                    <button type="button" class="btn btn-outline-light border-secondary px-4 text-white" onclick="switchPage('daftar')">Batal</button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
+                <!-- Quick Demo Buttons -->
+                <div class="grid grid-cols-2 gap-3">
+                    <button onclick="quickLogin('Siti Rahma', 'Kelas 12 IPA 2')" class="touch-btn py-2.5 px-3 rounded-xl glass-card text-xs text-slate-300 hover:text-white flex items-center justify-center gap-2 border border-slate-700/50 hover:bg-indigo-600/20">
+                        <i class="fa-solid fa-user-graduate text-indigo-400"></i>
+                        <span class="truncate">Demo Siswa</span>
+                    </button>
+                    <button onclick="quickLogin('Guest User', 'Tamu')" class="touch-btn py-2.5 px-3 rounded-xl glass-card text-xs text-slate-300 hover:text-white flex items-center justify-center gap-2 border border-slate-700/50 hover:bg-purple-600/20">
+                        <i class="fa-solid fa-circle-user text-purple-400"></i>
+                        <span class="truncate">Mode Guest</span>
+                    </button>
                 </div>
             </div>
-
+            
+            <p class="text-center text-xs text-slate-500 mt-6">&copy; 2026 TugasKu Digital. Powered by HTML5 & Tailwind.</p>
         </div>
     </div>
-</div>
 
-<!-- JAVASCRIPT LOGIC INTERAKTIF -->
-<script>
-    // DATA DUMMY & LOCALSTORAGE LOGIC
-    let daftarTugas = JSON.parse(localStorage.getItem('tugas_pr')) || [
-        { id: 1, mapel: 'Matematika', deskripsi: 'PR Latihan 1 Halaman 10-20', deadline: new Date().toISOString().split('T')[0], status: 'belum' },
-        { id: 2, mapel: 'Bahasa Indonesia', deskripsi: 'Merangkum Cerpen Tema Lingkungan', deadline: new Date(Date.now() + 86400000).toISOString().split('T')[0], status: 'belum' },
-        { id: 3, mapel: 'IPA', deskripsi: 'Laporan Praktikum Percobaan Gaya Magnet', deadline: new Date(Date.now() + 259200000).toISOString().split('T')[0], status: 'selesai' }
-    ];
+    <!-- ==================== MAIN DASHBOARD LAYOUT ==================== -->
+    <div id="mainApp" class="hidden min-h-screen flex flex-col lg:flex-row relative">
 
-    // INITIALIZATION ON LOAD
-    window.onload = function() {
-        checkAuthStatus();
-    };
-
-    // --- AUTHENTICATION FUNCTIONS ---
-    function checkAuthStatus() {
-        const loggedUser = JSON.parse(localStorage.getItem('logged_user'));
-        if (loggedUser) {
-            showMainApp(loggedUser);
-        } else {
-            showLoginScreen();
-        }
-    }
-
-    function handleLogin(event) {
-        event.preventDefault();
-        const email = document.getElementById('login-email').value;
-        const password = document.getElementById('login-password').value;
-        const alertBox = document.getElementById('login-alert');
-
-        // Simple validation logic (Demo User & Generic Check)
-        if ((email === 'siswa@sekolah.id' && password === '123456') || (email.length > 3 && password.length >= 4)) {
-            alertBox.classList.add('d-none');
-            
-            // Extract display name from email if generic
-            let name = "Siswa Pintar";
-            if (email === 'siswa@sekolah.id') {
-                name = "Ahmad Pratama";
-            } else {
-                name = email.split('@')[0];
-                name = name.charAt(0).toUpperCase() + name.slice(1);
-            }
-
-            const userData = {
-                name: name,
-                email: email,
-                role: 'Siswa Aktif',
-                avatar: `https://placehold.co/100x100/4f46e5/ffffff?text=${name.charAt(0)}`
-            };
-
-            localStorage.setItem('logged_user', JSON.stringify(userData));
-            showMainApp(userData);
-        } else {
-            alertBox.classList.remove('d-none');
-            document.getElementById('login-alert-msg').innerText = "Email atau password salah!";
-        }
-    }
-
-    function loginAsGuest() {
-        const guestData = {
-            name: "Tamu (Guest)",
-            email: "guest@sekolah.id",
-            role: "Mode Penjelajah",
-            avatar: "https://placehold.co/100x100/64748b/ffffff?text=G"
-        };
-        localStorage.setItem('logged_user', JSON.stringify(guestData));
-        showMainApp(guestData);
-    }
-
-    function handleLogout() {
-        localStorage.removeItem('logged_user');
-        showLoginScreen();
-    }
-
-    function showMainApp(user) {
-        document.getElementById('login-screen').classList.add('d-none');
-        document.getElementById('main-app').classList.remove('d-none');
-        
-        // Update User Profile Interface
-        document.getElementById('user-display-name').innerText = user.name;
-        document.getElementById('welcome-user-name').innerText = user.name;
-        document.getElementById('user-display-role').innerText = user.role;
-        document.getElementById('user-avatar').src = user.avatar;
-
-        renderDashboard();
-    }
-
-    function showLoginScreen() {
-        document.getElementById('login-screen').classList.remove('d-none');
-        document.getElementById('main-app').classList.add('d-none');
-        document.getElementById('form-login').reset();
-        document.getElementById('login-alert').classList.add('d-none');
-    }
-
-    function togglePasswordVisibility() {
-        const pwdInput = document.getElementById('login-password');
-        const icon = document.getElementById('toggle-pwd-icon');
-        if (pwdInput.type === 'password') {
-            pwdInput.type = 'text';
-            icon.classList.remove('fa-eye');
-            icon.classList.add('fa-eye-slash');
-        } else {
-            pwdInput.type = 'password';
-            icon.classList.remove('fa-eye-slash');
-            icon.classList.add('fa-eye');
-        }
-    }
-
-    function autoFillDemo() {
-        document.getElementById('login-email').value = 'siswa@sekolah.id';
-        document.getElementById('login-password').value = '123456';
-    }
-
-    // --- PAGE NAVIGATION & APPLICATION LOGIC ---
-    function switchPage(pageId) {
-        document.querySelectorAll('.content-section').forEach(el => el.classList.remove('active'));
-        document.querySelectorAll('.nav-link').forEach(el => el.classList.remove('active'));
-        
-        document.getElementById('page-' + pageId).classList.add('active');
-        document.getElementById('nav-' + pageId).classList.add('active');
-
-        if(pageId === 'dashboard') {
-            renderDashboard();
-        } else if(pageId === 'daftar') {
-            renderTabel();
-        }
-    }
-
-    function tambahTugas(event) {
-        event.preventDefault();
-        const mapel = document.getElementById('input-mapel').value;
-        const deskripsi = document.getElementById('input-deskripsi').value;
-        const deadline = document.getElementById('input-deadline').value;
-
-        const tugasBaru = {
-            id: Date.now(),
-            mapel: mapel,
-            deskripsi: deskripsi,
-            deadline: deadline,
-            status: 'belum'
-        };
-
-        daftarTugas.push(tugasBaru);
-        simpanStorage();
-        
-        document.getElementById('form-tambah').reset();
-        switchPage('daftar');
-    }
-
-    function ubahStatus(id) {
-        daftarTugas = daftarTugas.map(t => {
-            if(t.id === id) {
-                t.status = t.status === 'belum' ? 'selesai' : 'belum';
-            }
-            return t;
-        });
-        simpanStorage();
-        renderTabel();
-    }
-
-    function hapusTugas(id) {
-        // Native custom confirmation modal fallback safely
-        if (confirm('Yakin ingin menghapus tugas ini?')) {
-            daftarTugas = daftarTugas.filter(t => t.id !== id);
-            simpanStorage();
-            renderTabel();
-        }
-    }
-
-    function simpanStorage() {
-        localStorage.setItem('tugas_pr', JSON.stringify(daftarTugas));
-    }
-
-    function renderTabel() {
-        const tbody = document.getElementById('tabel-tugas-body');
-        const filter = document.getElementById('filter-mapel').value;
-        tbody.innerHTML = '';
-
-        let filteredData = daftarTugas;
-        if(filter) {
-            filteredData = daftarTugas.filter(t => t.mapel === filter);
-        }
-
-        if(filteredData.length === 0) {
-            tbody.innerHTML = `<tr><td colspan="6" class="text-center text-muted-custom py-5"><i class="fa-solid fa-folder-open fs-2 mb-2 d-block"></i>Belum ada data tugas.</td></tr>`;
-            return;
-        }
-
-        filteredData.forEach((t, index) => {
-            let badgeStatus = t.status === 'belum' 
-                ? '<span class="badge bg-danger bg-opacity-25 text-danger border border-danger border-opacity-50"><i class="fa-solid fa-circle-xmark me-1"></i> Belum</span>' 
-                : '<span class="badge bg-success bg-opacity-25 text-success border border-success border-opacity-50"><i class="fa-solid fa-circle-check me-1"></i> Selesai</span>';
-            
-            let tglFormat = new Date(t.deadline).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' });
-            
-            tbody.innerHTML += `
-                <tr>
-                    <td class="text-muted-custom">${index + 1}</td>
-                    <td class="fw-bold text-white">${t.mapel}</td>
-                    <td class="text-white">${t.deskripsi}</td>
-                    <td class="text-white"><i class="fa-regular fa-calendar-days me-1 text-muted-custom"></i> ${tglFormat}</td>
-                    <td>${badgeStatus}</td>
-                    <td class="text-center">
-                        <button class="btn btn-sm btn-outline-info px-2 py-1 me-1 text-white border-info" title="Ubah Status" onclick="ubahStatus(${t.id})">
-                            <i class="fa-solid fa-rotate"></i>
-                        </button>
-                        <button class="btn btn-sm btn-outline-danger px-2 py-1 text-white border-danger" title="Hapus Tugas" onclick="hapusTugas(${t.id})">
-                            <i class="fa-solid fa-trash-can"></i>
-                        </button>
-                    </td>
-                </tr>
-            `;
-        });
-    }
-
-    function renderDashboard() {
-        const total = daftarTugas.length;
-        const belum = daftarTugas.filter(t => t.status === 'belum').length;
-        const selesai = daftarTugas.filter(t => t.status === 'selesai').length;
-
-        document.getElementById('stat-total').innerText = total;
-        document.getElementById('stat-belum').innerText = belum;
-        document.getElementById('stat-selesai').innerText = selesai;
-
-        const deadlineList = document.getElementById('deadline-list');
-        deadlineList.innerHTML = '';
-
-        let belumSelesai = daftarTugas.filter(t => t.status === 'belum');
-        belumSelesai.sort((a, b) => new Date(a.deadline) - new Date(b.deadline));
-
-        let top3 = belumSelesai.slice(0, 3);
-        const todayStr = new Date().toISOString().split('T')[0];
-
-        if(top3.length === 0) {
-            deadlineList.innerHTML = `<div class="card card-custom p-4 text-center text-white"><i class="fa-solid fa-face-smile fs-3 mb-2 text-success"></i>Hore! Tidak ada tugas mendesak saat ini.</div>`;
-            return;
-        }
-
-        top3.forEach(t => {
-            let isToday = (t.deadline === todayStr);
-            let tglFormat = new Date(t.deadline).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' });
-            
-            deadlineList.innerHTML += `
-                <div class="card card-custom p-3 text-white d-flex flex-row justify-content-between align-items-center shadow-sm">
-                    <div class="d-flex align-items-center gap-3">
-                        <div class="bg-primary bg-opacity-25 p-3 rounded-3 text-white fs-4">
-                            <i class="fa-solid fa-book"></i>
-                        </div>
-                        <div>
-                            <h6 class="mb-1 fw-bold text-white">${t.mapel}</h6>
-                            <p class="text-muted-custom small mb-0">${t.deskripsi}</p>
-                        </div>
+        <!-- 1. MOBILE TOPBAR / NAVBAR (Visible on Mobile & Tablet < lg) -->
+        <header class="lg:hidden sticky top-0 z-30 glass-panel border-b border-slate-800/80 px-4 py-3 flex items-center justify-between shadow-lg">
+            <!-- Left: Mobile Menu Toggle & Brand -->
+            <div class="flex items-center gap-3">
+                <button onclick="toggleMobileDrawer()" class="touch-btn p-2 text-slate-300 hover:text-white focus:outline-none rounded-xl hover:bg-slate-800/60" aria-label="Toggle Menu">
+                    <i class="fa-solid fa-bars text-xl"></i>
+                </button>
+                <div class="flex items-center gap-2">
+                    <div class="w-8 h-8 rounded-lg bg-indigo-600 flex items-center justify-center text-white shadow-md">
+                        <i class="fa-solid fa-graduation-cap text-sm"></i>
                     </div>
-                    <div class="text-end">
-                        <span class="badge bg-dark border border-secondary mb-1 text-white"><i class="fa-regular fa-calendar me-1"></i> ${tglFormat}</span>
+                    <span class="font-bold text-base text-white tracking-tight">TugasKu</span>
+                </div>
+            </div>
+
+            <!-- Right: User Avatar & Quick Add -->
+            <div class="flex items-center gap-2">
+                <button onclick="openTaskModal()" class="touch-btn px-3 py-1.5 bg-indigo-600 hover:bg-indigo-500 text-white rounded-lg text-xs font-semibold flex items-center gap-1.5 shadow-md shadow-indigo-600/20">
+                    <i class="fa-solid fa-plus"></i>
+                    <span class="hidden sm:inline">Tambah PR</span>
+                </button>
+                <div class="w-8 h-8 rounded-full bg-gradient-to-tr from-indigo-500 to-purple-500 flex items-center justify-center text-white font-bold text-xs ring-2 ring-indigo-400/30" id="mobileAvatar">
+                    U
+                </div>
+            </div>
+        </header>
+
+        <!-- 2. OFFCANVAS SIDEBAR (MOBILE DRAWER) BACKDROP -->
+        <div id="drawerBackdrop" onclick="toggleMobileDrawer()" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-40 hidden transition-opacity lg:hidden"></div>
+
+        <!-- 3. SIDEBAR (DESKTOP STICKY & MOBILE OFFCANVAS) -->
+        <aside id="sidebar" class="fixed lg:sticky top-0 left-0 bottom-0 z-50 lg:z-20 w-72 bg-[#0f172a]/95 lg:bg-[#0f172a]/60 backdrop-blur-xl border-r border-slate-800 flex flex-col justify-between h-screen transition-transform duration-300 -translate-x-full lg:translate-x-0">
+            <div>
+                <!-- Sidebar Header (Desktop Brand) -->
+                <div class="p-6 hidden lg:flex items-center justify-between border-b border-slate-800/80">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-indigo-600 to-purple-600 flex items-center justify-center text-white shadow-lg shadow-indigo-500/20">
+                            <i class="fa-solid fa-graduation-cap text-lg"></i>
+                        </div>
                         <div>
-                            ${isToday ? '<span class="badge bg-danger">Hari Ini!</span>' : ''}
+                            <h2 class="font-bold text-lg text-white leading-none">TugasKu</h2>
+                            <span class="text-[11px] text-indigo-400 font-medium">Digital Homework</span>
                         </div>
                     </div>
                 </div>
-            `;
-        });
-    }
-</script>
 
+                <!-- Mobile Drawer Header -->
+                <div class="p-4 flex lg:hidden items-center justify-between border-b border-slate-800">
+                    <div class="flex items-center gap-2">
+                        <div class="w-8 h-8 rounded-lg bg-indigo-600 flex items-center justify-center text-white">
+                            <i class="fa-solid fa-graduation-cap text-xs"></i>
+                        </div>
+                        <span class="font-bold text-white text-base">Menu Navigasi</span>
+                    </div>
+                    <button onclick="toggleMobileDrawer()" class="p-2 text-slate-400 hover:text-white rounded-lg">
+                        <i class="fa-solid fa-xmark text-lg"></i>
+                    </button>
+                </div>
+
+                <!-- User Profile Card in Sidebar -->
+                <div class="p-4 mx-4 my-4 rounded-2xl glass-card flex items-center gap-3 border border-slate-800">
+                    <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 text-white flex items-center justify-center font-bold text-sm shadow-md" id="sidebarAvatar">
+                        U
+                    </div>
+                    <div class="overflow-hidden">
+                        <h4 class="font-semibold text-sm text-white truncate" id="userNameDisplay">User Name</h4>
+                        <p class="text-xs text-slate-400 truncate" id="userRoleDisplay">Kelas</p>
+                    </div>
+                </div>
+
+                <!-- Navigation Links -->
+                <nav class="px-4 space-y-1">
+                    <a href="#" onclick="setActiveNav('dashboard'); return false;" id="nav-dashboard" class="flex items-center gap-3 px-4 py-3 text-sm font-semibold rounded-xl transition bg-indigo-600/20 text-indigo-400 border border-indigo-500/30">
+                        <i class="fa-solid fa-chart-pie w-5 text-center"></i>
+                        <span>Dashboard</span>
+                    </a>
+                    <a href="#" onclick="setActiveNav('all-tasks'); return false;" id="nav-all-tasks" class="flex items-center gap-3 px-4 py-3 text-sm font-medium text-slate-400 hover:text-slate-200 hover:bg-slate-800/50 rounded-xl transition">
+                        <i class="fa-solid fa-list-check w-5 text-center"></i>
+                        <span>Semua Tugas & PR</span>
+                    </a>
+                    <a href="#" onclick="setActiveNav('today'); return false;" id="nav-today" class="flex items-center gap-3 px-4 py-3 text-sm font-medium text-slate-400 hover:text-slate-200 hover:bg-slate-800/50 rounded-xl transition">
+                        <i class="fa-solid fa-calendar-day w-5 text-center"></i>
+                        <span>Deadline Hari Ini</span>
+                        <span id="badgeTodayCount" class="ml-auto bg-indigo-600/40 text-indigo-300 text-[10px] px-2 py-0.5 rounded-full font-bold">0</span>
+                    </a>
+                    <a href="#" onclick="setActiveNav('completed'); return false;" id="nav-completed" class="flex items-center gap-3 px-4 py-3 text-sm font-medium text-slate-400 hover:text-slate-200 hover:bg-slate-800/50 rounded-xl transition">
+                        <i class="fa-solid fa-circle-check w-5 text-center"></i>
+                        <span>Selesai</span>
+                    </a>
+                </nav>
+            </div>
+
+            <!-- Sidebar Footer / Logout -->
+            <div class="p-4 border-t border-slate-800/80">
+                <button onclick="handleLogout()" class="touch-btn w-full flex items-center justify-center gap-2 px-4 py-2.5 text-xs font-semibold text-rose-400 hover:text-rose-300 hover:bg-rose-500/10 rounded-xl transition border border-rose-500/20">
+                    <i class="fa-solid fa-arrow-right-from-bracket"></i>
+                    <span>Keluar Akun</span>
+                </button>
+            </div>
+        </aside>
+
+        <!-- 4. MAIN CONTENT AREA -->
+        <main class="flex-1 p-4 md:p-6 lg:p-8 max-w-7xl mx-auto w-full space-y-6">
+
+            <!-- Top Header & Search Bar (Desktop View Header) -->
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-2 border-b border-slate-800/60">
+                <div>
+                    <h1 class="text-xl md:text-2xl font-bold text-white flex items-center gap-2">
+                        <span>Ringkasan Tugas Sekolah</span>
+                        <span class="text-xs px-2.5 py-1 rounded-full bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 hidden sm:inline-block">Tahun Ajaran 2026</span>
+                    </h1>
+                    <p class="text-xs md:text-sm text-slate-400 mt-0.5">Kelola PR, proyek kelompok, dan persiapan ujian tepat waktu.</p>
+                </div>
+
+                <!-- Desktop Action & Quick Search -->
+                <div class="flex items-center gap-3">
+                    <button onclick="openTaskModal()" class="hidden lg:flex items-center gap-2 px-4 py-2.5 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white text-xs font-semibold rounded-xl shadow-lg shadow-indigo-600/20 transition transform active:scale-95">
+                        <i class="fa-solid fa-plus"></i>
+                        <span>Buat Tugas Baru</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- 5. FULLY ADAPTIVE STATS CARDS GRID -->
+            <!-- 1 col on Mobile, 2 on Tablet, 4 on Desktop -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4">
+                
+                <!-- Card Total Tasks -->
+                <div class="glass-card rounded-2xl p-4 md:p-5 flex items-center justify-between relative overflow-hidden">
+                    <div class="absolute -right-4 -bottom-4 w-20 h-20 bg-indigo-500/10 rounded-full blur-xl"></div>
+                    <div>
+                        <p class="text-xs text-slate-400 font-medium uppercase tracking-wider">Total Tugas</p>
+                        <h3 class="text-2xl md:text-3xl font-extrabold text-white mt-1" id="statTotal">0</h3>
+                        <p class="text-[11px] text-slate-400 mt-1">Seluruh PR terdaftar</p>
+                    </div>
+                    <div class="w-12 h-12 rounded-2xl bg-indigo-500/20 text-indigo-400 flex items-center justify-center text-xl border border-indigo-500/30">
+                        <i class="fa-solid fa-book-open"></i>
+                    </div>
+                </div>
+
+                <!-- Card Pending Tasks -->
+                <div class="glass-card rounded-2xl p-4 md:p-5 flex items-center justify-between relative overflow-hidden">
+                    <div class="absolute -right-4 -bottom-4 w-20 h-20 bg-amber-500/10 rounded-full blur-xl"></div>
+                    <div>
+                        <p class="text-xs text-slate-400 font-medium uppercase tracking-wider">Belum Selesai</p>
+                        <h3 class="text-2xl md:text-3xl font-extrabold text-amber-400 mt-1" id="statPending">0</h3>
+                        <p class="text-[11px] text-amber-400/80 mt-1 font-medium" id="statPendingSubtitle">Perlu dikerjakan</p>
+                    </div>
+                    <div class="w-12 h-12 rounded-2xl bg-amber-500/20 text-amber-400 flex items-center justify-center text-xl border border-amber-500/30">
+                        <i class="fa-solid fa-clock font-normal"></i>
+                    </div>
+                </div>
+
+                <!-- Card Completed Tasks -->
+                <div class="glass-card rounded-2xl p-4 md:p-5 flex items-center justify-between relative overflow-hidden">
+                    <div class="absolute -right-4 -bottom-4 w-20 h-20 bg-emerald-500/10 rounded-full blur-xl"></div>
+                    <div>
+                        <p class="text-xs text-slate-400 font-medium uppercase tracking-wider">Selesai</p>
+                        <h3 class="text-2xl md:text-3xl font-extrabold text-emerald-400 mt-1" id="statCompleted">0</h3>
+                        <p class="text-[11px] text-emerald-400/80 mt-1" id="statCompletedRate">0% Progres</p>
+                    </div>
+                    <div class="w-12 h-12 rounded-2xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-xl border border-emerald-500/30">
+                        <i class="fa-solid fa-circle-check"></i>
+                    </div>
+                </div>
+
+                <!-- Card Overdue / Urgent -->
+                <div class="glass-card rounded-2xl p-4 md:p-5 flex items-center justify-between relative overflow-hidden">
+                    <div class="absolute -right-4 -bottom-4 w-20 h-20 bg-rose-500/10 rounded-full blur-xl"></div>
+                    <div>
+                        <p class="text-xs text-slate-400 font-medium uppercase tracking-wider">Mendesak / Lewat</p>
+                        <h3 class="text-2xl md:text-3xl font-extrabold text-rose-400 mt-1" id="statOverdue">0</h3>
+                        <p class="text-[11px] text-rose-400/80 mt-1 font-medium">Perhatikan deadline</p>
+                    </div>
+                    <div class="w-12 h-12 rounded-2xl bg-rose-500/20 text-rose-400 flex items-center justify-center text-xl border border-rose-500/30">
+                        <i class="fa-solid fa-triangle-exclamation"></i>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- 6. PROGRESS BAR & QUICK FILTERS SECTION -->
+            <div class="glass-panel rounded-2xl p-4 md:p-5 space-y-4">
+                <!-- Progress Header -->
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                    <div>
+                        <h3 class="text-sm font-bold text-white flex items-center gap-2">
+                            <i class="fa-solid fa-chart-line text-indigo-400"></i>
+                            <span>Progres Penyelesaian PR</span>
+                        </h3>
+                    </div>
+                    <span class="text-xs font-bold text-indigo-400" id="progressPercentText">0% Selesai</span>
+                </div>
+
+                <!-- Custom Progress Bar -->
+                <div class="w-full h-3 bg-slate-800 rounded-full overflow-hidden p-0.5 border border-slate-700/50">
+                    <div id="progressBarFill" class="h-full bg-gradient-to-r from-indigo-500 to-purple-500 rounded-full transition-all duration-500 w-0"></div>
+                </div>
+
+                <!-- Filters & Search Toolbar -->
+                <div class="pt-2 flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3">
+                    <!-- Search Input -->
+                    <div class="relative flex-1">
+                        <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-xs"></i>
+                        <input type="text" id="searchInput" oninput="renderTasks()" placeholder="Cari nama PR atau mata pelajaran..." class="w-full pl-9 pr-4 py-2 text-xs rounded-xl glass-input">
+                    </div>
+
+                    <!-- Dropdown Filters -->
+                    <div class="flex items-center gap-2">
+                        <!-- Subject Filter -->
+                        <select id="filterSubject" onchange="renderTasks()" class="touch-btn flex-1 md:flex-none py-2 px-3 text-xs rounded-xl glass-input bg-slate-900 text-slate-300">
+                            <option value="ALL">Semua Mapel</option>
+                            <option value="Matematika">Matematika</option>
+                            <option value="Fisika">Fisika</option>
+                            <option value="Bahasa Inggris">Bahasa Inggris</option>
+                            <option value="Informatika">Informatika</option>
+                            <option value="Biologi">Biologi</option>
+                            <option value="Lainnya">Lainnya</option>
+                        </select>
+
+                        <!-- Priority Filter -->
+                        <select id="filterPriority" onchange="renderTasks()" class="touch-btn flex-1 md:flex-none py-2 px-3 text-xs rounded-xl glass-input bg-slate-900 text-slate-300">
+                            <option value="ALL">Semua Prioritas</option>
+                            <option value="Tinggi">Tinggi</option>
+                            <option value="Sedang">Sedang</option>
+                            <option value="Rendah">Rendah</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 7. TASKS DISPLAY SECTION (HYBRID: DESKTOP TABLE vs MOBILE CARD LIST) -->
+            <div class="glass-panel rounded-2xl p-4 md:p-6">
+                
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-base font-bold text-white flex items-center gap-2" id="sectionTitle">
+                        <i class="fa-solid fa-list-check text-indigo-400"></i>
+                        <span>Daftar Tugas & PR</span>
+                    </h3>
+                    <span id="taskCountBadge" class="text-xs px-2.5 py-0.5 rounded-full bg-slate-800 text-slate-300 font-semibold border border-slate-700">0 Tugas</span>
+                </div>
+
+                <!-- Empty State Placeholder -->
+                <div id="emptyState" class="hidden text-center py-12 px-4">
+                    <div class="w-16 h-16 rounded-2xl bg-slate-800/80 text-slate-500 flex items-center justify-center text-2xl mx-auto mb-3 border border-slate-700/50">
+                        <i class="fa-solid fa-clipboard-check"></i>
+                    </div>
+                    <h4 class="text-sm font-bold text-slate-300">Tidak ada tugas ditemukan</h4>
+                    <p class="text-xs text-slate-500 mt-1 max-w-xs mx-auto">Selamat! Semua PR telah selesai atau belum ada tugas yang ditambahkan.</p>
+                    <button onclick="openTaskModal()" class="mt-4 px-4 py-2 bg-indigo-600/30 hover:bg-indigo-600/50 text-indigo-300 border border-indigo-500/30 rounded-xl text-xs font-semibold transition">
+                        + Tambah Tugas Baru
+                    </button>
+                </div>
+
+                <!-- DESKTOP VIEW: Glassmorphism Table (Hidden on Mobile < md) -->
+                <div class="hidden md:block overflow-x-auto">
+                    <table class="w-full text-left text-xs text-slate-300 border-collapse">
+                        <thead>
+                            <tr class="border-b border-slate-800 text-slate-400 font-semibold">
+                                <th class="py-3 px-3">Status</th>
+                                <th class="py-3 px-3">Judul PR & Mapel</th>
+                                <th class="py-3 px-3">Deadline</th>
+                                <th class="py-3 px-3">Prioritas</th>
+                                <th class="py-3 px-3 text-right">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody id="desktopTableBody" class="divide-y divide-slate-800/60">
+                            <!-- Injected dynamically via JS -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- MOBILE VIEW: Touch-Friendly Card List (Hidden on Desktop >= md) -->
+                <div id="mobileCardList" class="block md:hidden space-y-3">
+                    <!-- Injected dynamically via JS -->
+                </div>
+
+            </div>
+
+        </main>
+    </div>
+
+    <!-- ==================== MODAL: ADD / EDIT TASK ==================== -->
+    <div id="taskModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-md hidden opacity-0 transition-opacity duration-200 overflow-y-auto">
+        <div class="glass-panel w-full max-w-lg rounded-3xl p-5 md:p-6 relative my-auto border border-white/10 shadow-2xl">
+            <!-- Modal Header -->
+            <div class="flex items-center justify-between pb-3 border-b border-slate-800">
+                <h3 class="text-base md:text-lg font-bold text-white flex items-center gap-2" id="modalTitle">
+                    <i class="fa-solid fa-pen-to-square text-indigo-400"></i>
+                    <span>Tambah Tugas PR Baru</span>
+                </h3>
+                <button onclick="closeTaskModal()" class="touch-btn text-slate-400 hover:text-white p-2 rounded-lg">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
+
+            <!-- Form -->
+            <form id="taskForm" onsubmit="saveTask(event)" class="mt-4 space-y-4">
+                <input type="hidden" id="taskId">
+
+                <!-- Judul PR -->
+                <div>
+                    <label class="block text-xs font-semibold text-slate-300 mb-1">Judul Tugas / PR <span class="text-rose-400">*</span></label>
+                    <input type="text" id="taskTitle" required placeholder="Contoh: Kerjakan Hal 45 No 1-10" class="w-full px-3.5 py-2.5 text-xs rounded-xl glass-input">
+                </div>
+
+                <!-- Mapel & Prioritas Grid -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-300 mb-1">Mata Pelajaran <span class="text-rose-400">*</span></label>
+                        <select id="taskSubject" required class="w-full px-3.5 py-2.5 text-xs rounded-xl glass-input bg-slate-900 text-slate-200">
+                            <option value="Matematika">Matematika</option>
+                            <option value="Fisika">Fisika</option>
+                            <option value="Bahasa Inggris">Bahasa Inggris</option>
+                            <option value="Informatika">Informatika</option>
+                            <option value="Biologi">Biologi</option>
+                            <option value="Kimia">Kimia</option>
+                            <option value="Sejarah">Sejarah</option>
+                            <option value="Bahasa Indonesia">Bahasa Indonesia</option>
+                            <option value="Lainnya">Lainnya</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-300 mb-1">Tingkat Prioritas</label>
+                        <select id="taskPriority" class="w-full px-3.5 py-2.5 text-xs rounded-xl glass-input bg-slate-900 text-slate-200">
+                            <option value="Sedang">Sedang (Biasa)</option>
+                            <option value="Tinggi">Tinggi (Mendesak)</option>
+                            <option value="Rendah">Rendah (Santai)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Deadline Date & Time -->
+                <div>
+                    <label class="block text-xs font-semibold text-slate-300 mb-1">Tenggat Waktu (Deadline) <span class="text-rose-400">*</span></label>
+                    <input type="datetime-local" id="taskDeadline" required class="w-full px-3.5 py-2.5 text-xs rounded-xl glass-input bg-slate-900 text-slate-200">
+                </div>
+
+                <!-- Catatan Tambahan -->
+                <div>
+                    <label class="block text-xs font-semibold text-slate-300 mb-1">Catatan / Detail Instruksi</label>
+                    <textarea id="taskNotes" rows="3" placeholder="Instruksi tambahan dari guru, tautan pengumpulan, dsb..." class="w-full px-3.5 py-2.5 text-xs rounded-xl glass-input"></textarea>
+                </div>
+
+                <!-- Form Action Buttons -->
+                <div class="flex items-center justify-end gap-2 pt-2 border-t border-slate-800">
+                    <button type="button" onclick="closeTaskModal()" class="touch-btn px-4 py-2.5 rounded-xl border border-slate-700 text-xs font-semibold text-slate-300 hover:bg-slate-800">
+                        Batal
+                    </button>
+                    <button type="submit" class="touch-btn px-5 py-2.5 rounded-xl bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white text-xs font-semibold shadow-lg shadow-indigo-600/30">
+                        Simpan Tugas
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ==================== TOAST NOTIFICATION CONTAINER ==================== -->
+    <div id="toastContainer" class="fixed bottom-5 right-5 z-50 space-y-2 pointer-events-none max-w-sm w-full px-4"></div>
+
+    <!-- ==================== JAVASCRIPT LOGIC ==================== -->
+    <script>
+        // Default Mock Data PR
+        const defaultTasks = [
+            {
+                id: '1',
+                title: 'Kerjakan Latihan Bab 3 Trigonometri No 1 - 10',
+                subject: 'Matematika',
+                deadline: new Date(Date.now() + 86400000).toISOString().slice(0,16), // Tomorrow
+                priority: 'Tinggi',
+                completed: false,
+                notes: 'Kumpulkan dalam buku PR bergaris. Sertakan cara penyelesaian lengkap.'
+            },
+            {
+                id: '2',
+                title: 'Laporan Praktikum Hukum Newton & Gesekan',
+                subject: 'Fisika',
+                deadline: new Date(Date.now() + 172800000).toISOString().slice(0,16), // 2 days
+                priority: 'Sedang',
+                completed: false,
+                notes: 'Format PDF. Sertakan grafik data percobaan di Excel.'
+            },
+            {
+                id: '3',
+                title: 'Membuat Presentation Slide Analytical Exposition',
+                subject: 'Bahasa Inggris',
+                deadline: new Date(Date.now() - 36000000).toISOString().slice(0,16), // Yesterday (Overdue)
+                priority: 'Tinggi',
+                completed: false,
+                notes: 'Kelompok 4 orang. Upload slide ke Google Classroom.'
+            },
+            {
+                id: '4',
+                title: 'Program Sederhana Array Javascript & HTML',
+                subject: 'Informatika',
+                deadline: new Date(Date.now() + 345600000).toISOString().slice(0,16),
+                priority: 'Rendah',
+                completed: true,
+                notes: 'Sudah diselesaikan dan diverifikasi guru.'
+            }
+        ];
+
+        // State Management
+        let tasks = JSON.parse(localStorage.getItem('tugas_digital_db')) || defaultTasks;
+        let currentUser = JSON.parse(localStorage.getItem('tugas_digital_user')) || null;
+        let activeNavFilter = 'dashboard'; // 'dashboard', 'all-tasks', 'today', 'completed'
+
+        // Initialize App on DOM Loaded
+        document.addEventListener('DOMContentLoaded', () => {
+            if (currentUser) {
+                showMainApp();
+            } else {
+                showAuthPage();
+            }
+        });
+
+        // Save State to LocalStorage
+        function saveState() {
+            localStorage.setItem('tugas_digital_db', JSON.stringify(tasks));
+        }
+
+        // Auth Functions
+        function handleLogin(e) {
+            e.preventDefault();
+            const username = document.getElementById('usernameInput').value.trim();
+            const role = document.getElementById('roleInput').value;
+
+            if (!username) return;
+
+            currentUser = { name: username, role: role };
+            localStorage.setItem('tugas_digital_user', JSON.stringify(currentUser));
+            showToast(`Selamat datang kembali, ${username}!`, 'success');
+            showMainApp();
+        }
+
+        function quickLogin(name, role) {
+            currentUser = { name: name, role: role };
+            localStorage.setItem('tugas_digital_user', JSON.stringify(currentUser));
+            showToast(`Login sebagai ${name}`, 'info');
+            showMainApp();
+        }
+
+        function handleLogout() {
+            currentUser = null;
+            localStorage.removeItem('tugas_digital_user');
+            showAuthPage();
+            showToast('Berhasil keluar dari akun.', 'info');
+        }
+
+        function showAuthPage() {
+            document.getElementById('authPage').classList.remove('hidden');
+            document.getElementById('mainApp').classList.add('hidden');
+        }
+
+        function showMainApp() {
+            document.getElementById('authPage').classList.add('hidden');
+            document.getElementById('mainApp').classList.remove('hidden');
+            
+            // Render User Info
+            document.getElementById('userNameDisplay').textContent = currentUser.name;
+            document.getElementById('userRoleDisplay').textContent = currentUser.role;
+            
+            const initials = currentUser.name.charAt(0).toUpperCase();
+            document.getElementById('sidebarAvatar').textContent = initials;
+            document.getElementById('mobileAvatar').textContent = initials;
+
+            // Render UI Components
+            renderTasks();
+        }
+
+        // Drawer & Navigation Toggle (Mobile)
+        function toggleMobileDrawer() {
+            const sidebar = document.getElementById('sidebar');
+            const backdrop = document.getElementById('drawerBackdrop');
+            const isHidden = sidebar.classList.contains('-translate-x-full');
+
+            if (isHidden) {
+                sidebar.classList.remove('-translate-x-full');
+                backdrop.classList.remove('hidden');
+            } else {
+                sidebar.classList.add('-translate-x-full');
+                backdrop.classList.add('hidden');
+            }
+        }
+
+        function setActiveNav(nav) {
+            activeNavFilter = nav;
+            
+            // Update active nav styling
+            const navs = ['dashboard', 'all-tasks', 'today', 'completed'];
+            navs.forEach(n => {
+                const el = document.getElementById(`nav-${n}`);
+                if (el) {
+                    if (n === nav) {
+                        el.className = "flex items-center gap-3 px-4 py-3 text-sm font-semibold rounded-xl transition bg-indigo-600/20 text-indigo-400 border border-indigo-500/30";
+                    } else {
+                        el.className = "flex items-center gap-3 px-4 py-3 text-sm font-medium text-slate-400 hover:text-slate-200 hover:bg-slate-800/50 rounded-xl transition";
+                    }
+                }
+            });
+
+            // Close mobile drawer if open
+            if (window.innerWidth < 1024) {
+                const sidebar = document.getElementById('sidebar');
+                if (!sidebar.classList.contains('-translate-x-full')) {
+                    toggleMobileDrawer();
+                }
+            }
+
+            renderTasks();
+        }
+
+        // Task Filtering Logic
+        function getFilteredTasks() {
+            const searchQuery = document.getElementById('searchInput').value.toLowerCase();
+            const subjectFilter = document.getElementById('filterSubject').value;
+            const priorityFilter = document.getElementById('filterPriority').value;
+
+            const now = new Date();
+            const todayStr = now.toISOString().split('T')[0];
+
+            return tasks.filter(task => {
+                // Search query match
+                const matchesSearch = task.title.toLowerCase().includes(searchQuery) || task.subject.toLowerCase().includes(searchQuery);
+                
+                // Dropdown subject match
+                const matchesSubject = subjectFilter === 'ALL' || task.subject === subjectFilter;
+                
+                // Dropdown priority match
+                const matchesPriority = priorityFilter === 'ALL' || task.priority === priorityFilter;
+
+                // Sidebar Navigation filter match
+                let matchesNav = true;
+                if (activeNavFilter === 'today') {
+                    matchesNav = task.deadline.startsWith(todayStr) && !task.completed;
+                } else if (activeNavFilter === 'completed') {
+                    matchesNav = task.completed;
+                }
+
+                return matchesSearch && matchesSubject && matchesPriority && matchesNav;
+            });
+        }
+
+        // Main Render Function
+        function renderTasks() {
+            const filteredTasks = getFilteredTasks();
+            const desktopBody = document.getElementById('desktopTableBody');
+            const mobileList = document.getElementById('mobileCardList');
+            const emptyState = document.getElementById('emptyState');
+
+            desktopBody.innerHTML = '';
+            mobileList.innerHTML = '';
+
+            // Update Counts & Progress Stats
+            updateDashboardStats();
+
+            // Render Empty State
+            if (filteredTasks.length === 0) {
+                emptyState.classList.remove('hidden');
+            } else {
+                emptyState.classList.add('hidden');
+
+                filteredTasks.forEach(task => {
+                    const isOverdue = new Date(task.deadline) < new Date() && !task.completed;
+                    
+                    // Priority Badge HTML
+                    let priorityBadge = '';
+                    if (task.priority === 'Tinggi') {
+                        priorityBadge = `<span class="px-2 py-0.5 rounded-md text-[10px] font-bold bg-rose-500/10 text-rose-400 border border-rose-500/20">Tinggi</span>`;
+                    } else if (task.priority === 'Sedang') {
+                        priorityBadge = `<span class="px-2 py-0.5 rounded-md text-[10px] font-bold bg-amber-500/10 text-amber-400 border border-amber-500/20">Sedang</span>`;
+                    } else {
+                        priorityBadge = `<span class="px-2 py-0.5 rounded-md text-[10px] font-bold bg-slate-500/10 text-slate-400 border border-slate-500/20">Rendah</span>`;
+                    }
+
+                    // Format Deadline
+                    const formattedDate = formatDeadline(task.deadline);
+
+                    // 1. DESKTOP ROW HTML
+                    const tr = document.createElement('tr');
+                    tr.className = `hover:bg-slate-800/40 transition border-b border-slate-800/40 ${task.completed ? 'opacity-60' : ''}`;
+                    tr.innerHTML = `
+                        <td class="py-3 px-3">
+                            <button onclick="toggleTaskComplete('${task.id}')" class="touch-btn text-lg hover:scale-110 transition">
+                                ${task.completed ? '<i class="fa-solid fa-circle-check text-emerald-400"></i>' : '<i class="fa-regular fa-circle text-slate-500 hover:text-indigo-400"></i>'}
+                            </button>
+                        </td>
+                        <td class="py-3 px-3">
+                            <p class="font-semibold text-white ${task.completed ? 'line-through text-slate-400' : ''}">${escapeHtml(task.title)}</p>
+                            <span class="text-[11px] text-indigo-400 font-medium">${escapeHtml(task.subject)}</span>
+                            ${task.notes ? `<p class="text-[11px] text-slate-400 mt-0.5 line-clamp-1">${escapeHtml(task.notes)}</p>` : ''}
+                        </td>
+                        <td class="py-3 px-3 whitespace-nowrap">
+                            <div class="flex items-center gap-1.5 text-xs ${isOverdue ? 'text-rose-400 font-bold' : 'text-slate-300'}">
+                                <i class="fa-regular fa-calendar text-[11px]"></i>
+                                <span>${formattedDate}</span>
+                            </div>
+                        </td>
+                        <td class="py-3 px-3 whitespace-nowrap">${priorityBadge}</td>
+                        <td class="py-3 px-3 text-right whitespace-nowrap">
+                            <div class="flex items-center justify-end gap-1">
+                                <button onclick="openTaskModal('${task.id}')" class="p-2 text-slate-400 hover:text-indigo-400 hover:bg-indigo-500/10 rounded-lg transition" title="Edit PR">
+                                    <i class="fa-solid fa-pen"></i>
+                                </button>
+                                <button onclick="deleteTask('${task.id}')" class="p-2 text-slate-400 hover:text-rose-400 hover:bg-rose-500/10 rounded-lg transition" title="Hapus PR">
+                                    <i class="fa-solid fa-trash"></i>
+                                </button>
+                            </div>
+                        </td>
+                    `;
+                    desktopBody.appendChild(tr);
+
+                    // 2. MOBILE CARD HTML
+                    const card = document.createElement('div');
+                    card.className = `glass-card p-4 rounded-2xl border ${task.completed ? 'border-emerald-500/20 bg-emerald-950/10 opacity-75' : isOverdue ? 'border-rose-500/30 bg-rose-950/10' : 'border-slate-800'} space-y-3`;
+                    card.innerHTML = `
+                        <div class="flex items-start justify-between gap-3">
+                            <div class="flex items-start gap-3">
+                                <button onclick="toggleTaskComplete('${task.id}')" class="touch-btn text-xl mt-0.5">
+                                    ${task.completed ? '<i class="fa-solid fa-circle-check text-emerald-400"></i>' : '<i class="fa-regular fa-circle text-slate-500"></i>'}
+                                </button>
+                                <div>
+                                    <span class="text-[10px] font-bold text-indigo-400 tracking-wider uppercase">${escapeHtml(task.subject)}</span>
+                                    <h4 class="font-bold text-sm text-white ${task.completed ? 'line-through text-slate-400' : ''}">${escapeHtml(task.title)}</h4>
+                                </div>
+                            </div>
+                            <div>${priorityBadge}</div>
+                        </div>
+
+                        ${task.notes ? `<p class="text-xs text-slate-400 pl-8 line-clamp-2 bg-slate-900/40 p-2 rounded-xl border border-slate-800/50">${escapeHtml(task.notes)}</p>` : ''}
+
+                        <div class="flex items-center justify-between pt-2 border-t border-slate-800/60 pl-8">
+                            <div class="flex items-center gap-1.5 text-xs ${isOverdue ? 'text-rose-400 font-bold' : 'text-slate-400'}">
+                                <i class="fa-regular fa-clock"></i>
+                                <span>${formattedDate}</span>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <button onclick="openTaskModal('${task.id}')" class="touch-btn px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs rounded-xl flex items-center gap-1">
+                                    <i class="fa-solid fa-pen text-[10px]"></i> Edit
+                                </button>
+                                <button onclick="deleteTask('${task.id}')" class="touch-btn px-3 py-1.5 bg-rose-500/10 hover:bg-rose-500/20 text-rose-400 text-xs rounded-xl flex items-center gap-1 border border-rose-500/20">
+                                    <i class="fa-solid fa-trash text-[10px]"></i> Hapus
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                    mobileList.appendChild(card);
+                });
+            }
+
+            document.getElementById('taskCountBadge').textContent = `${filteredTasks.length} Tugas`;
+        }
+
+        // Calculate Stats & Render Progress Fill
+        function updateDashboardStats() {
+            const total = tasks.length;
+            const completed = tasks.filter(t => t.completed).length;
+            const pending = total - completed;
+            
+            const now = new Date();
+            const overdue = tasks.filter(t => !t.completed && new Date(t.deadline) < now).length;
+            
+            const todayStr = now.toISOString().split('T')[0];
+            const todayCount = tasks.filter(t => !t.completed && t.deadline.startsWith(todayStr)).length;
+
+            document.getElementById('statTotal').textContent = total;
+            document.getElementById('statPending').textContent = pending;
+            document.getElementById('statCompleted').textContent = completed;
+            document.getElementById('statOverdue').textContent = overdue;
+            
+            document.getElementById('badgeTodayCount').textContent = todayCount;
+
+            const percentage = total > 0 ? Math.round((completed / total) * 100) : 0;
+            document.getElementById('statCompletedRate').textContent = `${percentage}% Selesai`;
+            document.getElementById('progressPercentText').textContent = `${percentage}% Selesai (${completed}/${total})`;
+            document.getElementById('progressBarFill').style.width = `${percentage}%`;
+        }
+
+        // Modal Handlers
+        function openTaskModal(taskId = null) {
+            const modal = document.getElementById('taskModal');
+            const modalTitle = document.getElementById('modalTitle');
+            const form = document.getElementById('taskForm');
+
+            form.reset();
+
+            if (taskId) {
+                const task = tasks.find(t => t.id === taskId);
+                if (task) {
+                    document.getElementById('taskId').value = task.id;
+                    document.getElementById('taskTitle').value = task.title;
+                    document.getElementById('taskSubject').value = task.subject;
+                    document.getElementById('taskPriority').value = task.priority;
+                    document.getElementById('taskDeadline').value = task.deadline;
+                    document.getElementById('taskNotes').value = task.notes || '';
+                    modalTitle.innerHTML = `<i class="fa-solid fa-pen-to-square text-indigo-400"></i><span>Edit Tugas / PR</span>`;
+                }
+            } else {
+                document.getElementById('taskId').value = '';
+                // Default deadline tomorrow same hour
+                const tomorrow = new Date(Date.now() + 86400000);
+                document.getElementById('taskDeadline').value = tomorrow.toISOString().slice(0,16);
+                modalTitle.innerHTML = `<i class="fa-solid fa-plus-circle text-indigo-400"></i><span>Tambah Tugas PR Baru</span>`;
+            }
+
+            modal.classList.remove('hidden');
+            setTimeout(() => modal.classList.remove('opacity-0'), 10);
+        }
+
+        function closeTaskModal() {
+            const modal = document.getElementById('taskModal');
+            modal.classList.add('opacity-0');
+            setTimeout(() => modal.classList.add('hidden'), 200);
+        }
+
+        // Save Task (Create or Update)
+        function saveTask(e) {
+            e.preventDefault();
+            const id = document.getElementById('taskId').value;
+            const title = document.getElementById('taskTitle').value.trim();
+            const subject = document.getElementById('taskSubject').value;
+            const priority = document.getElementById('taskPriority').value;
+            const deadline = document.getElementById('taskDeadline').value;
+            const notes = document.getElementById('taskNotes').value.trim();
+
+            if (!title || !deadline) return;
+
+            if (id) {
+                // Update Existing
+                const index = tasks.findIndex(t => t.id === id);
+                if (index !== -1) {
+                    tasks[index] = { ...tasks[index], title, subject, priority, deadline, notes };
+                    showToast('Tugas berhasil diperbarui!', 'success');
+                }
+            } else {
+                // Add New
+                const newTask = {
+                    id: Date.now().toString(),
+                    title,
+                    subject,
+                    priority,
+                    deadline,
+                    notes,
+                    completed: false
+                };
+                tasks.unshift(newTask);
+                showToast('Tugas PR baru berhasil ditambahkan!', 'success');
+            }
+
+            saveState();
+            renderTasks();
+            closeTaskModal();
+        }
+
+        // Toggle Task Complete Status
+        function toggleTaskComplete(id) {
+            const task = tasks.find(t => t.id === id);
+            if (task) {
+                task.completed = !task.completed;
+                saveState();
+                renderTasks();
+                showToast(task.completed ? 'Selamat! Tugas diselesaikan 🎉' : 'Status tugas dikembalikan ke pending.', task.completed ? 'success' : 'info');
+            }
+        }
+
+        // Delete Task
+        function deleteTask(id) {
+            if (confirm('Apakah Anda yakin ingin menghapus PR ini?')) {
+                tasks = tasks.filter(t => t.id !== id);
+                saveState();
+                renderTasks();
+                showToast('Tugas telah dihapus.', 'info');
+            }
+        }
+
+        // Toast Notification System
+        function showToast(message, type = 'info') {
+            const container = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+            
+            let bgBorder = 'bg-slate-900/90 border-indigo-500/40 text-slate-200';
+            let icon = 'fa-circle-info text-indigo-400';
+
+            if (type === 'success') {
+                bgBorder = 'bg-slate-900/90 border-emerald-500/40 text-slate-200';
+                icon = 'fa-circle-check text-emerald-400';
+            } else if (type === 'rose' || type === 'error') {
+                bgBorder = 'bg-slate-900/90 border-rose-500/40 text-slate-200';
+                icon = 'fa-triangle-exclamation text-rose-400';
+            }
+
+            toast.className = `pointer-events-auto flex items-center gap-3 p-3.5 rounded-2xl border ${bgBorder} backdrop-blur-xl shadow-2xl transition-all duration-300 transform translate-y-4 opacity-0 text-xs font-semibold`;
+            toast.innerHTML = `
+                <i class="fa-solid ${icon} text-base"></i>
+                <span class="flex-1">${escapeHtml(message)}</span>
+            `;
+
+            container.appendChild(toast);
+
+            setTimeout(() => {
+                toast.classList.remove('translate-y-4', 'opacity-0');
+            }, 10);
+
+            setTimeout(() => {
+                toast.classList.add('opacity-0', 'translate-y-2');
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
+
+        // Utility: Format Date & Time
+        function formatDeadline(dateTimeStr) {
+            if (!dateTimeStr) return '-';
+            const date = new Date(dateTimeStr);
+            const months = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'];
+            
+            const day = date.getDate();
+            const month = months[date.getMonth()];
+            const hours = String(date.getHours()).padStart(2, '0');
+            const minutes = String(date.getMinutes()).padStart(2, '0');
+
+            return `${day} ${month}, ${hours}:${minutes} WIB`;
+        }
+
+        // Utility: Sanitize HTML Input
+        function escapeHtml(str) {
+            if (!str) return '';
+            return str.replace(/[&<>"']/g, function(m) {
+                return {
+                    '&': '&amp;',
+                    '<': '&lt;',
+                    '>': '&gt;',
+                    '"': '&quot;',
+                    "'": '&#039;'
+                }[m];
+            });
+        }
+    </script>
 </body>
 </html>
