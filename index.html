@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -70,7 +69,7 @@ a{text-decoration:none}
 .status-pending{color:#fcd34d;background:rgba(245,158,11,.13)}
 .status-late{color:#fda4af;background:rgba(244,63,94,.13)}
 
-/* LOGIN */
+/* LOGIN & REGISTER */
 #login-overlay{
  position:fixed;inset:0;z-index:9999;display:flex;align-items:center;
  justify-content:center;overflow:auto;padding:20px;
@@ -78,7 +77,7 @@ a{text-decoration:none}
  radial-gradient(ellipse at 90% 90%,rgba(192,132,252,.16),transparent 40%),#070a14;
 }
 .login-card{
- width:100%;max-width:430px;padding:35px;
+ width:100%;max-width:440px;padding:35px;
  border:1px solid rgba(255,255,255,.12);border-radius:27px;
  background:rgba(15,23,42,.88);box-shadow:0 30px 90px #0007;
 }
@@ -195,15 +194,16 @@ a{text-decoration:none}
 
 <body>
 
-<!-- LOGIN -->
+<!-- LOGIN & REGISTER OVERLAY -->
 <div id="login-overlay">
  <div class="login-card">
   <div class="logo-icon"><i class="fa-solid fa-graduation-cap"></i></div>
   <div class="text-center mb-4">
-   <h3 class="fw-bold mb-2">PR Master Studio</h3>
-   <p class="text-muted small">Atur tugasmu. Capai targetmu.</p>
+   <h3 class="fw-bold mb-1" id="auth-title">Masuk Akun</h3>
+   <p class="text-muted small" id="auth-subtitle">Atur tugasmu. Capai targetmu.</p>
   </div>
 
+  <!-- FORM LOGIN -->
   <form id="login-form">
    <div class="mb-3">
     <label class="form-label">Email siswa</label>
@@ -213,16 +213,38 @@ a{text-decoration:none}
     <label class="form-label">Password</label>
     <div class="input-group">
      <input id="login-password" type="password" class="form-control" placeholder="Masukkan password" required>
-     <button type="button" class="btn btn-soft" onclick="togglePassword()"><i id="eye-icon" class="fa-regular fa-eye"></i></button>
+     <button type="button" class="btn btn-soft" onclick="togglePassword('login-password', 'eye-icon')"><i id="eye-icon" class="fa-regular fa-eye"></i></button>
     </div>
    </div>
    <button class="btn btn-primary-custom w-100 mb-3" type="submit">Masuk Aplikasi <i class="fa-solid fa-arrow-right ms-2"></i></button>
+   <div class="text-center">
+    <small class="text-muted">Belum punya akun? <a href="#" class="text-white fw-bold" onclick="toggleAuthMode(true)">Daftar Akun Baru</a></small>
+   </div>
   </form>
 
-  <div class="d-flex gap-2">
-   <button class="btn btn-soft flex-fill btn-sm py-2" onclick="demoLogin()"><i class="fa-solid fa-user-graduate me-1"></i> Demo Siswa</button>
-   <button class="btn btn-soft flex-fill btn-sm py-2" onclick="guestLogin()"><i class="fa-solid fa-user-clock me-1"></i> Mode Tamu</button>
-  </div>
+  <!-- FORM REGISTER -->
+  <form id="register-form" style="display:none">
+   <div class="mb-3">
+    <label class="form-label">Nama Lengkap</label>
+    <input id="reg-name" type="text" class="form-control" placeholder="Masukkan nama kamu" required>
+   </div>
+   <div class="mb-3">
+    <label class="form-label">Email siswa</label>
+    <input id="reg-email" type="email" class="form-control" placeholder="nama@sekolah.sch.id" required>
+   </div>
+   <div class="mb-4">
+    <label class="form-label">Password</label>
+    <div class="input-group">
+     <input id="reg-password" type="password" class="form-control" placeholder="Buat password bebas" required minlength="4">
+     <button type="button" class="btn btn-soft" onclick="togglePassword('reg-password', 'eye-icon-reg')"><i id="eye-icon-reg" class="fa-regular fa-eye"></i></button>
+    </div>
+   </div>
+   <button class="btn btn-primary-custom w-100 mb-3" type="submit">Buat Akun Sekarang <i class="fa-solid fa-user-plus ms-2"></i></button>
+   <div class="text-center">
+    <small class="text-muted">Sudah punya akun? <a href="#" class="text-white fw-bold" onclick="toggleAuthMode(false)">Masuk di sini</a></small>
+   </div>
+  </form>
+
   <p class="text-muted text-center mt-4 mb-0" style="font-size:.72rem">PR MASTER STUDIO • SMART STUDENT PLANNER</p>
  </div>
 </div>
@@ -389,13 +411,13 @@ a{text-decoration:none}
    <img id="profile-avatar" class="avatar-large mb-3" alt="Foto profil">
    <h4 id="profile-heading" class="fw-bold mb-1"></h4>
    <p id="profile-subtitle" class="text-muted small"></p>
-   <span class="badge rounded-pill text-bg-success">Profil lokal</span>
+   <span class="badge rounded-pill text-bg-success">Profil Akun Terdaftar</span>
   </div>
   <form id="profile-form">
    <div class="row g-3">
     <div class="col-md-6"><label class="form-label">Nama lengkap</label><input id="profile-name" class="form-control" required maxlength="80"></div>
-    <div class="col-md-6"><label class="form-label">Email</label><input id="profile-email" type="email" class="form-control" required></div>
-    <div class="col-md-6"><label class="form-label">Kelas / jurusan</label><input id="profile-class" class="form-control" placeholder="XII RPL 3"></div>
+    <div class="col-md-6"><label class="form-label">Email</label><input id="profile-email" type="email" class="form-control" readonly disabled style="opacity:.6"></div>
+    <div class="col-md-6"><label class="form-label">Kelas / jurusan</label><input id="profile-class" class="form-control" placeholder="Contoh: XII RPL 3"></div>
     <div class="col-md-6"><label class="form-label">Nama sekolah</label><input id="profile-school" class="form-control" placeholder="Nama sekolah"></div>
     <div class="col-12"><label class="form-label">URL foto profil (opsional)</label><input id="profile-photo" type="url" class="form-control" placeholder="https://..."></div>
    </div>
@@ -448,13 +470,7 @@ const SUBJECTS = [
  'Pendidikan Agama','PJOK','Seni Budaya','PKWU','Lainnya'
 ];
 
-const DEFAULT_USER = {
- name:'Mochamad Rizky Ramadhan',
- email:'rizky@smkwahidin.sch.id',
- kelas:'XII RPL 3',
- sekolah:'SMK Wahidin Cirebon',
- avatar:'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200&auto=format&fit=crop&q=80'
-};
+const DEFAULT_AVATAR = 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200&auto=format&fit=crop&q=80';
 
 function loadJSON(key, fallback){
  try {
@@ -465,19 +481,15 @@ function loadJSON(key, fallback){
  }
 }
 
-let currentUser = {...DEFAULT_USER,...loadJSON('prmaster_user',{})};
-let loggedIn = sessionStorage.getItem('prmaster_session') === 'active';
-
-let tasks = loadJSON('prmaster_tasks',[
- {id:1,mapel:'Matematika',deskripsi:'PR Latihan Soal Bab 2 Halaman 45–50',deadline:getDateOffset(0),prioritas:'Tinggi',status:'belum'},
- {id:2,mapel:'Informatika / RPL',deskripsi:'Membuat rancangan aplikasi sederhana',deadline:getDateOffset(1),prioritas:'Sedang',status:'belum'},
- {id:3,mapel:'Bahasa Indonesia',deskripsi:'Merangkum teks laporan hasil observasi',deadline:getDateOffset(3),prioritas:'Rendah',status:'selesai'}
-]);
+let users = loadJSON('prmaster_users_db', []);
+let activeEmail = sessionStorage.getItem('prmaster_active_user') || '';
+let currentUser = null;
+let tasks = [];
 
 let calendarDate = new Date();
 let taskModal;
 
-/* TANGGAL LOKAL */
+/* HELPER TANGGAL & TEKS */
 function localDate(date = new Date()){
  const y=date.getFullYear();
  const m=String(date.getMonth()+1).padStart(2,'0');
@@ -507,12 +519,37 @@ function safePhoto(value){
  }catch(e){}
  return '';
 }
+
+/* DATA MANAGER PER USER */
+function loadUserData(email){
+ const userObj = users.find(u => u.email.toLowerCase() === email.toLowerCase());
+ if(!userObj) return;
+
+ currentUser = loadJSON(`prmaster_user_${email}`, {
+  name: userObj.name,
+  email: userObj.email,
+  kelas: 'Siswa',
+  sekolah: 'Sekolah',
+  avatar: DEFAULT_AVATAR
+ });
+
+ tasks = loadJSON(`prmaster_tasks_${email}`, []);
+}
+
 function saveUser(){
- localStorage.setItem('prmaster_user',JSON.stringify(currentUser));
+ if(!currentUser) return;
+ localStorage.setItem(`prmaster_user_${currentUser.email}`, JSON.stringify(currentUser));
+ const idx = users.findIndex(u => u.email.toLowerCase() === currentUser.email.toLowerCase());
+ if(idx !== -1){
+  users[idx].name = currentUser.name;
+  localStorage.setItem('prmaster_users_db', JSON.stringify(users));
+ }
  updateProfileUI();
 }
+
 function saveTasks(){
- localStorage.setItem('prmaster_tasks',JSON.stringify(tasks));
+ if(!currentUser) return;
+ localStorage.setItem(`prmaster_tasks_${currentUser.email}`, JSON.stringify(tasks));
 }
 
 /* INIT */
@@ -521,12 +558,11 @@ document.addEventListener('DOMContentLoaded',()=>{
  buildNavigation();
  buildSubjectOptions();
  document.getElementById('login-form').addEventListener('submit',login);
+ document.getElementById('register-form').addEventListener('submit',register);
  document.getElementById('task-form').addEventListener('submit',saveTask);
  document.getElementById('profile-form').addEventListener('submit',saveProfile);
 
  checkLogin();
- updateProfileUI();
- renderAll();
 });
 
 /* NAVIGATION */
@@ -561,6 +597,7 @@ function buildNavigation(){
   });
  });
 }
+
 function switchPage(id){
  document.querySelectorAll('.page').forEach(el=>el.classList.remove('active'));
  document.getElementById('page-'+id)?.classList.add('active');
@@ -574,55 +611,91 @@ function switchPage(id){
  window.scrollTo({top:0,behavior:'smooth'});
 }
 
-/* LOGIN — DEMO LOKAL, BUKAN AUTENTIKASI AMAN */
+/* AUTENTIKASI MASUK & DAFTAR */
 function checkLogin(){
- document.getElementById('login-overlay').style.display=loggedIn?'none':'flex';
+ if(activeEmail){
+  loadUserData(activeEmail);
+  document.getElementById('login-overlay').style.display='none';
+  updateProfileUI();
+  renderAll();
+ } else {
+  document.getElementById('login-overlay').style.display='flex';
+ }
 }
+
+function toggleAuthMode(isRegister){
+ document.getElementById('login-form').style.display = isRegister ? 'none' : 'block';
+ document.getElementById('register-form').style.display = isRegister ? 'block' : 'none';
+ document.getElementById('auth-title').textContent = isRegister ? 'Daftar Akun Baru' : 'Masuk Akun';
+ document.getElementById('auth-subtitle').textContent = isRegister ? 'Buat akun siswa milikmu sendiri.' : 'Atur tugasmu. Capai targetmu.';
+}
+
+function register(event){
+ event.preventDefault();
+ const name = document.getElementById('reg-name').value.trim();
+ const email = document.getElementById('reg-email').value.trim().toLowerCase();
+ const password = document.getElementById('reg-password').value;
+
+ if(users.some(u => u.email === email)){
+  showToast('Email sudah terdaftar. Silakan gunakan email lain!');
+  return;
+ }
+
+ const newUser = { name, email, password };
+ users.push(newUser);
+ localStorage.setItem('prmaster_users_db', JSON.stringify(users));
+
+ activeEmail = email;
+ sessionStorage.setItem('prmaster_active_user', email);
+ loadUserData(email);
+ saveUser();
+ saveTasks();
+
+ document.getElementById('register-form').reset();
+ checkLogin();
+ showToast(`Selamat datang, ${name}! Akunmu berhasil dibuat.`);
+}
+
 function login(event){
  event.preventDefault();
- const email=document.getElementById('login-email').value.trim();
- const password=document.getElementById('login-password').value;
- if(!email||!password)return;
+ const email = document.getElementById('login-email').value.trim().toLowerCase();
+ const password = document.getElementById('login-password').value;
 
- currentUser.email=email;
- if(email==='siswa@smkwahidin.sch.id'){
-  currentUser.name='Siswa Demo';
+ const user = users.find(u => u.email === email && u.password === password);
+ if(!user){
+  showToast('Email atau password salah!');
+  return;
  }
- saveUser();
- loggedIn=true;
- sessionStorage.setItem('prmaster_session','active');
+
+ activeEmail = email;
+ sessionStorage.setItem('prmaster_active_user', email);
+ loadUserData(email);
+
+ document.getElementById('login-form').reset();
  checkLogin();
- showToast('Berhasil masuk ke PR Master!');
+ showToast(`Selamat datang kembali, ${currentUser.name}!`);
 }
-function demoLogin(){
- document.getElementById('login-email').value='siswa@smkwahidin.sch.id';
- document.getElementById('login-password').value='12345678';
- document.getElementById('login-form').requestSubmit();
-}
-function guestLogin(){
- currentUser={...DEFAULT_USER,name:'Tamu Pengunjung',email:'tamu@example.com'};
- saveUser();
- loggedIn=true;
- sessionStorage.setItem('prmaster_session','active');
- checkLogin();
- showToast('Selamat datang di Mode Tamu!');
-}
+
 function logout(){
- loggedIn=false;
- sessionStorage.removeItem('prmaster_session');
+ activeEmail = '';
+ currentUser = null;
+ tasks = [];
+ sessionStorage.removeItem('prmaster_active_user');
  checkLogin();
- showToast('Kamu telah keluar dari aplikasi.');
+ showToast('Kamu telah keluar dari akun.');
 }
-function togglePassword(){
- const input=document.getElementById('login-password');
- const icon=document.getElementById('eye-icon');
+
+function togglePassword(inputId, iconId){
+ const input=document.getElementById(inputId);
+ const icon=document.getElementById(iconId);
  input.type=input.type==='password'?'text':'password';
  icon.className=input.type==='password'?'fa-regular fa-eye':'fa-regular fa-eye-slash';
 }
 
 /* PROFIL */
 function updateProfileUI(){
- const photo=safePhoto(currentUser.avatar)||'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200&auto=format&fit=crop&q=80';
+ if(!currentUser) return;
+ const photo=safePhoto(currentUser.avatar)||DEFAULT_AVATAR;
  document.getElementById('welcome').textContent='Selamat datang, '+(currentUser.name||'Siswa').split(' ')[0]+'!';
  ['side-avatar','mobile-avatar','profile-avatar'].forEach(id=>{
   document.getElementById(id).src=photo;
@@ -642,14 +715,15 @@ function updateProfileUI(){
  document.getElementById('profile-school').value=currentUser.sekolah||'';
  document.getElementById('profile-photo').value=currentUser.avatar||'';
 }
+
 function saveProfile(event){
  event.preventDefault();
+ if(!currentUser) return;
  currentUser.name=document.getElementById('profile-name').value.trim();
- currentUser.email=document.getElementById('profile-email').value.trim();
  currentUser.kelas=document.getElementById('profile-class').value.trim();
  currentUser.sekolah=document.getElementById('profile-school').value.trim();
  const photo=document.getElementById('profile-photo').value.trim();
- currentUser.avatar=safePhoto(photo)||DEFAULT_USER.avatar;
+ currentUser.avatar=safePhoto(photo)||DEFAULT_AVATAR;
  saveUser();
  showToast('Profil berhasil diperbarui!');
 }
@@ -728,7 +802,7 @@ function deleteTask(id){
  showToast('Tugas berhasil dihapus.');
 }
 
-/* HELPERS */
+/* HELPERS & BADGES */
 function isLate(task){
  return task.status!=='selesai'&&task.deadline<localDate();
 }
@@ -887,7 +961,7 @@ function changeMonth(delta){
  renderCalendar();
 }
 
-/* NOTIFIKASI */
+/* NOTIFIKASI TOAST */
 function showToast(message){
  document.getElementById('toast-text').textContent=message;
  bootstrap.Toast.getOrCreateInstance(document.getElementById('app-toast'),{delay:2600}).show();
