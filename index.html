@@ -368,17 +368,18 @@ a{text-decoration:none}
 
  <div class="glass p-3 mb-4">
   <div class="row g-3">
-   <div class="col-lg-5"><input id="search-task" class="form-control" placeholder="Cari judul atau mata pelajaran..." oninput="renderTasks()"></div>
+   <div class="col-lg-4"><input id="search-task" class="form-control" placeholder="Cari judul atau mata pelajaran..." oninput="renderTasks()"></div>
    <div class="col-6 col-lg-3"><select id="filter-mapel" class="form-select" onchange="renderTasks()"><option value="">Semua mapel</option></select></div>
    <div class="col-6 col-lg-2"><select id="filter-status" class="form-select" onchange="renderTasks()"><option value="">Semua status</option><option value="belum">Belum selesai</option><option value="selesai">Selesai</option></select></div>
-   <div class="col-lg-2"><button class="btn btn-soft w-100" onclick="resetFilters()"><i class="fa-solid fa-rotate me-1"></i>Reset</button></div>
+   <div class="col-6 col-lg-2"><select id="filter-type" class="form-select" onchange="renderTasks()"><option value="">Semua Tipe</option><option value="PR">PR Individual</option><option value="Kelompok">Tugas Kelompok</option><option value="Ujian">Ujian / Ulangan</option><option value="Proyek">Proyek</option><option value="Presentasi">Presentasi</option></select></div>
+   <div class="col-6 col-lg-1"><button class="btn btn-soft w-100" onclick="resetFilters()"><i class="fa-solid fa-rotate me-1"></i>Reset</button></div>
   </div>
  </div>
 
  <div class="glass overflow-hidden d-none d-md-block">
   <div class="table-responsive">
    <table class="table align-middle">
-    <thead><tr><th>No.</th><th>Mata pelajaran / Deskripsi</th><th>Deadline</th><th>Prioritas</th><th>Status</th><th>Aksi</th></tr></thead>
+    <thead><tr><th>No.</th><th>Mata Pelajaran / Deskripsi</th><th>Tipe & Est. Waktu</th><th>Deadline</th><th>Prioritas</th><th>Status</th><th>Aksi</th></tr></thead>
     <tbody id="task-table"></tbody>
    </table>
   </div>
@@ -405,7 +406,7 @@ a{text-decoration:none}
 
 <!-- PROFIL -->
 <section id="page-profile" class="page">
- <div class="mb-4"><h3 class="page-title fw-bold mb-1">Profil Saya</h3><p class="text-muted small">Kelola informasi profil siswa.</p></div>
+ <div class="mb-4"><h3 class="page-title fw-bold mb-1">Profil Saya</h3><p class="text-muted small">Kelola informasi profil siswa & cadangkan data.</p></div>
  <div class="glass p-4 p-md-5" style="max-width:760px;margin:auto">
   <div class="text-center mb-4">
    <img id="profile-avatar" class="avatar-large mb-3" alt="Foto profil">
@@ -423,6 +424,16 @@ a{text-decoration:none}
    </div>
    <button class="btn btn-primary-custom w-100 mt-4" type="submit"><i class="fa-solid fa-floppy-disk me-2"></i>Simpan Profil</button>
   </form>
+
+  <hr class="my-4" style="border-color:var(--border)">
+  <h6 class="fw-bold mb-3"><i class="fa-solid fa-database me-2"></i>Cadangan & Pemulihan Data</h6>
+  <div class="d-flex gap-2 flex-wrap">
+   <button class="btn btn-soft flex-fill" onclick="exportData()"><i class="fa-solid fa-download me-2"></i>Ekspor Data PR (.JSON)</button>
+   <label class="btn btn-soft flex-fill mb-0 text-center cursor-pointer">
+    <i class="fa-solid fa-upload me-2"></i>Impor Data PR
+    <input type="file" id="import-file" accept=".json" style="display:none" onchange="importData(event)">
+   </label>
+  </div>
  </div>
 </section>
 
@@ -437,11 +448,23 @@ a{text-decoration:none}
    <div class="modal-body p-4">
     <form id="task-form">
      <input type="hidden" id="task-id">
-     <div class="mb-3"><label class="form-label">Mata pelajaran</label><select id="task-mapel" class="form-select" required></select></div>
+     <div class="row g-3 mb-3">
+      <div class="col-md-6"><label class="form-label">Mata pelajaran</label><select id="task-mapel" class="form-select" required></select></div>
+      <div class="col-md-6"><label class="form-label">Tipe Tugas</label>
+       <select id="task-type" class="form-select">
+        <option value="PR">PR Individual</option>
+        <option value="Kelompok">Tugas Kelompok</option>
+        <option value="Ujian">Ujian / Ulangan</option>
+        <option value="Proyek">Proyek</option>
+        <option value="Presentasi">Presentasi</option>
+       </select>
+      </div>
+     </div>
      <div class="mb-3"><label class="form-label">Deskripsi tugas</label><textarea id="task-description" class="form-control" rows="3" maxlength="1500" placeholder="Contoh: Kerjakan halaman 45 nomor 1–10" required></textarea></div>
      <div class="row g-3 mb-4">
-      <div class="col-6"><label class="form-label">Deadline</label><input type="date" id="task-deadline" class="form-control" required></div>
-      <div class="col-6"><label class="form-label">Prioritas</label><select id="task-priority" class="form-select"><option>Tinggi</option><option selected>Sedang</option><option>Rendah</option></select></div>
+      <div class="col-4"><label class="form-label">Deadline</label><input type="date" id="task-deadline" class="form-control" required></div>
+      <div class="col-4"><label class="form-label">Est. Waktu (Menit)</label><input type="number" id="task-estimate" class="form-control" placeholder="60" min="5" step="5"></div>
+      <div class="col-4"><label class="form-label">Prioritas</label><select id="task-priority" class="form-select"><option>Tinggi</option><option selected>Sedang</option><option>Rendah</option></select></div>
      </div>
      <div class="d-flex gap-2"><button class="btn btn-primary-custom flex-fill" type="submit">Simpan Tugas</button><button class="btn btn-soft" type="button" data-bs-dismiss="modal">Batal</button></div>
     </form>
@@ -692,7 +715,7 @@ function togglePassword(inputId, iconId){
  icon.className=input.type==='password'?'fa-regular fa-eye':'fa-regular fa-eye-slash';
 }
 
-/* PROFIL */
+/* PROFIL & EKSPOR/IMPOR DATA */
 function updateProfileUI(){
  if(!currentUser) return;
  const photo=safePhoto(currentUser.avatar)||DEFAULT_AVATAR;
@@ -728,6 +751,47 @@ function saveProfile(event){
  showToast('Profil berhasil diperbarui!');
 }
 
+function exportData(){
+ if(!currentUser) return;
+ const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify({
+  profile: currentUser,
+  tasks: tasks
+ }, null, 2));
+ const dlAnchor = document.createElement('a');
+ dlAnchor.setAttribute("href", dataStr);
+ dlAnchor.setAttribute("download", `PR_Master_Backup_${currentUser.name.replace(/\s+/g, '_')}.json`);
+ document.body.appendChild(dlAnchor);
+ dlAnchor.click();
+ dlAnchor.remove();
+ showToast('Data berhasil diekspor!');
+}
+
+function importData(event){
+ const file = event.target.files[0];
+ if(!file) return;
+ const reader = new FileReader();
+ reader.onload = function(e){
+  try {
+   const imported = JSON.parse(e.target.result);
+   if(imported.tasks && Array.isArray(imported.tasks)){
+    tasks = imported.tasks;
+    saveTasks();
+    if(imported.profile){
+     currentUser = {...currentUser, ...imported.profile};
+     saveUser();
+    }
+    renderAll();
+    showToast('Data berhasil diimpor!');
+   } else {
+    showToast('Format berkas tidak valid.');
+   }
+  } catch(err){
+   showToast('Gagal membaca berkas JSON.');
+  }
+ };
+ reader.readAsText(file);
+}
+
 /* SUBJECTS */
 function buildSubjectOptions(){
  ['task-mapel','filter-mapel'].forEach(id=>{
@@ -747,6 +811,7 @@ function openTaskModal(id=null){
  document.getElementById('task-id').value='';
  document.getElementById('task-deadline').value=getDateOffset(1);
  document.getElementById('task-priority').value='Sedang';
+ document.getElementById('task-type').value='PR';
  document.getElementById('modal-title').textContent=id?'Edit Tugas':'Tambah PR Baru';
 
  if(id!==null){
@@ -754,8 +819,10 @@ function openTaskModal(id=null){
   if(!task)return;
   document.getElementById('task-id').value=task.id;
   document.getElementById('task-mapel').value=task.mapel;
+  document.getElementById('task-type').value=task.tipe || 'PR';
   document.getElementById('task-description').value=task.deskripsi;
   document.getElementById('task-deadline').value=task.deadline;
+  document.getElementById('task-estimate').value=task.estimasi || '';
   document.getElementById('task-priority').value=task.prioritas;
  }
  taskModal.show();
@@ -765,8 +832,10 @@ function saveTask(event){
  event.preventDefault();
  const id=document.getElementById('task-id').value;
  const mapel=document.getElementById('task-mapel').value;
+ const tipe=document.getElementById('task-type').value;
  const deskripsi=document.getElementById('task-description').value.trim();
  const deadline=document.getElementById('task-deadline').value;
+ const estimasi=document.getElementById('task-estimate').value;
  const prioritas=document.getElementById('task-priority').value;
 
  if(!mapel||!deskripsi||!deadline)return;
@@ -776,10 +845,10 @@ function saveTask(event){
  }
 
  if(id){
-  tasks=tasks.map(t=>String(t.id)===id?{...t,mapel,deskripsi,deadline,prioritas}:t);
+  tasks=tasks.map(t=>String(t.id)===id?{...t,mapel,tipe,deskripsi,deadline,estimasi,prioritas}:t);
   showToast('Tugas berhasil diperbarui!');
  }else{
-  tasks.push({id:Date.now(),mapel,deskripsi,deadline,prioritas,status:'belum'});
+  tasks.push({id:Date.now(),mapel,tipe,deskripsi,deadline,estimasi,prioritas,status:'belum'});
   showToast('PR baru berhasil ditambahkan!');
  }
  saveTasks();
@@ -862,7 +931,7 @@ function renderDashboard(){
     <div class="d-flex gap-3 align-items-start">
      <button class="btn btn-soft btn-sm mt-1" title="Tandai selesai" onclick="toggleStatus(${Number(t.id)})"><i class="fa-solid fa-check"></i></button>
      <div class="min-w-0">
-      <div class="fw-bold">${escapeHTML(t.mapel)}</div>
+      <div class="fw-bold">${escapeHTML(t.mapel)} <span class="badge bg-secondary ms-1" style="font-size:.65rem">${escapeHTML(t.tipe || 'PR')}</span></div>
       <div class="text-muted small task-description mt-1">${escapeHTML(t.deskripsi)}</div>
      </div>
     </div>
@@ -879,17 +948,18 @@ function renderTasks(){
  const search=(document.getElementById('search-task').value||'').toLowerCase().trim();
  const mapel=document.getElementById('filter-mapel').value;
  const status=document.getElementById('filter-status').value;
+ const tipe=document.getElementById('filter-type').value;
 
  const filtered=sortTasks(tasks.filter(t=>{
   const text=(t.mapel+' '+t.deskripsi).toLowerCase();
-  return text.includes(search)&&(!mapel||t.mapel===mapel)&&(!status||t.status===status);
+  return text.includes(search)&&(!mapel||t.mapel===mapel)&&(!status||t.status===status)&&(!tipe||t.tipe===tipe);
  }));
 
  const table=document.getElementById('task-table');
  const cards=document.getElementById('task-cards');
 
  if(!filtered.length){
-  table.innerHTML='<tr><td colspan="6"><div class="empty-state"><i class="fa-solid fa-folder-open fs-2 mb-2 d-block"></i>Tidak ada tugas ditemukan.</div></td></tr>';
+  table.innerHTML='<tr><td colspan="7"><div class="empty-state"><i class="fa-solid fa-folder-open fs-2 mb-2 d-block"></i>Tidak ada tugas ditemukan.</div></td></tr>';
   cards.innerHTML='<div class="glass empty-state">Tidak ada tugas ditemukan.</div>';
   return;
  }
@@ -898,17 +968,18 @@ function renderTasks(){
   <tr>
    <td class="text-muted">${i+1}</td>
    <td><div class="fw-bold">${escapeHTML(t.mapel)}</div><div class="text-muted small task-description mt-1">${escapeHTML(t.deskripsi)}</div></td>
+   <td><span class="badge bg-secondary mb-1">${escapeHTML(t.tipe || 'PR')}</span>${t.estimasi ? `<div class="small text-muted"><i class="fa-regular fa-clock me-1"></i>${t.estimasi}m</div>` : ''}</td>
    <td class="text-nowrap"><i class="fa-regular fa-calendar me-1 text-muted"></i>${formatDate(t.deadline)}</td>
    <td>${priorityBadge(t)}</td><td>${statusBadge(t)}</td><td>${taskActions(t)}</td>
   </tr>`).join('');
 
  cards.innerHTML=filtered.map(t=>`
   <div class="card-custom p-3">
-   <div class="d-flex justify-content-between gap-2 mb-3">${priorityBadge(t)}${statusBadge(t)}</div>
-   <h6 class="fw-bold">${escapeHTML(t.mapel)}</h6>
+   <div class="d-flex justify-content-between gap-2 mb-2">${priorityBadge(t)}${statusBadge(t)}</div>
+   <div class="d-flex justify-content-between align-items-center mb-1"><h6 class="fw-bold mb-0">${escapeHTML(t.mapel)}</h6><span class="badge bg-secondary" style="font-size:.65rem">${escapeHTML(t.tipe || 'PR')}</span></div>
    <p class="text-muted small task-description">${escapeHTML(t.deskripsi)}</p>
    <div class="d-flex justify-content-between align-items-center gap-2 pt-3 border-top" style="border-color:var(--border)!important">
-    <small class="text-muted"><i class="fa-regular fa-calendar me-1"></i>${formatDate(t.deadline)}</small>
+    <small class="text-muted"><i class="fa-regular fa-calendar me-1"></i>${formatDate(t.deadline)}${t.estimasi ? ` • ${t.estimasi} mnt` : ''}</small>
     <div class="mobile-task-actions">${taskActions(t)}</div>
    </div>
   </div>`).join('');
@@ -918,6 +989,7 @@ function resetFilters(){
  document.getElementById('search-task').value='';
  document.getElementById('filter-mapel').value='';
  document.getElementById('filter-status').value='';
+ document.getElementById('filter-type').value='';
  renderTasks();
 }
 
